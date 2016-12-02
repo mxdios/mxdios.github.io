@@ -11,6 +11,10 @@ E-mail: <i@markmiao.com>
 
 Github: [@Mark Miao](https://github.com/mxdios)
 
+微信订阅号: **imarkmiao**
+
+![扫码关注微信订阅号](/img/imarkmiao.jpg)
+
 目前状态: 想学的太多，关注的太杂，行动的步伐跟不上大脑的冲动。
 
 Hello world, Coding life;
