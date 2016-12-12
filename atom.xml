@@ -621,48 +621,57 @@
     <link href="http://markmiao.com/2016/11/10/%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0AppStore%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/"/>
     <id>http://markmiao.com/2016/11/10/提交应用到AppStore准备工作/</id>
     <published>2016-11-10T03:50:14.000Z</published>
-    <updated>2016-11-27T05:14:18.000Z</updated>
+    <updated>2016-12-12T06:17:35.000Z</updated>
     
     <content type="html"><![CDATA[<p>本文详细记录了提交应用到AppStore的准备工作，以及准备的内容对应AppStore上APP的呈现方式，还列出某些内容是不能随意修改的，以及填写时的注意点，还有我提交APP时踩到的坑。对已有过上架经验的开发者来说本文意义不大，但是当产品经理问上架AppStore需要什么资料时，可以把本文分享给他。<br><a id="more"></a></p>
-<h2 id="App信息"><a href="#App信息" class="headerlink" title="App信息"></a>App信息</h2><p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-7.png?raw=true" alt="img"></p>
-<h3 id="公司名称"><a href="#公司名称" class="headerlink" title="公司名称"></a>公司名称</h3><p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG1081.jpeg?raw=true" alt="img"></p>
+<h2 id="App信息"><a href="#App信息" class="headerlink" title="App信息"></a>App信息</h2><p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-7.png?raw=true" alt="iTunes Connect内APP信息截图"></p>
+<h3 id="公司名称"><a href="#公司名称" class="headerlink" title="公司名称"></a>公司名称</h3><p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG1081.jpeg?raw=true" alt="12306显示的公司名称"></p>
 <p>公司名字是指显示在这里的名字。这个只针对公司级账号说的，个人账号不能设置公司名称，只能以开发商名字显示。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160930-0.png?raw=true" alt="img"></p>
-<p>每个账号在iTunes Connect里创建第一个应用的时候，可以设置公司名字，如果不设置的话就显示开发商名字。日后不能修改公司名字，也不能重新设置。只能给苹果开发者发邮件，要求去掉公司名显示开发商名字。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160930-0.png?raw=true" alt="设置公司名"></p>
+<p>每个账号在iTunes Connect里创建第一个应用的时候，可以设置公司名字。如果不设置的话，就显示开发商名字。日后不能修改公司名字，也不能重新设置。只能给苹果开发者发邮件，要求去掉公司名显示开发商名字。</p>
 <h3 id="app名称"><a href="#app名称" class="headerlink" title="app名称"></a>app名称</h3><p>您的 App 在 App Store 中显示的名称。名称长度不能超过<del>255个字符</del> 50个字符（新审核指南修改）。并不等同于app安装完成在手机上显示的名字，这里的名称可以写为名字+简介。</p>
 <p>例如：天猫在AppStore展示的名称如下图，应用名为“天猫”</p>
 <p><img src="http://oalg33nuc.bkt.clouddn.com/image/%E5%9B%BE%E7%89%87%201.png" alt="天猫"></p>
 <h3 id="隐私政策网址-可不填"><a href="#隐私政策网址-可不填" class="headerlink" title="隐私政策网址(可不填)"></a>隐私政策网址(可不填)</h3><p>您所在机构的隐私政策网址(URL)。面向儿童或提供自动续费的 App 内购买项目或免费订阅的 App, 均需要隐私政策。另外, 需用帐户注册、使用现有帐户访问、或由法律另行规定的 App 也需隐私政策。对于收集用户或设备相关数据的 App, 亦推荐使用隐私政策。</p>
 <h3 id="套装ID"><a href="#套装ID" class="headerlink" title="套装ID"></a>套装ID</h3><p>套装 ID 必须与您在 Xcode 中使用的 ID 相符。该 ID 在您上传第一个构建版本后便无法更改。</p>
-<p>开发人员设置的，在开发信息配置里<code>Certificates, Identifiers &amp; Profiles</code>注册的<code>Identifiers</code>。一般与工程中的<code>Bundle Identifier</code>相同，如果<code>Identifiers</code>使用了通配符<code>*</code>则不需要完全一样(应用有消息推送功能则不能使用通配符)。</p>
+<p>开发人员设置的，在开发信息配置里<code>Certificates, Identifiers &amp; Profiles</code>注册的<code>Identifiers</code>。一般与工程中的<code>Bundle Identifier</code>相同，如果<code>Identifiers</code>使用了通配符<code>*</code>则不需要完全一样(应用有消息推送功能，不能使用通配符！)。</p>
 <h3 id="SKU"><a href="#SKU" class="headerlink" title="SKU"></a>SKU</h3><p>您 App 专有的 ID, 此 ID 不会在 App Store 中显示。</p>
-<p>开发人员设置的，随便写一个即可保持唯一性。</p>
+<p>开发人员设置，注意保持唯一性。</p>
 <h3 id="Apple-ID"><a href="#Apple-ID" class="headerlink" title="Apple ID"></a>Apple ID</h3><p>为您的 App 自动生成的 ID。无需设置，在<code>iTunes Connect</code>创建了应用就会生成此ID。做qq登录分享功能在腾讯开放平台注册应用时需要提交这个ID。</p>
 <h3 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h3><p>最能准确描述此 App 的类别。分为主要类别和次要类别，次要类别可不填。有如下类别：</p>
 <p>报刊杂志、财务、参考、导航、儿童、工具、购物、健康健美、教育、旅游、美食佳饮、商品指南、商务、社交、摄影与录像、生活、体育、天气、图书、效率、新闻、医疗、音乐、游戏、娱乐。</p>
 <p>详情请见：<a href="https://itunesconnect.apple.com/itc/static/category_definitions" target="_blank" rel="external">AppStore类别定义</a></p>
 <h3 id="分级"><a href="#分级" class="headerlink" title="分级"></a>分级</h3><p>此 App 分级将在所有平台的 App Store 中显示。此分级根据分级限制最高的 App 平台而定。</p>
 <h2 id="App版本信息"><a href="#App版本信息" class="headerlink" title="App版本信息"></a>App版本信息</h2><h3 id="app预览和屏幕快照"><a href="#app预览和屏幕快照" class="headerlink" title="app预览和屏幕快照"></a>app预览和屏幕快照</h3><p>屏幕快照必须为 JPG 或 PNG 格式，且必须采用 RGB 颜色空间。 App 预览必须为 M4V、MP4 或 MOV 格式，且不能超过 500 MB。</p>
-<p>现在只需要提交5.5英寸的图片，其他尺寸会沿用5.5的图片，尺寸为1242*2208。可以设计几张app介绍图或者用手机截屏。也可以用模拟器保存界面快照，操作：<code>command + s</code>，注意模拟器有显示百分比，在<code>模拟器-&gt;Window-&gt;Scale</code>里面，快捷键是<code>command + 12345</code>，保存界面快照时要<code>command + 1</code>100%模拟器显示。非Retina屏(低分辨率)的Mac模拟器会超过屏幕被压扁了，不影响快照保存。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-4.png?raw=true" alt="img"></p>
+<p>现在只需要提交5.5英寸的图片，其他尺寸会沿用5.5的图片，尺寸为1242*2208。可以设计几张app介绍图或者用手机截屏。也可以用模拟器保存界面快照，操作：<code>command + s</code>，注意模拟器有显示百分比，在<code>模拟器-&gt;Window-&gt;Scale</code>里面，快捷键是<code>command + 12345</code>，保存界面快照时要<code>command + 1</code>100%模拟器显示。非Retina屏(低分辨率)的Mac模拟器会超过屏幕，但不影响快照保存。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-4.png?raw=true" alt="屏幕快照"></p>
 <h3 id="描述-关键字-技术支持网址-营销网址"><a href="#描述-关键字-技术支持网址-营销网址" class="headerlink" title="描述/关键字/技术支持网址/营销网址"></a>描述/关键字/技术支持网址/营销网址</h3><p>描述：对您 App 的描述，用以详细说明特性和功能。它还将用于您的 Apple Watch App。显示于AppStore中的内容提要</p>
 <p>关键字：一个或多个关键词，用以描述您的 App。关键词将使 App Store 搜索结果更加准确。</p>
 <p>技术支持网址：您的 App 技术支持信息网址(URL)。该网址(URL)将会在 App Store 中显示。显示位置为<code>开发人员网站</code>。点击在Safari中打开网址。一般会填写官网地址。</p>
 <p>营销网址：您的 App 营销信息网址(URL)。该网址(URL)会在 App Store 中显示。可不填写。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-5.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-5.png?raw=true" alt="app描述显示的位置"></p>
 <h2 id="构建版本"><a href="#构建版本" class="headerlink" title="构建版本"></a>构建版本</h2><p>提交app到AppStore审核最重要的地方！提交打包好的.api文件</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-11.png" alt="img"></p>
-<p>但并不是在这里面上传.api文件。而是需要用<code>Application Loader</code>交付应用程序。</p>
-<h2 id="App综合信息"><a href="#App综合信息" class="headerlink" title="App综合信息"></a>App综合信息</h2><h3 id="app图标"><a href="#app图标" class="headerlink" title="app图标"></a>app图标</h3><p>此图标将用于 App Store，其格式必须为 JPG 或 PNG，最低分辨率至少为 72 DPI，并采用 RGB 色彩空间。它不能包含图层或圆角。尺寸为1024*1024</p>
-<h3 id="版权"><a href="#版权" class="headerlink" title="版权"></a>版权</h3><p>拥有您的 App 专有权的人员或实体的名称，前面是获得权利的年份（例如“2008 Acme Inc”）。请勿提供网址(URL)。显示在AppStore</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-11.png" alt="构建版本"></p>
+<p>但并不是在这里面上传.api文件。而是需要用<code>Application Loader</code>交付应用程序。<code>Application Loader</code>的位置在<code>Xcode</code> -&gt; <code>Open DeveloperTool</code> -&gt; <code>Application loader</code>，或者在应用程序里<code>Xcode.app</code>右键显示包内容 -&gt; <code>Contents</code> -&gt; <code>Applications</code> -&gt; <code>Application loader.app</code>，选择交付应用程序。这里要事先登录上架应用的开发者账号，也就是打包.api文件时配置发布证书的开发者账号。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161212-0.png?raw=true" alt="使用Application loader交付应用程序"></p>
+<p>在交付应用程序的时候，点背的话会一直显示<code>正在通过AppStore进行鉴定</code>，然后就一直等然后也没有然后，我曾晚上11点交付应用程序，然后就这样显示了一夜，第二天醒来依旧正在通过AppStore进行鉴定。</p>
+<p>至于为什么会这样，相信大家都心知肚明。好多开发者选择翻墙交付应用程序，我也经常这么干，亲测挺快的。其实有时候人品正，在墙内也可以很快交付。我还在网上找到过一个解决办法，需要修改Application Loader里的一个文件内容，亲测过确实有效。</p>
+<p>路径为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/itms/java/lib/net.properties</div></pre></td></tr></table></figure>
+<p>或者路径为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/MacOS/itms/java/lib/net.properties</div></pre></td></tr></table></figure>
+<p>打开这个文件，把第34行的<code>http.proxyPort=443</code> 改为<code>https.proxyPort=80</code> 再提交应用就ok了。</p>
+<h2 id="App综合信息"><a href="#App综合信息" class="headerlink" title="App综合信息"></a>App综合信息</h2><h3 id="app图标"><a href="#app图标" class="headerlink" title="app图标"></a>app图标</h3><p>此图标将用于 App Store，其格式必须为 JPG 或 PNG，最低分辨率至少为 72 DPI，并采用 RGB 色彩空间。它不能包含图层或圆角。尺寸为1024*1024。</p>
+<p>在开发中，只需要让设计同事提供一个1024*1024的app图标即可，可以用<a href="https://itunes.apple.com/cn/app/prepo/id476533227?mt=12" target="_blank" rel="external">Prepo</a>生成各种需要的图标尺寸。</p>
+<h3 id="版权"><a href="#版权" class="headerlink" title="版权"></a>版权</h3><p>拥有您的 App 专有权的人员或实体的名称，前面是获得权利的年份（例如“2008 Acme Inc”），请勿提供网址(URL)，显示在AppStore。不填写年份，只填写所有权组织或个人也可以。</p>
 <h3 id="商务代表联系信息"><a href="#商务代表联系信息" class="headerlink" title="商务代表联系信息"></a>商务代表联系信息</h3><p>您可以为您的 App 在韩国 App Store 中提供额外信息，这一额外信息只会显示在韩国 App Store 中。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-9.png?raw=true" alt="img"></p>
-<h3 id="分级-1"><a href="#分级-1" class="headerlink" title="分级"></a>分级</h3><p>为app指定分级，一般都会指定低级，但也要根据实际情况。会影响AppStore审核</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-9.png?raw=true" alt="分级显示和版权信息显示"></p>
+<h3 id="分级-1"><a href="#分级-1" class="headerlink" title="分级"></a>分级</h3><p>为app指定分级，一般都会指定低级，但也要根据实际情况。会影响AppStore审核。如果所有分级全选无，为4+等级，会询问此app是否是针对儿童的，根据实际情况选择。</p>
 <p><a href="https://itunesconnect.apple.com/itc/views/shared/app_store_rating_matrix.html" target="_blank" rel="external">了解详情</a></p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-10.png?raw=true" alt="img"></p>
-<h2 id="APP审核信息"><a href="#APP审核信息" class="headerlink" title="APP审核信息"></a>APP审核信息</h2><p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-3.png?raw=true" alt="img"></p>
-<h3 id="联系信息："><a href="#联系信息：" class="headerlink" title="联系信息："></a>联系信息：</h3><p>一般会填写开发者的联系信息。在App审核中有问题会联系开发者。但app审核结果不会通过这个联系方式反馈，会反馈给开发者账号邮箱。可以下载<code>iTunes Connect</code>应用，登录提交app的开发者账号，随时接收审核状态消息推送。<del>我不会说这个应用一点都不好用，但只此一家别无分号，爱用不用</del></p>
-<h3 id="演示账户："><a href="#演示账户：" class="headerlink" title="演示账户："></a>演示账户：</h3><p>提供给AppStore审核人员用于登录app的账号密码，必须有效可登录，<strong>非常重要,别问我是怎么知道的/(ㄒoㄒ)/~~</strong>。有的应用是手机号+验证码登录，需要事先让服务器同事留好后门，设定固定手机号+固定验证码能随时登录。(按说这应该开发时就得做到，不然开发者每次登录操作都获取验证码多麻烦，而且这还是要花钱的)</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-10.png?raw=true" alt="分级列表"></p>
+<h2 id="APP审核信息"><a href="#APP审核信息" class="headerlink" title="APP审核信息"></a>APP审核信息</h2><p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-3.png?raw=true" alt="APP审核信息"></p>
+<h3 id="联系信息："><a href="#联系信息：" class="headerlink" title="联系信息："></a>联系信息：</h3><p>一般会填写开发者的联系信息，在App审核中有问题会联系开发者，其实有问题被拒绝上架了也没联系过我，iTunes Connect里会有拒绝原因。app审核结果不会通过这个联系方式反馈，会反馈给开发者账号邮箱。可以下载<code>Connect</code>应用，登录提交app的开发者账号，随时接收审核状态消息推送。<del>我不会说这个应用一点都不好用，但只此一家别无分号，爱用不用</del></p>
+<h3 id="演示账户："><a href="#演示账户：" class="headerlink" title="演示账户："></a>演示账户：</h3><p>提供给AppStore审核人员用于登录app的账号密码，必须有效可登录，<strong>非常重要,别问我是怎么知道的(ㄒoㄒ)~~orz</strong>。有的应用是手机号+验证码登录，需要事先让服务器同事留好后门，设定固定手机号+固定验证码能随时登录。(按说这应该开发时就得做到，不然开发者每次登录操作都获取验证码多麻烦，而且这还是要花钱的)</p>
 <h3 id="备注："><a href="#备注：" class="headerlink" title="备注："></a>备注：</h3><p>对审核过程会有所帮助的、有关您 App 的额外信息, 包括在测试中需要的 App 特别设置等。额外说明app里某些影响到审核的部分，可以放入图片链接或者操作视频链接以弥补审核人员不能操作到的部分(比如：p2p项目中绑定银行卡)。</p>
 <h3 id="版本发布："><a href="#版本发布：" class="headerlink" title="版本发布："></a>版本发布：</h3><p>这个根据实际情况设置，随便设置，为了一切尽在掌控，我会选择手动发布此版本，你应该体会一下应用审核通过点击发布按钮那一刻的感觉！（千万别点击开发者撤下提交的版本…）</p>
 <h2 id="之前不幸踩过的一些坑，被AppStore拒了"><a href="#之前不幸踩过的一些坑，被AppStore拒了" class="headerlink" title="之前不幸踩过的一些坑，被AppStore拒了"></a>之前不幸踩过的一些坑，被AppStore拒了</h2><ol>
