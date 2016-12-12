@@ -11,17 +11,17 @@ toc: true
 
 ## App信息
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-7.png?raw=true)
+![iTunes Connect内APP信息截图](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-7.png?raw=true)
 
 ### 公司名称
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG1081.jpeg?raw=true)
+![12306显示的公司名称](https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG1081.jpeg?raw=true)
 
 公司名字是指显示在这里的名字。这个只针对公司级账号说的，个人账号不能设置公司名称，只能以开发商名字显示。
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160930-0.png?raw=true)
+![设置公司名](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160930-0.png?raw=true)
 
-每个账号在iTunes Connect里创建第一个应用的时候，可以设置公司名字，如果不设置的话就显示开发商名字。日后不能修改公司名字，也不能重新设置。只能给苹果开发者发邮件，要求去掉公司名显示开发商名字。
+每个账号在iTunes Connect里创建第一个应用的时候，可以设置公司名字。如果不设置的话，就显示开发商名字。日后不能修改公司名字，也不能重新设置。只能给苹果开发者发邮件，要求去掉公司名显示开发商名字。
 
 ### app名称
 
@@ -37,13 +37,13 @@ toc: true
 
 套装 ID 必须与您在 Xcode 中使用的 ID 相符。该 ID 在您上传第一个构建版本后便无法更改。
 
-开发人员设置的，在开发信息配置里`Certificates, Identifiers & Profiles`注册的`Identifiers`。一般与工程中的`Bundle Identifier`相同，如果`Identifiers`使用了通配符`*`则不需要完全一样(应用有消息推送功能则不能使用通配符)。
+开发人员设置的，在开发信息配置里`Certificates, Identifiers & Profiles`注册的`Identifiers`。一般与工程中的`Bundle Identifier`相同，如果`Identifiers`使用了通配符`*`则不需要完全一样(应用有消息推送功能，不能使用通配符！)。
 
 ### SKU
 
 您 App 专有的 ID, 此 ID 不会在 App Store 中显示。
 
-开发人员设置的，随便写一个即可保持唯一性。
+开发人员设置，注意保持唯一性。
 
 ### Apple ID 
 
@@ -67,9 +67,9 @@ toc: true
 
 屏幕快照必须为 JPG 或 PNG 格式，且必须采用 RGB 颜色空间。 App 预览必须为 M4V、MP4 或 MOV 格式，且不能超过 500 MB。
 
-现在只需要提交5.5英寸的图片，其他尺寸会沿用5.5的图片，尺寸为1242*2208。可以设计几张app介绍图或者用手机截屏。也可以用模拟器保存界面快照，操作：`command + s`，注意模拟器有显示百分比，在`模拟器->Window->Scale`里面，快捷键是`command + 12345`，保存界面快照时要`command + 1`100%模拟器显示。非Retina屏(低分辨率)的Mac模拟器会超过屏幕被压扁了，不影响快照保存。
+现在只需要提交5.5英寸的图片，其他尺寸会沿用5.5的图片，尺寸为1242*2208。可以设计几张app介绍图或者用手机截屏。也可以用模拟器保存界面快照，操作：`command + s`，注意模拟器有显示百分比，在`模拟器->Window->Scale`里面，快捷键是`command + 12345`，保存界面快照时要`command + 1`100%模拟器显示。非Retina屏(低分辨率)的Mac模拟器会超过屏幕，但不影响快照保存。
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-4.png?raw=true)
+![屏幕快照](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-4.png?raw=true)
 
 ### 描述/关键字/技术支持网址/营销网址
 
@@ -81,50 +81,71 @@ toc: true
 
 营销网址：您的 App 营销信息网址(URL)。该网址(URL)会在 App Store 中显示。可不填写。
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-5.png?raw=true)
+![app描述显示的位置](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-5.png?raw=true)
 
 ## 构建版本
 
 提交app到AppStore审核最重要的地方！提交打包好的.api文件
 
-![img](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-11.png)
+![构建版本](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-11.png)
 
-但并不是在这里面上传.api文件。而是需要用`Application Loader`交付应用程序。
+但并不是在这里面上传.api文件。而是需要用`Application Loader`交付应用程序。`Application Loader`的位置在`Xcode` -> `Open DeveloperTool` -> `Application loader`，或者在应用程序里`Xcode.app`右键显示包内容 -> `Contents` -> `Applications` -> `Application loader.app`，选择交付应用程序。这里要事先登录上架应用的开发者账号，也就是打包.api文件时配置发布证书的开发者账号。
+
+![使用Application loader交付应用程序](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161212-0.png?raw=true)
+
+在交付应用程序的时候，点背的话会一直显示`正在通过AppStore进行鉴定`，然后就一直等然后也没有然后，我曾晚上11点交付应用程序，然后就这样显示了一夜，第二天醒来依旧正在通过AppStore进行鉴定。
+
+至于为什么会这样，相信大家都心知肚明。好多开发者选择翻墙交付应用程序，我也经常这么干，亲测挺快的。其实有时候人品正，在墙内也可以很快交付。我还在网上找到过一个解决办法，需要修改Application Loader里的一个文件内容，亲测过确实有效。
+
+路径为
+
+```
+/Applications/Xcode.app显示包内容 -> Contents/Applications/Application Loader.app显示包内容 -> Contents/itms/java/lib/net.properties
+```
+或者路径为
+
+```
+/Applications/Xcode.app显示包内容 -> Contents/Applications/Application Loader.app显示包内容 -> Contents/MacOS/itms/java/lib/net.properties
+```
+打开这个文件，把第34行的`http.proxyPort=443` 改为`https.proxyPort=80` 再提交应用就ok了。
 
 ## App综合信息
 
 ### app图标
 
-此图标将用于 App Store，其格式必须为 JPG 或 PNG，最低分辨率至少为 72 DPI，并采用 RGB 色彩空间。它不能包含图层或圆角。尺寸为1024*1024
+此图标将用于 App Store，其格式必须为 JPG 或 PNG，最低分辨率至少为 72 DPI，并采用 RGB 色彩空间。它不能包含图层或圆角。尺寸为1024*1024。
+
+在开发中，只需要让设计同事提供一个1024*1024的app图标即可，可以用[Prepo](https://itunes.apple.com/cn/app/prepo/id476533227?mt=12)生成各种需要的图标尺寸。
 
 ### 版权
 
-拥有您的 App 专有权的人员或实体的名称，前面是获得权利的年份（例如“2008 Acme Inc”）。请勿提供网址(URL)。显示在AppStore
+拥有您的 App 专有权的人员或实体的名称，前面是获得权利的年份（例如“2008 Acme Inc”），请勿提供网址(URL)，显示在AppStore。不填写年份，只填写所有权组织或个人也可以。
 
 ### 商务代表联系信息 
 
 您可以为您的 App 在韩国 App Store 中提供额外信息，这一额外信息只会显示在韩国 App Store 中。
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-9.png?raw=true)
+![分级显示和版权信息显示](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-9.png?raw=true)
 
 ### 分级
 
-为app指定分级，一般都会指定低级，但也要根据实际情况。会影响AppStore审核
+为app指定分级，一般都会指定低级，但也要根据实际情况。会影响AppStore审核。如果所有分级全选无，为4+等级，会询问此app是否是针对儿童的，根据实际情况选择。
 
 [了解详情](https://itunesconnect.apple.com/itc/views/shared/app_store_rating_matrix.html)
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-10.png?raw=true)
+![分级列表](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-10.png?raw=true)
 
 ## APP审核信息
 
-![img](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-3.png?raw=true)
+![APP审核信息](https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160815-3.png?raw=true)
 
 ### 联系信息：
-一般会填写开发者的联系信息。在App审核中有问题会联系开发者。但app审核结果不会通过这个联系方式反馈，会反馈给开发者账号邮箱。可以下载`iTunes Connect`应用，登录提交app的开发者账号，随时接收审核状态消息推送。~~我不会说这个应用一点都不好用，但只此一家别无分号，爱用不用~~
+
+一般会填写开发者的联系信息，在App审核中有问题会联系开发者，其实有问题被拒绝上架了也没联系过我，iTunes Connect里会有拒绝原因。app审核结果不会通过这个联系方式反馈，会反馈给开发者账号邮箱。可以下载`Connect`应用，登录提交app的开发者账号，随时接收审核状态消息推送。~~我不会说这个应用一点都不好用，但只此一家别无分号，爱用不用~~
 
 ### 演示账户：
 
-提供给AppStore审核人员用于登录app的账号密码，必须有效可登录，**非常重要,别问我是怎么知道的/(ㄒoㄒ)/~~**。有的应用是手机号+验证码登录，需要事先让服务器同事留好后门，设定固定手机号+固定验证码能随时登录。(按说这应该开发时就得做到，不然开发者每次登录操作都获取验证码多麻烦，而且这还是要花钱的)
+提供给AppStore审核人员用于登录app的账号密码，必须有效可登录，**非常重要,别问我是怎么知道的(ㄒoㄒ)~~orz**。有的应用是手机号+验证码登录，需要事先让服务器同事留好后门，设定固定手机号+固定验证码能随时登录。(按说这应该开发时就得做到，不然开发者每次登录操作都获取验证码多麻烦，而且这还是要花钱的)
 
 ### 备注：
 
