@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2016-12-08T03:37:21.000Z</updated>
+  <updated>2016-12-13T09:47:31.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,203 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Quartz 2D（一）概念、图形上下文、路径</title>
+    <link href="http://markmiao.com/2016/12/13/Quartz2D1/"/>
+    <id>http://markmiao.com/2016/12/13/Quartz2D1/</id>
+    <published>2016-12-13T08:59:51.000Z</published>
+    <updated>2016-12-13T09:47:31.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Quartz 2D是二维图形绘制引擎，可以实现N多图形图像的操作功能，如基本路径的绘制、透明度、描影、绘制阴影、透明层、颜色管理、反锯齿、PDF文档生成和PDF元数据访问。</p>
+<a id="more"></a>
+<h2 id="画布Page"><a href="#画布Page" class="headerlink" title="画布Page"></a>画布Page</h2><p>在图像操作过程中使用了<code>绘画者模型</code>，绘制过程是将绘制层铺到画布上，这个画布称为<code>Page</code>。类似于Photoshop中，将每个图层叠加放在画布上，形成最后的图像。</p>
+<h2 id="图形上下文Graphics-Context"><a href="#图形上下文Graphics-Context" class="headerlink" title="图形上下文Graphics Context"></a>图形上下文Graphics Context</h2><p><code>图形上下文(Graphics Context)</code>是一个数据类型<code>CGContextRef</code>，它存放了Quartz 2D绘制的图形输出信息，可以看做是图形到设备输出的介质工具。Quartz 2D绘制的图形可以放到多种设备上，比如：PDF文件、显示器窗口、bitmap(位图)、view的Layer层等等，这就需要不同的<code>Graphics Context</code>来完成输出到不同设备上的工作。这好比人要上高速需要汽车，去海上需要船，去天空需要飞机，这里人相当于图形，高速路、海、天空相当于设备，而汽车、船、飞机就是<code>Graphics Context</code>。</p>
+<p><code>Graphics Context</code>的几种类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1. Bitmap Graphics Context</div><div class="line">2. PDF Graphics Context</div><div class="line">3. Window Graphics Context</div><div class="line">4. Layer Context</div><div class="line">5. Post Graphics Context</div></pre></td></tr></table></figure>
+<h2 id="Quartz-2D的数据类型"><a href="#Quartz-2D的数据类型" class="headerlink" title="Quartz 2D的数据类型"></a>Quartz 2D的数据类型</h2><p>Quartz 2D API属于Code Graphics框架，所以Quartz 2D的数据类型是以CG开头的。有以下数据类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1. CGPathRef：用于向量图，可创建路径，并进行填充或描画(stroke)</div><div class="line">2. CGImageRef：用于表示bitmap图像和基于采样数据的bitmap图像遮罩。</div><div class="line">3. CGLayerRef：用于表示可用于重复绘制(如背景)和幕后(offscreen)绘制的绘画层</div><div class="line">4. CGPatternRef：用于重绘图</div><div class="line">5. CGShadingRef、CGGradientRef：用于绘制渐变</div><div class="line">6. CGFunctionRef：用于定义回调函数，该函数包含一个随机的浮点值参数。当为阴影创建渐变时使用该类型</div><div class="line">7. CGColorRef, CGColorSpaceRef：用于告诉Quartz如何解释颜色</div><div class="line">8. CGImageSourceRef,CGImageDestinationRef：用于在Quartz中移入移出数据</div><div class="line">9. CGFontRef：用于绘制文本</div><div class="line">10. CGPDFDictionaryRef, CGPDFObjectRef, CGPDFPageRef, CGPDFStream, CGPDFStringRef, and CGPDFArrayRef：用于访问PDF的元数据</div><div class="line">11. CGPDFScannerRef, CGPDFContentStreamRef：用于解析PDF元数据</div><div class="line">12. CGPSConverterRef：用于将PostScript转化成PDF。在iOS中不能使用。</div></pre></td></tr></table></figure>
+<h2 id="图形状态"><a href="#图形状态" class="headerlink" title="图形状态"></a>图形状态</h2><p>Quartz通过修改图形状态来修改绘制结果，图形状态直接决定了图形的最终渲染结果。图形状态包含用于绘制程序的参数，绘制参数改变了，图形自然就变了。比如修改了填充色值，图形颜色就变了。</p>
+<h2 id="iOS中使用Graphics-Context绘制图形"><a href="#iOS中使用Graphics-Context绘制图形" class="headerlink" title="iOS中使用Graphics Context绘制图形"></a>iOS中使用Graphics Context绘制图形</h2><p>在iOS中要想用Quartz 2D在屏幕上绘图，需要自定义一个UIView，在UIView的<code>- (void)drawRect:(CGRect)rect</code>方法中实现绘图操作，这个方法会在UIView显示在屏幕上和需要被刷新的时候调用。创建上下文的方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上下文中绘制图形：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    //获取图形上下文</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    //设置红色透明度0.5的填充色</div><div class="line">    CGContextSetRGBFillColor(context, 1, 0, 0, 0.5);</div><div class="line">    //填充一个矩形frame为(10, 20, 100, 40)</div><div class="line">    CGContextFillRect(context, CGRectMake(10, 20, 100, 40));</div><div class="line">    //设置蓝色透明度0.5的填充色</div><div class="line">    CGContextSetRGBFillColor(context, 0, 0, 1, 0.5);</div><div class="line">    //填充一个矩形frame为(10, 20, 40,  100)</div><div class="line">    CGContextFillRect(context, CGRectMake(10, 20, 40, 100));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161209-0.png?raw=true" alt="显示结果"></p>
+<p>注意：设置填充色和填充矩形的方法顺序不能颠倒，不然填充色填充不到想填充的矩形中。得不到填充色填充的会是黑色。</p>
+<h2 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h2><p>路径可以构建出多种图形，可以是点、直线、弧线、不规则线、规则或不规则形状，可以对闭合路径进行填充行程面。使用路径绘制出想要的图形，有两步：创建路径和绘制路径。创建出点、线等路径，使用函数<code>CGContextDrawPath</code>绘制路径。</p>
+<h3 id="点"><a href="#点" class="headerlink" title="点"></a>点</h3><p>点是依靠x、y值固定的位置，可作为路径的起始点位置。比如要画一个线段，必须要有一个起点和一个终点，两点确定一条线段。使用函数<code>CGContextMoveToPoint</code>来确定起始点，传入图形上下文和x,y坐标点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//确定一个坐标为(10,10)的点</div><div class="line">CGContextMoveToPoint(context, 10, 10);</div></pre></td></tr></table></figure>
+<h3 id="直线"><a href="#直线" class="headerlink" title="直线"></a>直线</h3><p>有起始点，再指定一个终点位置就能确定一条直线了，使用函数<code>CGContextAddLineToPoint</code>来指定终点位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">	  //获取图形上下文</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    //设置起点</div><div class="line">    CGContextMoveToPoint(context, 20, 20);</div><div class="line">    //起点延长至终点位置</div><div class="line">    CGContextAddLineToPoint(context, 50, 50);</div><div class="line">    //绘制路径</div><div class="line">    CGContextDrawPath(context, kCGPathStroke);    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以使用<code>CGContextAddLineToPoint</code>函数指定多个位置点，线段会一个接一个画下去，形成折线图形。也可以使用<code>CGContextAddLines</code>函数一次性指定多个位置点，完成折线图形，此时无需指定起始点，第一个点默认为起始点(即使用<code>CGContextMoveToPoint</code>指定起始点也无效)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//一个一个点继续加</div><div class="line">CGContextMoveToPoint(context, 20, 20);    </div><div class="line">CGContextAddLineToPoint(context, 50, 50);</div><div class="line">CGContextAddLineToPoint(context, 30, 80);</div><div class="line"></div><div class="line">//一次性指定多个点</div><div class="line">CGPoint pos[3] = &#123;CGPointMake(80, 20), CGPointMake(20, 50), CGPointMake(100, 200)&#125;;</div><div class="line">CGContextAddLines(context, pos, 3);</div></pre></td></tr></table></figure>
+<p>由于<code>CGContextAddLineToPoint</code>函数必须得有<code>CGContextMoveToPoint</code>函数固定起始点，<code>CGContextAddLines</code>函数默认第一个点为起始点，所以<code>CGContextAddLines</code>后面可以跟着<code>CGContextAddLineToPoint</code>继续加点画线，能连成一组折线，而<code>CGContextMoveToPoint</code>+<code>CGContextAddLineToPoint</code>画线后面不能跟<code>CGContextAddLines</code>，会画成两组无关联的折线。</p>
+<h3 id="圆弧"><a href="#圆弧" class="headerlink" title="圆弧"></a>圆弧</h3><p>画圆弧提供了两个函数，一个是<code>CGContextAddArc</code>，依次指定<code>图形上下文</code>、<code>圆心坐标</code>、<code>半径</code>、<code>起始弧度</code>、<code>终止弧度</code>、<code>画线顺时针(1)或逆时针(0)</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextAddArc(context, 100, 200, 30, 0, M_PI, 0);</div><div class="line">CGContextDrawPath(context, kCGPathStroke);</div></pre></td></tr></table></figure>
+<p>第二个函数是<code>CGContextAddArcToPoint</code>，三点+半径确定一个圆弧。<code>CGContextMoveToPoint</code>函数确定第一个点，<code>CGContextAddArcToPoint</code>添加第二个点、第三个点和还有半径。原理：以第二点为中心，分别向第一点、第三点延长两条射线，射线夹角小于180°的一侧，以指定半径画圆弧，圆弧与射线相切。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextMoveToPoint(context, 100, 100);</div><div class="line">CGContextAddArcToPoint(context, 100, 150, 150, 150, 50);</div><div class="line">CGContextDrawPath(context, kCGPathStroke);</div></pre></td></tr></table></figure>
+<h3 id="曲线"><a href="#曲线" class="headerlink" title="曲线"></a>曲线</h3><p>画Bezier曲线也提供了两个函数，函数<code>CGContextAddCurveToPoint</code>用于画三次Bezier曲线，由一个起点、一个终点和两个控制点构成一条三次Bezier曲线。当两个控制点在起点和终点连线的同侧时，曲线会只有一个拱向，在不同侧时有两个拱向。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextMoveToPoint(context, 100, 100);</div><div class="line">CGContextAddCurveToPoint(context, 150, 50, 200, 200, 300, 100);</div><div class="line">CGContextDrawPath(context, kCGPathStroke);</div></pre></td></tr></table></figure>
+<p>画二次Bezier曲线，使用函数CGContextAddQuadCurveToPoint。以当前点为起始点，指定一个控制点一个终点，确定一条二次Bezier曲线。控制点决定了曲线拱的方向，该函数只能创建一个拱向的Bezier曲线，而且曲线不可能交叉。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextMoveToPoint(context, 100, 100);</div><div class="line">CGContextAddQuadCurveToPoint(context, 200, 200, 300, 100);</div><div class="line">CGContextDrawPath(context, kCGPathStroke);</div></pre></td></tr></table></figure>
+<h3 id="闭合路径"><a href="#闭合路径" class="headerlink" title="闭合路径"></a>闭合路径</h3><p>Quartz 2D提供函数<code>CGContextClosePath</code>来闭合路径。就是将终点和起点用直线连接起来，使整个路径闭合。对于直线、弧、曲线等不能自动闭合的路径，如果想完成路径闭合必须调用该函数。</p>
+<p>调用了<code>CGContextClosePath</code>完成闭合路径后，再调用<code>Add...</code>添加路径的函数，添加直线、弧线、曲线等路径，会从闭合路径的起始点开始。如果没有完成闭合路径函数的调用，则从终点继续开始新添加的路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextMoveToPoint(context, 100, 100);</div><div class="line">CGContextAddCurveToPoint(context, 150, 50, 150, 200, 300, 100);</div><div class="line">CGContextClosePath(context);</div><div class="line">CGContextAddLineToPoint(context, 200, 500);</div><div class="line">CGContextDrawPath(context, kCGPathStroke);</div></pre></td></tr></table></figure>
+<h3 id="矩形"><a href="#矩形" class="headerlink" title="矩形"></a>矩形</h3><p>使用函数<code>CGContextAddRect</code>来画矩形，函数中的<code>rect</code>中x,y是矩形左上角，宽高是矩形的宽高。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextAddRect(context, CGRectMake(20, 20, 100, 40));</div><div class="line">CGContextDrawPath(context, kCGPathStroke);</div></pre></td></tr></table></figure>
+<h3 id="椭圆"><a href="#椭圆" class="headerlink" title="椭圆"></a>椭圆</h3><p>使用函数<code>CGContextAddEllipseInRect</code>来画椭圆，是以矩形来确定椭圆。坐标参数意义和矩形一样，以确定的矩形内切画出的椭圆。矩形的圆心即是椭圆的圆心，矩形的宽高即是椭圆的长轴短轴，当矩形的宽高相等时，椭圆就是一个圆了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextAddEllipseInRect(context, CGRectMake(0, 0, 30, 50));</div><div class="line">CGContextDrawPath(context, kCGPathStroke);</div></pre></td></tr></table></figure>
+<h2 id="创建路径"><a href="#创建路径" class="headerlink" title="创建路径"></a>创建路径</h2><ul>
+<li>在开始绘制路径前，调用 CGContextBeginPath 或 UI。</li>
+<li>直线、弧、曲线开始于当前点。空路径没有当前点；我们必须调用CGContextMoveToPoint来设置第一个子路径的起始点，或者调用一个便利函数来隐式地完成该任务。</li>
+<li>如果要闭合当前子路径，调用函数 CGContextClosePath。随后路径将开始一个新的子路径，即使我们不显示设置一个新的起始点。</li>
+<li>当绘制弧时，Quartz 将在当前点与弧的起始点间绘制一条直线。</li>
+<li>添加椭圆和矩形的 Quartz 程序将在路径中添加新的闭合子路径。</li>
+<li>我们必须调用绘制函数来填充或者描边一条路径，因为创建路径时并不会绘制路径。</li>
+<li>Quartz 提供了两个数据类型来创建可复用路径 CGPathRef 和 CGMutablePathRef。</li>
+<li>Quartz 提供了一个类似于操作图形上下文的 CGPath 的函数集合。这些路径函数操作 CGPath 对象，而不是图形上下文。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">1.	CGPathCreateMutable 取代 CGContextBeginPath</div><div class="line">2.	CGPathMoveToPoint 取代 CGContextMoveToPoint</div><div class="line">3.	CGPathAddLineToPoint 取代 CGContexAddLineToPoint</div><div class="line">4.	CGPathAddCurveToPoint 取代 CGContexAddCurveToPoint</div><div class="line">5.	CGPathAddEllipseInRect 取代 CGContexAddEllipseInRect</div><div class="line">6.	CGPathAddArc 取代 CGContexAddArc</div><div class="line">7.	CGPathAddRect 取代 CGContexAddRect</div><div class="line">8.	CGPathCloseSubpath 取代 CGContexClosePath</div></pre></td></tr></table></figure>
+<p>如果想要添加一个路径到图形上下文，可以调用CGContextAddPath。路径将保留在图形上下文中，直到Quartz绘制它。我们可以调用CGContextAddPath再次添加路径。</p>
+<h2 id="绘制路径"><a href="#绘制路径" class="headerlink" title="绘制路径"></a>绘制路径</h2><p>通过图形上下文加上一系列创建路径的函数得到最终的路径，还需要绘制路径操作，才能使得路径呈现。如上文中一直用到的绘制路径的函数操作<code>CGContextDrawPath(context, kCGPathStroke);</code>。</p>
+<p>绘制路径分为描边和填充，描边是绘制路径的边框，填充是绘制路径所包含的区域。</p>
+<h3 id="影响描边的属性"><a href="#影响描边的属性" class="headerlink" title="影响描边的属性"></a>影响描边的属性</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">解释</th>
+<th style="text-align:left">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CGContextSetLineWidth</td>
+<td style="text-align:left">描边路径的宽度</td>
+<td style="text-align:left">单位是用户空间单位</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextSetLineJoin</td>
+<td style="text-align:left">指定描边的连接点样式</td>
+<td style="text-align:left">枚举类型:Miter(尖角),Round(圆角),Bevel(平角)</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextSetLineCap</td>
+<td style="text-align:left">指定直线端点样式</td>
+<td style="text-align:left">枚举类:Butt,Round,Square</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextSetMiterLimit</td>
+<td style="text-align:left">转角的量级</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextSetLineDash</td>
+<td style="text-align:left">虚线模式</td>
+<td style="text-align:left">指定虚线数组和虚线相位控制虚线大小和位置</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextSetStrokeColorSpace</td>
+<td style="text-align:left">描边颜色空间</td>
+<td style="text-align:left">封装了颜色和颜色空间的CGColorRef</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextSetStrokeColor</td>
+<td style="text-align:left">设置描边颜色</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextSetStrokePattern</td>
+<td style="text-align:left">笔触模式</td>
+</tr>
+</tbody>
+</table>
+<h3 id="填充路径"><a href="#填充路径" class="headerlink" title="填充路径"></a>填充路径</h3><p>填充规则有两种：非零缠绕数规则（nonzero winding number rule）、偶数-奇数规则（even-odd rule）。</p>
+<p>默认的填充规则为非零缠绕数规则。方法或枚举带有“EO”的为偶数-奇数规则。</p>
+<p>非零缠绕数的填充规则与绘制的方向有关、偶数-奇数规则则与方向无关。如图。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/eosampleone.gif" alt="非零缠绕数规则和偶数奇数规则"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">CGContextEOFillPath</td>
+<td style="text-align:left">使用偶数奇数规则填充当前路径</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextFillPath</td>
+<td style="text-align:left">使用非零缠绕数规则填充当前路径</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextFillRect</td>
+<td style="text-align:left">快速填充一个矩形</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextFillRects</td>
+<td style="text-align:left">快速填充N个矩形</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextFillEllipseInRect</td>
+<td style="text-align:left">快速填充一个椭圆形</td>
+</tr>
+<tr>
+<td style="text-align:left">CGContextDrawPath</td>
+<td style="text-align:left">填充或描边路径</td>
+</tr>
+</tbody>
+</table>
+<p>CGContextDrawPath函数的使用：</p>
+<ul>
+<li>CGContextDrawPath(context, kCGPathFill) 填充路径。</li>
+<li>CGContextDrawPath(context, kCGPathEOFill) 使用奇偶规则填充路径。</li>
+<li>CGContextDrawPath(context, kCGPathStroke) 描边路径。</li>
+<li>CGContextDrawPath(context, kCGPathFillStroke) 填充并描边路径。</li>
+<li>CGContextDrawPath(context, kCGPathEOFillStroke) 使用奇偶规则填充并描边路径。</li>
+</ul>
+<h3 id="混合模式"><a href="#混合模式" class="headerlink" title="混合模式"></a>混合模式</h3><p>混合模式是Quartz将绘图绘制到背景上的方式，其实就是前景图和背景图怎么混合叠加。叠加公式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">result = (alpha * foreground) + (1 - alpha) *background</div></pre></td></tr></table></figure>
+<p>Quartz默认使用普通混合模式，也就是<code>kCGBlendModeNormal</code>。下面举例几个混合模式的样式，案例样式的代码见下一节<code>裁剪路径</code>：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">kCGBlendModeNormal</th>
+<th style="text-align:center">kCGBlendModeMultiply</th>
+<th style="text-align:center">kCGBlendModeScreen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161213-0.png" alt="普通模式"></td>
+<td style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161213-1.png" alt="正片叠底"></td>
+<td style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161213-2.png" alt="屏幕混合"></td>
+</tr>
+</tbody>
+</table>
+<p>16种混合模式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">kCGBlendModeNormal,		//普通</div><div class="line">kCGBlendModeMultiply,		//正片叠底</div><div class="line">kCGBlendModeScreen,		//屏幕</div><div class="line">kCGBlendModeOverlay,		//叠加</div><div class="line">kCGBlendModeDarken,		//暗化</div><div class="line">kCGBlendModeLighten,		//亮化</div><div class="line">kCGBlendModeColorDodge,		//色彩减淡</div><div class="line">kCGBlendModeColorBurn,		//色彩加深</div><div class="line">kCGBlendModeSoftLight,		//柔光</div><div class="line">kCGBlendModeHardLight,		//强光</div><div class="line">kCGBlendModeDifference,		//差值</div><div class="line">kCGBlendModeExclusion,		//排除</div><div class="line">kCGBlendModeHue,			//色相</div><div class="line">kCGBlendModeSaturation,		//饱和度</div><div class="line">kCGBlendModeColor,		//颜色</div><div class="line">kCGBlendModeLuminosity,		//亮度</div></pre></td></tr></table></figure>
+<h2 id="裁剪路径"><a href="#裁剪路径" class="headerlink" title="裁剪路径"></a>裁剪路径</h2><p>裁剪是一个遮罩，会遮住不允许绘制的地方。裁剪区域是一个闭合路径，Quartz只会渲染裁剪区域里面的东西，外面的东西不渲染。通过函数<code>CGContextClip</code>裁剪，具体的裁剪代码和执行结果如下，注意代码位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">/** 裁剪 */</div><div class="line">CGContextBeginPath(context);</div><div class="line">CGContextAddArc(context, 200, 200, 150, 0, 2 * M_PI, 0);</div><div class="line">CGContextClosePath(context);</div><div class="line">CGContextClip(context);</div><div class="line"></div><div class="line">CGContextSetRGBFillColor(context, 0.5, 0.2, 1, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(100, 50, 50, 300));</div><div class="line">CGContextSetRGBFillColor(context, 0.8, 0.3, 0.1, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(150, 50, 50, 300));</div><div class="line">CGContextSetRGBFillColor(context, 0.5, 0.1, 0.4, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(200, 50, 50, 300));</div><div class="line">CGContextSetRGBFillColor(context, 0, 0.5, 0.1, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(250, 50, 50, 300));</div><div class="line">    </div><div class="line">//设置混合模式，自行替换上述16中混合模式查看效果</div><div class="line">CGContextSetBlendMode(context, kCGBlendModeMultiply); </div><div class="line"></div><div class="line">CGContextSetRGBFillColor(context, 0.5, 0.2, 1, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(20, 100, 350, 50));</div><div class="line">CGContextSetRGBFillColor(context, 0.8, 0.3, 0.1, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(20, 150, 350, 50));</div><div class="line">CGContextSetRGBFillColor(context, 0.5, 0.1, 0.4, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(20, 200, 350, 50));</div><div class="line">CGContextSetRGBFillColor(context, 0, 0.5, 0.1, 1);</div><div class="line">CGContextFillRect(context, CGRectMake(20, 250, 350, 50));</div></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161213-3.png" alt="裁剪路径和混合模式的执行结果"></p>
+<hr>
+<p>参考文章：<a href="http://southpeak.github.io/categories/translate/" target="_blank" rel="external">南峰子翻译的Quartz2D编程指南</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Quartz 2D是二维图形绘制引擎，可以实现N多图形图像的操作功能，如基本路径的绘制、透明度、描影、绘制阴影、透明层、颜色管理、反锯齿、PDF文档生成和PDF元数据访问。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="Quartz2D" scheme="http://markmiao.com/tags/Quartz2D/"/>
+    
+  </entry>
   
   <entry>
     <title>iOS时间问题</title>
