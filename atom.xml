@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Mark Miao</title>
-  <subtitle>苗晓东的博客</subtitle>
+  <subtitle>Mark’s blog</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
@@ -9,7 +9,7 @@
   <id>http://markmiao.com/</id>
   
   <author>
-    <name>苗晓东</name>
+    <name>Mark</name>
     
   </author>
   
