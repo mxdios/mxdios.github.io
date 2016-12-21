@@ -270,4 +270,8 @@ CGAffineTransform scale = CGAffineTransformScale(rotate, 0.5, 0.5);
 CGContextConcatCTM(context, scale);
 ```
 
+---
+
+参考文章：[南峰子翻译的Quartz2D编程指南](http://southpeak.github.io/categories/translate/)
+
 
