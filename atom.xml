@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2016-12-21T07:04:57.000Z</updated>
+  <updated>2016-12-28T09:45:50.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,112 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>私有API的使用</title>
+    <link href="http://markmiao.com/2016/12/28/%E7%A7%81%E6%9C%89API%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://markmiao.com/2016/12/28/私有API的使用/</id>
+    <published>2016-12-28T09:42:20.000Z</published>
+    <updated>2016-12-28T09:45:50.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>私有API是指苹果未公开的一些方法，通常情况下这些方法不允许开发者使用，通常情况是指上架AppStore。私有API可以实现一些开放API不能实现的效果，功能强大，效果非凡。苹果不允许使用，是因为有些私有API会侵犯用户隐私，但使用私有API也并非一定会侵犯用户隐私，这要看开发者怎么用了。</p>
+<a id="more"></a>
+<p>企业级账号发布供内部人使用的APP，可以使用私有API。发布到其他APP平台供越狱手机下载的APP，也有可能使用了私有API。这两者没有苹果审核把关，私有API可以随便使用。<strong>苹果明令禁止使用私有API的APP上架AppStore！</strong>但凡事无绝对，AppStore上也不乏使用私有API的应用，使用办法有很多，比如热更新。不被苹果发现就行，发现了轻者下架，重者封号。</p>
+<p>我想看看私有API到底能干些啥，写了一个测试私有API的小项目，涉及到的知识点大多数来源于网络，在此感谢大神们的知识共享。项目很小，知识很浅，欢迎拍砖吐槽。</p>
+<p>项目代码: <a href="https://github.com/mxdios/privateApiApps" target="_blank" rel="external">privateApiApps</a></p>
+<p>开发环境: Xcode 8.2.1，iPhone 6，iOS 10.2</p>
+<p>项目截图:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/WechatIMG241.jpeg" alt="获取iPhone上的所有APP"></th>
+<th style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/WechatIMG242.jpeg" alt="APP相关信息"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<p>参考资料:</p>
+<ol>
+<li><a href="https://github.com/nst/iOS-Runtime-Headers" target="_blank" rel="external">iOS-Runtime-Headers</a></li>
+<li><a href="http://octree.me/2016/08/01/get-installed-apps/" target="_blank" rel="external">获取iOS设备上安装的应用列表</a></li>
+</ol>
+<h2 id="获取iPhone中安装的APP列表"><a href="#获取iPhone中安装的APP列表" class="headerlink" title="获取iPhone中安装的APP列表"></a>获取iPhone中安装的APP列表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Class LSAppClass = objc_getClass(&quot;LSApplicationWorkspace&quot;);</div><div class="line">NSObject *workspace = [LSAppClass performSelector:@selector(defaultWorkspace)];</div><div class="line">NSArray *appsArray = [workspace performSelector:@selector(allApplications)];</div></pre></td></tr></table></figure>
+<p>这里面使用了runtime的方法<code>- (id)performSelector:(SEL)aSelector;</code>，需要引入<code>&lt;objc/runtime.h&gt;</code>。该方法的作用是给接收者传递进去一个方法，返回值就是这个方法执行后的返回值。</p>
+<p>由于调用的是私有API，传入的方法相当于一个字符串，编译器不会检测该方法是否正确，相反会一直报警告。例如上面传递的方法<code>defaultWorkspace</code>，这是个私有API的方法。通常还有另一种调用<code>performSelector</code>方法的写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSObject *workspace = [LSAppClass performSelector:NSSelectorFromString(@&quot;defaultWorkspace&quot;)];</div></pre></td></tr></table></figure>
+<p>如果传递进去的私有API方法名写错了，程序就会找不到该方法而崩溃。所以通常会通过下面方法检测接收者或接收者的父类是否实现了传递进去的方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (BOOL)respondsToSelector:(SEL)aSelector;</div></pre></td></tr></table></figure>
+<p>使用方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if ([LSAppClass respondsToSelector:@selector(defaultWorkspace)]) &#123;</div><div class="line">   	NSObject *workspace = [LSAppClass performSelector:@selector(defaultWorkspace)];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>真实情况中，该方法并非必要。传入的私有API方法名都是固定的，程序崩溃了说明方法名写错了，改成正确的即可。使用该方法不会崩溃，反而不易发现错误。</p>
+<h2 id="获取每个APP的相关信息"><a href="#获取每个APP的相关信息" class="headerlink" title="获取每个APP的相关信息"></a>获取每个APP的相关信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[appsArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;   </div><div class="line">	AppsObject *appsObj = [[AppsObject alloc] init];</div><div class="line">	appsObj.appName = [obj performSelector:@selector(localizedName)];</div><div class="line">	appsObj.version = [obj performSelector:@selector(shortVersionString)];</div><div class="line">	appsObj.bundleId = [obj performSelector:@selector(applicationIdentifier)];</div><div class="line">	appsObj.appFullName = [obj performSelector:@selector(itemName)];</div><div class="line">	appsObj.appType = [obj performSelector:@selector(applicationType)];</div><div class="line">	appsObj.appVendorName = [obj performSelector:@selector(vendorName)];</div><div class="line">	appsObj.appRating = [obj performSelector:@selector(ratingLabel)];</div><div class="line">	[_appsObjArray addObject:appsObj];</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
+<p>遍历获取的APP列表，通过私有API获取每个app的各种信息：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">私有API方法名</th>
+<th style="text-align:left">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">localizedName</td>
+<td style="text-align:left">app名字</td>
+</tr>
+<tr>
+<td style="text-align:left">shortVersionString</td>
+<td style="text-align:left">版本号</td>
+</tr>
+<tr>
+<td style="text-align:left">applicationIdentifier</td>
+<td style="text-align:left">Bundle Identifier</td>
+</tr>
+<tr>
+<td style="text-align:left">itemName</td>
+<td style="text-align:left">app在AppStore显示的名字</td>
+</tr>
+<tr>
+<td style="text-align:left">applicationType</td>
+<td style="text-align:left">app类型,分为:System和User</td>
+</tr>
+<tr>
+<td style="text-align:left">vendorName</td>
+<td style="text-align:left">app供应商</td>
+</tr>
+<tr>
+<td style="text-align:left">ratingLabel</td>
+<td style="text-align:left">app评级</td>
+</tr>
+</tbody>
+</table>
+<h2 id="获取APP图标"><a href="#获取APP图标" class="headerlink" title="获取APP图标"></a>获取APP图标</h2><p>上述中并没有获取APP图标的方法，获取app图标比较麻烦。</p>
+<h3 id="获取APP图标路径"><a href="#获取APP图标路径" class="headerlink" title="获取APP图标路径"></a>获取APP图标路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NSDictionary *dict = [object performSelector:@selector(boundIconsDictionary)];</div><div class="line">NSString *appIconPath = [NSString stringWithFormat:@&quot;%@/%@.png&quot;,[[object performSelector:@selector(resourcesDirectoryURL)] path],[[[dict objectForKey:@&quot;CFBundlePrimaryIcon&quot;] objectForKey:@&quot;CFBundleIconFiles&quot;] lastObject]];</div></pre></td></tr></table></figure>
+<p>iOS10.2亲测，该方法只能获取模拟器上的APP图标，真机无效。</p>
+<h3 id="获取图标data数据"><a href="#获取图标data数据" class="headerlink" title="获取图标data数据"></a>获取图标data数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">appsObj.iconData = [obj performSelector:@selector(iconDataForVariant:) withObject:@(2)];</div></pre></td></tr></table></figure>
+<p>该data数据并不能直接转为UIImage，需要对data数据进行截取转换，方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">+ (UIImage *)getAppIcon:(NSData *)iconData &#123;</div><div class="line">    NSInteger lenth = iconData.length;</div><div class="line">    NSInteger width = 87;</div><div class="line">    NSInteger height = 87;</div><div class="line">    uint32_t *pixels = (uint32_t *)malloc(width * height * sizeof(uint32_t));</div><div class="line">    [iconData getBytes:pixels range:NSMakeRange(32, lenth - 32)];</div><div class="line">    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGContextRef ctx = CGBitmapContextCreate(pixels, width, height, 8, (width + 1) * sizeof(uint32_t), colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);</div><div class="line">    CGImageRef cgImage = CGBitmapContextCreateImage(ctx);</div><div class="line">    CGContextRelease(ctx);</div><div class="line">    CGColorSpaceRelease(colorSpace);</div><div class="line">    UIImage *icon = [UIImage imageWithCGImage: cgImage];</div><div class="line">    CGImageRelease(cgImage);</div><div class="line">    return icon;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="打开APP"><a href="#打开APP" class="headerlink" title="打开APP"></a>打开APP</h2><p>在iOS 9以后要想打开其他app需要添加URL Scheme，设置白名单，否则将无法打开，白名单的上限为50个。上文中我们可以获取APP的<code>Bundle Id</code>，依靠<code>Bundle Id</code>使用私有API可以打开其他APP，并没有数量限制。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Class LSAppClass = NSClassFromString(@&quot;LSApplicationWorkspace&quot;);</div><div class="line">id workSpace = [(id)LSAppClass performSelector:@selector(defaultWorkspace)];</div><div class="line">[workSpace performSelector:@selector(openApplicationWithBundleID:) withObject:self.appsObj.bundleId];</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;私有API是指苹果未公开的一些方法，通常情况下这些方法不允许开发者使用，通常情况是指上架AppStore。私有API可以实现一些开放API不能实现的效果，功能强大，效果非凡。苹果不允许使用，是因为有些私有API会侵犯用户隐私，但使用私有API也并非一定会侵犯用户隐私，这要看开发者怎么用了。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="iOS" scheme="http://markmiao.com/tags/iOS/"/>
+    
+      <category term="私有API" scheme="http://markmiao.com/tags/%E7%A7%81%E6%9C%89API/"/>
+    
+  </entry>
   
   <entry>
     <title>Quartz 2D（三）样式、阴影、渐变</title>
