@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-03-14T10:08:01.000Z</updated>
+  <updated>2017-03-16T05:27:16.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,48 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>swift中contains的使用</title>
+    <link href="http://markmiao.com/2017/03/16/swift%E4%B8%ADcontains%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
+    <id>http://markmiao.com/2017/03/16/swift中contains的使用/</id>
+    <published>2017-03-16T05:25:47.000Z</published>
+    <updated>2017-03-16T05:27:16.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>contains</code>是swift中的一个实例方法，返回一个Bool值，用于做“是否包含”的判断。简单的说就是：告诉你一堆玩意儿中是否有你要的玩意儿。</p>
+<a id="more"></a>
+<h2 id="方法contains"><a href="#方法contains" class="headerlink" title="方法contains()"></a>方法contains()</h2><p>用法1：判断字符串中是否包含某个字符或某段字符串</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> str = <span class="string">"abcdef"</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"a"</span>))<span class="comment">//true</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"bcd"</span>))<span class="comment">//true</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"g"</span>))<span class="comment">//false</span></div></pre></td></tr></table></figure>
+<p>用法2：判断数组中是否包含某个元素</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> name = [<span class="string">"Mark"</span>, <span class="string">"Kim"</span>, <span class="string">"Goudan"</span>]</div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"Mark"</span>))<span class="comment">//true</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"MJ"</span>))<span class="comment">//false</span></div></pre></td></tr></table></figure>
+<h2 id="方法contains-where"><a href="#方法contains-where" class="headerlink" title="方法contains(where: )"></a>方法contains(where: )</h2><p>该方法接收一个闭包，以序列元素作为闭包的参数，返回一个Bool值，判断该序列中是否有元素符合闭包条件。</p>
+<p>用法1：判断Int数组中元素有没有大于100的</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> list = [<span class="number">11</span>,<span class="number">22</span>,<span class="number">44</span>,<span class="number">66</span>,<span class="number">88</span>,<span class="number">100</span>]</div><div class="line"><span class="keyword">let</span> zz = list.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; (value) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></div><div class="line">    <span class="keyword">return</span> value &gt; <span class="number">100</span></div><div class="line">&#125;)</div><div class="line"><span class="built_in">print</span>(zz)<span class="comment">//false</span></div></pre></td></tr></table></figure>
+<p>闭包的写法可以简化，闭包中只有一行表达式时，可以省略return，直接写表达式，隐式返回：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> zz = list.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; (value) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></div><div class="line">	 value &gt; <span class="number">100</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>闭包的参数名可以简化为$0，表示第i个参数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> zz = list.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123;$<span class="number">0</span> &gt; <span class="number">100</span>&#125;)</div></pre></td></tr></table></figure>
+<p>用法2：判断对象数组中对象元素的某个key所对应的value是存在某值</p>
+<p>例如：判断下面<code>dictList</code>数组中的字典元素里面是否有<code>&quot;name&quot;</code> == <code>&quot;Mark&quot;</code>的元素存在</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> dictList = [[<span class="string">"name"</span>: <span class="string">"Goudan"</span>, <span class="string">"age"</span>: <span class="string">"22"</span>], [<span class="string">"name"</span>: <span class="string">"Mark"</span>, <span class="string">"age"</span>: <span class="string">"18"</span>], [<span class="string">"name"</span>: <span class="string">"Maoya"</span>, <span class="string">"age"</span>: <span class="string">"19"</span>], [<span class="string">"name"</span>: <span class="string">"Tuzi"</span>, <span class="string">"age"</span>: <span class="string">"25"</span>], ]</div></pre></td></tr></table></figure>
+<p>当然可以通过<code>for</code>循环遍历<code>dictList</code>数组，挨个字典元素检测。这样做太麻烦，可以使用<code>contains(where: )</code>方法，传入一个闭包，完成检测</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> isMark = dictList.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; (dict:[<span class="type">String</span> : <span class="type">String</span>]) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></div><div class="line">    dict[<span class="string">"name"</span>] == <span class="string">"Mark"</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>可简写为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> isMark = a.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123;$<span class="number">0</span>[<span class="string">"name"</span>] == <span class="string">"Mark"</span>&#125;)</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;contains&lt;/code&gt;是swift中的一个实例方法，返回一个Bool值，用于做“是否包含”的判断。简单的说就是：告诉你一堆玩意儿中是否有你要的玩意儿。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="swift" scheme="http://markmiao.com/tags/swift/"/>
+    
+  </entry>
   
   <entry>
     <title>蓬莱两日游</title>
@@ -72,30 +114,30 @@
     <link href="http://markmiao.com/2017/03/10/swift%E4%B8%ADdelegate%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/"/>
     <id>http://markmiao.com/2017/03/10/swift中delegate的使用注意/</id>
     <published>2017-03-10T08:21:42.000Z</published>
-    <updated>2017-03-10T08:26:42.000Z</updated>
+    <updated>2017-03-16T05:28:37.000Z</updated>
     
     <content type="html"><![CDATA[<p>delegate是iOS开发中一种非常常用的设计模式，经常用作界面的反向传值。block可以做到同样的事情，曾有人言delegate是个臃肿的胖子，远不如block轻便，早该淘汰了。在ARC中，block中使用swift要用weak修饰，注意循环引用。delegate也需要使用weak指针，避免内存泄露。</p>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@property (nonatomic, weak)id&lt;XDViewControllerDelegate&gt; delegate;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@property (nonatomic, <span class="keyword">weak</span>)id&lt;<span class="type">XDViewControllerDelegate</span>&gt; delegate;</div></pre></td></tr></table></figure>
 <p>ARC环境下在oc中定义delegate使用weak修饰，在delegate对象释放掉后，delegate没有强指针引用也会被释放掉，避免了访问不存在delegate对象的delegate方法而崩溃。可以在<code>dealloc</code>方法中做防御性操作：置空delegate。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)dealloc &#123;</div><div class="line">    self.delegate = nil;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)dealloc &#123;</div><div class="line">    <span class="keyword">self</span>.delegate = <span class="literal">nil</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在最近的swift项目中用到delegate，由于没有使用weak修饰，控件循环引用无法释放，导致内存泄露。</p>
 <p>场景是这样的: 在控制器中添加了A控件，A控件中有个子控件B，B有个代理方法，A作为他的代理，并实现了代理方法。在完成功能后，使用<code>removeFromSuperview()</code>移除A控件时，发现A和B的反初始化方法<code>deinit</code>都没调用，说明这两个控件没被释放掉，内存泄露了。</p>
 <p>(这里有个小坑，<code>deinit { }</code>方法里面如果没有执行代码是不会调用的，使用<code>deinit</code>检测该控件是否被移除，记得在<code>deinit { }</code>里面写一行执行代码，比如<code>print(&quot;deinit&quot;)</code>)</p>
 <p>因为我在定义delegate的时候，是这样定义的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">protocol workSelectViewDelegate &#123;</div><div class="line">    func addWorkBtnViewClick(workTitle: String, workColor: String)</div><div class="line">&#125;</div><div class="line">class WorkSelectView: UIView&#123;</div><div class="line">    var delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorkSelectView</span>: <span class="title">UIView</span></span>&#123;</div><div class="line">    <span class="keyword">var</span> delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>由于delegate没有weak修饰，在移除A控件的时候，A中有B，B的代理又是A，A和B相互引用，导致谁也没能释放掉。</p>
 <p>将delegate使用weak修饰即可，直接在<code>var delegate</code>前面加<code>weak</code>，编译会报错。这是因为在swift中遵守protocol的类型有很多，其中有些类型不支持weak修饰，比如struct。这里需要限制protocol的类型遵守。比如下面指定这个protocol只能由class遵守：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">protocol workSelectViewDelegate: class &#123;</div><div class="line">    func addWorkBtnViewClick(workTitle: String, workColor: String)</div><div class="line">&#125;</div><div class="line">class WorkSelectView: UIView&#123;</div><div class="line">    weak var delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span>: <span class="title">class</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorkSelectView</span>: <span class="title">UIView</span></span>&#123;</div><div class="line">    <span class="keyword">weak</span> <span class="keyword">var</span> delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>还有一种方式是定义oc类型的protocol，因为oc类型的protocol只有class实现。使用关键词<code>@objc</code>修饰protocol：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@objc protocol workSelectViewDelegate &#123;</div><div class="line">    func addWorkBtnViewClick(workTitle: String, workColor: String)</div><div class="line">&#125;</div><div class="line">class WorkSelectView: UIView&#123;</div><div class="line">    weak var delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> <span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorkSelectView</span>: <span class="title">UIView</span></span>&#123;</div><div class="line">    <span class="keyword">weak</span> <span class="keyword">var</span> delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>相比第二种方法，第一种方法明显才是swift该有的样子，第二种太依赖oc了。</p>
 <p>说起依赖oc，想起来在delegate定义中的<code>optional</code>，在swift中定义delegate方法，如果没有可选修饰，遵守了代理而不实现代理方法，不是警告，而是直接报错。</p>
 <p>要想使用可选实现的修饰<code>optional</code>，必须使用<code>@objc</code>修饰</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@objc protocol workSelectViewDelegate&#123;</div><div class="line">    func addWorkBtnViewClick(workTitle: String, workColor: String)</div><div class="line">    @objc optional func addTimeTextString()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> <span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">    <span class="meta">@objc</span> <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">addTimeTextString</span><span class="params">()</span></span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这样还有一个问题，如果代理有结构体作为返回值的话，会不支持而报错。</p>
 <p>需要另一种方法定义可选代理方法，协议拓展：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">protocol workSelectViewDelegate: class&#123;</div><div class="line">    func addWorkBtnViewClick(workTitle: String, workColor: String)</div><div class="line">    func addTimeTextString()</div><div class="line">&#125;</div><div class="line">extension workSelectViewDelegate &#123;</div><div class="line">    func addTimeTextString() &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span>: <span class="title">class</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addTimeTextString</span><span class="params">()</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">workSelectViewDelegate</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addTimeTextString</span><span class="params">()</span></span> &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
