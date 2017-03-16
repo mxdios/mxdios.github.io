@@ -9,12 +9,12 @@ delegate是iOS开发中一种非常常用的设计模式，经常用作界面的
 
 <!-- more -->
 
-```Objective-c
+```swift
 @property (nonatomic, weak)id<XDViewControllerDelegate> delegate;
 ```
 ARC环境下在oc中定义delegate使用weak修饰，在delegate对象释放掉后，delegate没有强指针引用也会被释放掉，避免了访问不存在delegate对象的delegate方法而崩溃。可以在`dealloc`方法中做防御性操作：置空delegate。
 
-```Objective-c
+```swift
 - (void)dealloc {
     self.delegate = nil;
 }
@@ -28,7 +28,7 @@ ARC环境下在oc中定义delegate使用weak修饰，在delegate对象释放掉�
 
 因为我在定义delegate的时候，是这样定义的：
 
-```Objective-c
+```swift
 protocol workSelectViewDelegate {
     func addWorkBtnViewClick(workTitle: String, workColor: String)
 }
@@ -40,7 +40,7 @@ class WorkSelectView: UIView{
 
 将delegate使用weak修饰即可，直接在`var delegate`前面加`weak`，编译会报错。这是因为在swift中遵守protocol的类型有很多，其中有些类型不支持weak修饰，比如struct。这里需要限制protocol的类型遵守。比如下面指定这个protocol只能由class遵守：
 
-```Objective-c
+```swift
 protocol workSelectViewDelegate: class {
     func addWorkBtnViewClick(workTitle: String, workColor: String)
 }
@@ -51,7 +51,7 @@ class WorkSelectView: UIView{
 
 还有一种方式是定义oc类型的protocol，因为oc类型的protocol只有class实现。使用关键词`@objc`修饰protocol：
 
-```Objective-c
+```swift
 @objc protocol workSelectViewDelegate {
     func addWorkBtnViewClick(workTitle: String, workColor: String)
 }
@@ -66,7 +66,7 @@ class WorkSelectView: UIView{
 
 要想使用可选实现的修饰`optional`，必须使用`@objc`修饰
 
-```Objective-c
+```swift
 @objc protocol workSelectViewDelegate{
     func addWorkBtnViewClick(workTitle: String, workColor: String)
     @objc optional func addTimeTextString()
@@ -77,7 +77,7 @@ class WorkSelectView: UIView{
 
 需要另一种方法定义可选代理方法，协议拓展：
 
-```Objective-c
+```swift
 protocol workSelectViewDelegate: class{
     func addWorkBtnViewClick(workTitle: String, workColor: String)
     func addTimeTextString()
