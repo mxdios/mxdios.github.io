@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-03-16T05:27:16.000Z</updated>
+  <updated>2017-04-05T09:38:58.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,170 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>排班 - 上班时间，一目了然</title>
+    <link href="http://markmiao.com/2017/04/05/%E6%8E%92%E7%8F%AD/"/>
+    <id>http://markmiao.com/2017/04/05/排班/</id>
+    <published>2017-04-05T09:18:42.000Z</published>
+    <updated>2017-04-05T09:38:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>排班 - 是一款以日历为基础，记录上班时间的应用。主要针对实行倒班制，上班时间不固定的用户。简单的两步设置，便能准确地在日历上排列出上班时间，查看方便，一目了然。不用在台历上拿笔标记，也不用时时去看主管给你的上班安排。让你告别上班时间不确定的痛苦。</p>
+<a id="more"></a>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/seticonapp.png" alt=""></p>
+<h2 id="获取排班"><a href="#获取排班" class="headerlink" title="获取排班"></a>获取排班</h2><p>iOS: <a href="https://itunes.apple.com/cn/app/id1221228242?mt=8" target="_blank" rel="external">App Store下载</a></p>
+<h2 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h2><ul>
+<li><p>丰富而简洁的日历信息，包含<code>公历</code>、<code>农历</code>以及各种<code>节日</code>、<code>节气</code>、<code>节假日</code>、<code>纪念日</code>，适合每一位用户查看。</p>
+</li>
+<li><p><strong>添加排班：</strong>设置<code>坐标时间</code> -&gt; 添加<code>循环班次</code> -&gt; 保存<code>班表</code>，添加的班次会立刻出现在日历上。可选择<code>无限循环</code>、<code>指定时间内循环</code>、<code>按月循环</code>排班。可编辑<code>班表名称</code>。</p>
+</li>
+<li><p><strong>无线循环排班：</strong><code>坐标时间</code>是开始循环的时间，默认从今天开始。会以这个时间为坐标，向前、向后无限循环设置的<code>循环班次</code>。</p>
+</li>
+<li><p><strong>指定日期内循环排班：</strong>给<code>循环班次</code>设置一个<code>日期范围</code>，会从<code>开始日期</code>开始执行<code>循环班次</code>，一直循环到<code>结束日期</code>。这个日期范围之外无班次设置。</p>
+</li>
+<li><p><strong>按月循环排班：</strong>不需要时间设置，从每月的<code>1号</code>开始执行<code>循环班次</code>，循环到每月的最后一日。每个月都是独立循环的。</p>
+</li>
+<li><p><strong>循环班次：</strong>循环班次可长按拖动排序，指定删除某个班次，一键清空所有添加的班次。</p>
+</li>
+<li><p><strong>待选班次：</strong>待选班次预设了6个，可添加删除。可以在设置中还原待选班次。</p>
+</li>
+<li><p><strong>选择班表：</strong>可以添加多个班表，这里显示了添加的所有班表名称，选中确认显示在日历中。可以左滑删除。</p>
+</li>
+<li><p><strong>班表统计：</strong>统计每个月，各种班次各上了几天班。一键查看方便快捷。</p>
+</li>
+<li><p><strong>备忘列表：</strong>长按日历中的某天，或点击今日信息中的备忘，可添加备忘信息。所有的备忘信息会显示在这里，可以左滑删除。</p>
+</li>
+<li><p><strong>其他设置：</strong>可以设置日历的各种显示方式，可以还原待选班次，清空添加的备忘记录和班表。</p>
+</li>
+<li><p><strong>自定义班次：</strong>当待选班次没有合适的，可以自己添加待选班次，指定喜欢的班次颜色。</p>
+</li>
+<li><p><strong>修改某一天的班次：</strong>长按日历中的某天，或者点击今日信息中的排班，可修改这一天的班次。</p>
+</li>
+</ul>
+<h2 id="反馈与支持"><a href="#反馈与支持" class="headerlink" title="反馈与支持"></a>反馈与支持</h2><p>如果您有自己的排班需求和对应用的意见或建议，请联系：i@markmiao.com 我们会认真对待每一次反馈，将[排班]做的更好。</p>
+<p>如果您喜欢该应用，请在App Store留下宝贵的评价。如果<code>排班</code>对您有一点点用处的话，请支持我们：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/2017-04-05-17-25-23wx.png" alt="微信"></th>
+<th style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/2017-04-05-17-24-59zfb.png" alt="支付宝"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="感谢"><a href="#感谢" class="headerlink" title="感谢"></a>感谢</h2><p><strong>感谢下列开源项目</strong></p>
+<p><a href="https://github.com/ccgus/fmdb" target="_blank" rel="external">fmdb</a></p>
+<p><a href="https://github.com/yuantiku/YTKKeyValueStore" target="_blank" rel="external">YTKKeyValueStore</a></p>
+<p><a href="https://github.com/cyanzhong/LunarCore" target="_blank" rel="external">LunarCore</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;排班 - 是一款以日历为基础，记录上班时间的应用。主要针对实行倒班制，上班时间不固定的用户。简单的两步设置，便能准确地在日历上排列出上班时间，查看方便，一目了然。不用在台历上拿笔标记，也不用时时去看主管给你的上班安排。让你告别上班时间不确定的痛苦。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="应用" scheme="http://markmiao.com/tags/%E5%BA%94%E7%94%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Widget开发</title>
+    <link href="http://markmiao.com/2017/04/02/Widget%E5%BC%80%E5%8F%91/"/>
+    <id>http://markmiao.com/2017/04/02/Widget开发/</id>
+    <published>2017-04-02T12:09:00.000Z</published>
+    <updated>2017-04-05T09:38:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>widget是iOS8时推出的窗口小部件功能，窗口小部件在Android上早已大行其道。记得当年用过的第一部Android是深圳出产的国产机，当时滑过三四个屏幕的应用，还能继续再滑三四个屏幕的窗口小部件。用的最多的窗口小部件就是日历了，屏幕上一目了然。</p>
+<a id="more"></a>
+<p>Apple直到iOS8才加入窗口小部件，而且可自定义程度远远没有Android开放。</p>
+<p>本文记录了开发widget的步骤，以及遇到的一些问题。</p>
+<p>开发环境：Xcode8.2.1，swift3.0</p>
+<h2 id="创建widget"><a href="#创建widget" class="headerlink" title="创建widget"></a>创建widget</h2><p>widget可以理解为一个独立的项目，虽然形式上看来像是附属于app的一部分功能，其实并不是，widget想获取app的数据，还需要做数据共享。</p>
+<p><code>File</code> -&gt; <code>New</code> -&gt; <code>Target</code></p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016-10-094.36.08.png?raw=true" alt="创建Today Extension"></p>
+<p>选择iOS里的<code>Today Extension</code></p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016-10-094.40.27.png?raw=true" alt="创建Today Extension"></p>
+<p>习惯使用纯代码布局，喜欢用storyboard的不需要下面的info.plist修改。在新创建的widget项目文件夹中删除<code>MainInterface.storyboard</code>，修改info.plist里的<code>NSExtension</code>字段：</p>
+<ol>
+<li>删除<code>NSExtensionMainStoryboard</code>字段</li>
+<li>添加<code>NSExtensionPrincipalClass</code>字段，Value 为<code>TodayViewController</code>（<code>TodayViewController</code>是自定义控制器，）</li>
+</ol>
+<p>修改info.plist的结果如下</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-0.png?raw=true" alt="img"></p>
+<h3 id="问题1-widget崩溃"><a href="#问题1-widget崩溃" class="headerlink" title="问题1.widget崩溃"></a>问题1.widget崩溃</h3><p>经过上述修改，用纯代码布局widget，用OC开发是没有问题的，swift3.0中widget会崩溃，并打印下面的错误。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">*** Terminating app due to uncaught exception &apos;NSInvalidArgumentException&apos;, reason: &apos;*** setObjectForKey: object cannot be nil (key: 56A34ADC-7A43-43B0-A924-171F803DD305)&apos;</div><div class="line">libc++abi.dylib: terminating with uncaught exception of type NSException</div></pre></td></tr></table></figure>
+<p>StackOverflow有人遇到同样的问题：<a href="http://stackoverflow.com/questions/28153273/today-extension-crashes-before-launching-on-ios-8-1-2" target="_blank" rel="external">Today Extension Crashes before launching on iOS 8.1.2</a>，但解答好像并没有效果。</p>
+<p>在一篇博客中我找到了解决办法，<a href="http://blog.xebia.com/ios-today-widget-written-in-swift/" target="_blank" rel="external">博客地址</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Since (at the time of this writing) Xcode cannot find Swift classes as extension principal classes, we also would have to add the following line to our TodayViewController:</div><div class="line"></div><div class="line">@objc (TodayViewController)</div><div class="line"></div><div class="line">Update: Make sure to set the &quot;Embedded Content Contains Swift Code&quot; build setting of the main app target to YES. Otherwise your widget written in Swift will crash.</div></pre></td></tr></table></figure>
+<p>文中说目前为止Xcode找不到swift类作为拓展主题类（其实到我写这篇文章的时候，还是找不到），这可能是一个bug。解决办法是需要在widget控制器<code>TodayViewController</code>中添加：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> (<span class="type">TodayViewController</span>)</div></pre></td></tr></table></figure>
+<p>博文更新中说，可以更改<code>Embedded Content Contains Swift Code</code>这个设置为yes，但是在Xcode8.2.1中，这个设置已经没有了，取而代之的是<code>Always Embed Swift Standard Libraries</code>，亲测主项目的<code>targets</code>和widget的<code>targets</code>中修改这个设置的Bool值，都还是会崩溃。</p>
+<h2 id="widget折叠"><a href="#widget折叠" class="headerlink" title="widget折叠"></a>widget折叠</h2><p>iOS10之后才有的widget折叠。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> #available(iOSApplicationExtension <span class="number">10.0</span>, *) &#123;</div><div class="line">    <span class="keyword">self</span>.extensionContext?.widgetLargestAvailableDisplayMode = .expanded</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// Fallback on earlier versions</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实现下面方法。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@available</span>(iOSApplicationExtension <span class="number">10.0</span>, *)</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">widgetActiveDisplayModeDidChange</span><span class="params">(<span class="number">_</span> activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize)</span></span> &#123;</div><div class="line">	<span class="keyword">if</span> activeDisplayMode == .expanded &#123;</div><div class="line">        <span class="keyword">self</span>.preferredContentSize = <span class="type">CGSize</span>(width: <span class="number">0</span>, height: <span class="number">200</span>)</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">self</span>.preferredContentSize = maxSize</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="代码共享"><a href="#代码共享" class="headerlink" title="代码共享"></a>代码共享</h2><p>虽然widget附属于主应用，但其实是独立的。在widget中无法调用主应用中的代码，这样一来就蛋疼了。有些公共方法或者控件，在主应用中写完了，在widget却无法使用。当然把主应用中的代码拷贝一份到widget中也是可以的，这种做法太low。</p>
+<p>可以使用framework做代码共享。创建一个framework</p>
+<p><code>File</code> -&gt; <code>New</code> -&gt; <code>Target</code></p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170330-150955.png" alt="创建framework"></p>
+<p>在<code>framework</code>的<code>Build Phases</code> -&gt; <code>Compile Sources</code>里面添加要共享的代码文件。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170330-152310.png" alt="添加共享的代码文件"></p>
+<p>在<code>TARGETS</code>里面，分别在主项目和widget下面的<code>Linked Frameworks and Libraries</code>里面添加新建的<code>framework</code></p>
+<p>并在widget中用到共享代码的地方引入<code>framework</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> ShareToday</div></pre></td></tr></table></figure>
+<h3 id="问题1-引入framework报错和报警告"><a href="#问题1-引入framework报错和报警告" class="headerlink" title="问题1.引入framework报错和报警告"></a>问题1.引入framework报错和报警告</h3><p>引入的时候会如下错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TodayViewController.swift:11:8: Module file&apos;s minimum deployment target is ios10.0 v10.0:</div></pre></td></tr></table></figure></p>
+<p>是因为framework的<code>Deployment Target</code>的版本号和widget的版本号不相符，改为一样的即可。</p>
+<p>报如下警告：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ld: warning: linking against a dylib which is not safe for use in application extensions:</div></pre></td></tr></table></figure>
+<p>是因为application extensions限制了一些API的使用，而在新建的framework里面，可能包含了这些API，所以才会出现这个警告。</p>
+<p>解决办法：勾选framework里面的<code>Allow app extension API only</code></p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170330-152418.png" alt="注意"></p>
+<h3 id="问题2-方法调用不到"><a href="#问题2-方法调用不到" class="headerlink" title="问题2.方法调用不到"></a>问题2.方法调用不到</h3><p>swift中，加入到framework的一些方法，在引入头文件后的widget调用不到。</p>
+<p>解决办法：需要把方法设置为公用的，用<code>public</code>修饰方法，例如</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">getString</span><span class="params">(a: Int)</span></span> -&gt; <span class="type">String</span> &#123;</div><div class="line">	  <span class="keyword">return</span> <span class="string">"<span class="subst">\(a)</span>"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果有共用的oc代码，需要将.m文件引入到<code>Compile Sources</code>，将.h文件拖入<code>Headers</code>的<code>Public</code>里面，然后在framework的.h头文件中<code>#import</code>共用oc代码的.h头文件</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-04-02-14-17-36.png" alt="引入oc共享代码"></p>
+<h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><h3 id="配置证书："><a href="#配置证书：" class="headerlink" title="配置证书："></a>配置证书：</h3><ol>
+<li>在<code>Certificates, Identifiers &amp; Profiles</code>里的<code>Identifiers</code>下面添加<code>App IDs</code>时，要勾选<code>App Groups</code>。</li>
+<li>在<code>App Group</code>添加一个<code>App Group</code>，在写<code>Identifier</code>，会在前面自动添加<code>group.</code></li>
+<li>添加<code>App Group</code>之后，在<code>App IDs</code>点开第1步创建的id，点击edit，把<code>App Group</code>添加上，<code>App Group</code>的黄点会变成绿点。</li>
+</ol>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-113444@2x.png" alt="创建的App Group"></p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-113344@2x.png" alt="配置完成的Identifier"></p>
+<h3 id="添加证书"><a href="#添加证书" class="headerlink" title="添加证书"></a>添加证书</h3><p>在Xcode的<code>TARGEST</code>下面，主程序和widget的<code>Capabilities</code>里面，都要打开<code>App Groups</code>。下面的Steps不能有红色叹号的错误。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-113739@2x.png" alt="正确显示"></p>
+<p>在证书配置正确的前提下，还出现了红色叹号的错误警告，有可能是因为主项目或者widget的<code>General</code>里面没有选择好正确的签名Team。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-112029@2x.png" alt="配置正确的签名"></p>
+<h3 id="用NSUserDefaults共享数据，"><a href="#用NSUserDefaults共享数据，" class="headerlink" title="用NSUserDefaults共享数据，"></a>用NSUserDefaults共享数据，</h3><p>存储数据</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shareDefaults = <span class="type">UserDefaults</span>(suiteName: <span class="string">"group.xxx.xxx.xx"</span>)<span class="comment">//App Groups ID</span></div><div class="line">shareDefaults?.<span class="keyword">set</span>(worksArray, forKey: <span class="string">"worksArray"</span>)</div><div class="line">shareDefaults?.synchronize()</div></pre></td></tr></table></figure>
+<p>读取数据</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shareDefaults = <span class="type">UserDefaults</span>(suiteName: <span class="string">"group.xxx.xxx.xx"</span>)<span class="comment">//App Groups ID</span></div><div class="line"><span class="keyword">let</span> worksArray = shareDefaults?.array(forKey: <span class="string">"worksArray"</span>)</div></pre></td></tr></table></figure>
+<h3 id="点击widget开启app"><a href="#点击widget开启app" class="headerlink" title="点击widget开启app"></a>点击widget开启app</h3><p>在widget中，点击图标可以开启主应用，不用添加任何方法。如果想点击其他地方开启app，需要在app的<code>TARGEST</code>里的<code>info</code>下<code>URL Types</code>添加<code>URL Schemes</code></p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-1.png?raw=true" alt="img"></p>
+<p>添加点击事件，调用方法，开启app</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">openApp</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">self</span>.extensionContext?.open(<span class="type">URL</span>(string: <span class="string">"paibanapp://"</span>)!, completionHandler: &#123; (<span class="type">Bool</span>) <span class="keyword">in</span></div><div class="line">		<span class="built_in">print</span>(<span class="string">"success"</span>)</div><div class="line">	&#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;widget是iOS8时推出的窗口小部件功能，窗口小部件在Android上早已大行其道。记得当年用过的第一部Android是深圳出产的国产机，当时滑过三四个屏幕的应用，还能继续再滑三四个屏幕的窗口小部件。用的最多的窗口小部件就是日历了，屏幕上一目了然。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="swift" scheme="http://markmiao.com/tags/swift/"/>
+    
+  </entry>
   
   <entry>
     <title>swift中contains的使用</title>
