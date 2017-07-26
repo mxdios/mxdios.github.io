@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-07-26T03:11:02.000Z</updated>
+  <updated>2017-07-26T08:58:03.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,40 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>速记 - 快速记录每一段文字</title>
+    <link href="http://markmiao.com/2017/07/26/stenonote/"/>
+    <id>http://markmiao.com/2017/07/26/stenonote/</id>
+    <published>2017-07-26T08:54:02.000Z</published>
+    <updated>2017-07-26T08:58:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>[速记] 是一款可以在工具栏快速记录一段文字的应用。也支持在应用窗口添加、删除、编辑记录的文本。我们支持的是迅速、便捷、一触即达，比便签更迅速，比日记更简约。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170726-161903.png" alt="速记 - 快速记录每一段文字"></p>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li>在工具栏上点击速记标识，可迅速弹出文本输入框，可快速记录文本内容。</li>
+<li>在应用主窗口可快速编辑文本内容，无需保存操作，应用会自动存储更改后的内容。</li>
+<li>在应用主窗口可点击加号按钮，快速创建一条记录，输入内容快速便捷。</li>
+<li>强大的搜索功能，会实时检索搜索词组，快速将结果反馈到速记列表中。</li>
+<li>速记信息，点击应用主窗口右上角按钮，可快速查看本条信息的字数及创建时间。</li>
+</ul>
+<h2 id="反馈"><a href="#反馈" class="headerlink" title="反馈"></a>反馈</h2><p>如果您对[速记]有什么意见或建议，请联系i@markmiao.com 我们会认真对待每一次反馈，将[速记]做的更好。</p>
+<p>如果您喜欢该应用，请在App Store留下宝贵的评论。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;[速记] 是一款可以在工具栏快速记录一段文字的应用。也支持在应用窗口添加、删除、编辑记录的文本。我们支持的是迅速、便捷、一触即达，比便签更迅速，比日记更简约。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://oalg33nuc.bkt.clouddn.com/QQ20170
+    
+    </summary>
+    
+      <category term="macOS开发" scheme="http://markmiao.com/categories/macOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="应用" scheme="http://markmiao.com/tags/%E5%BA%94%E7%94%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>ipa重签名</title>
@@ -1678,91 +1712,6 @@
     
     
       <category term="静态库" scheme="http://markmiao.com/tags/%E9%9D%99%E6%80%81%E5%BA%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>iOS10升级后的一些问题</title>
-    <link href="http://markmiao.com/2016/11/11/iOS10%E5%8D%87%E7%BA%A7%E5%90%8E%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98/"/>
-    <id>http://markmiao.com/2016/11/11/iOS10升级后的一些问题/</id>
-    <published>2016-11-11T13:07:52.000Z</published>
-    <updated>2016-11-27T05:14:18.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在2016年9月14日凌晨iOS10系统准时推送过来了，作为懒人之前的beta版一直没有升级试用。今天果断手机和Xcode一起升级了，新系统新面貌带来新bug。记录一下升级iOS10和Xcode8.0后遇到的问题。</p>
-<a id="more"></a>
-<h2 id="开发者证书不能使用"><a href="#开发者证书不能使用" class="headerlink" title="开发者证书不能使用"></a>开发者证书不能使用</h2><p>General里面Signing变成如下样子，Automatically manage signing 自动签名管理。报错了，之前一直使用的企业级开发者证书不可用了。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG79.jpeg?raw=true" alt="img"></p>
-<p>Build Settings 里面的 Code Signing Identity 清一色选择为企业级开发者证书。还是报错</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-0.png?raw=true" alt="img"></p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-1.png?raw=true" alt="img"></p>
-<p><strong>解决办法：</strong></p>
-<p>取消Automatically manage signing的选择，会出现两个Signing，分别对应Debug和Release，选择该项目对应使用的Provisioning Profiles即可</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-2.png?raw=true" alt="img"></p>
-<h2 id="注释快捷键command-失效"><a href="#注释快捷键command-失效" class="headerlink" title="注释快捷键command+/失效"></a>注释快捷键command+/失效</h2><p>Xcode8.0的注释// 生成快捷键 command+/失效了</p>
-<p><strong>解决办法：</strong></p>
-<p>终端运行命令：<code>sudo /usr/libexec/xpccachectl</code><br>Password：<code>输入开机密码</code><br>重启Mac生效</p>
-<p>生效后空行快捷键，只在代码行能产生/解除注释，空行不能产生注释。记得之前可以来这….</p>
-<h2 id="Xcode控制台输出问题"><a href="#Xcode控制台输出问题" class="headerlink" title="Xcode控制台输出问题"></a>Xcode控制台输出问题</h2><h3 id="无用log打印"><a href="#无用log打印" class="headerlink" title="无用log打印"></a>无用log打印</h3><p>升级Xcode8.0之后运行项目，控制台疯狂打印了N多东西，完全看不懂啊，完犊子了，这么多需要适配的…</p>
-<p>眼不见心不烦，下面就提供去掉这些乱七八糟打印内容的方法。</p>
-<p><strong>解决办法：</strong></p>
-<p>在<code>Edit Scheme...</code>下的Run -&gt; Arguments -&gt; Environment Variables 添加  <code>OS_ACTIVITY_MODE</code> = <code>disable</code></p>
-<p>具体见下图</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-3.png?raw=true" alt="img"></p>
-<h3 id="真机测试log屏蔽"><a href="#真机测试log屏蔽" class="headerlink" title="真机测试log屏蔽"></a>真机测试log屏蔽</h3><p>经过上述修改，在iOS10模拟器中无用的log输出被屏蔽了，但是真机测试的时候，没有log输出，log日志被完全屏蔽了。不知是屏蔽无用log的设置，还是xcode8为了提高真机测试性能屏蔽了log日志？真机测试的log也很重要。</p>
-<p>为了app正式发布时不打印log，让打印操作<code>NSLog</code>只在<code>Debug</code>环境下运行，采用了下面的办法自定义<code>NSLog</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#ifdef DEBUG</div><div class="line">#define XDLog(...) NSLog(__VA_ARGS__)</div><div class="line">#else</div><div class="line">#define XDLog(...)</div><div class="line">#endif</div></pre></td></tr></table></figure>
-<p>iOS10之后，在真机中<code>NSLog</code>无法打印log，可以使用<code>printf()</code>，具体修改见下面自定义log：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#ifdef DEBUG</div><div class="line">#define XDString [NSString stringWithFormat:@&quot;%s&quot;, __FILE__].lastPathComponent</div><div class="line">#define XDLog(...) printf(&quot;%s %d行: %s\n\n&quot;,[XDString UTF8String], __LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String]);</div><div class="line">#else</div><div class="line">#define XDLog(...)</div><div class="line">#endif</div></pre></td></tr></table></figure>
-<p><code>XDString</code>是获取的该log在哪个文件里，<code>__LINE__</code>该log在第几行。<code>printf()</code>是c语言方法，所以要用<code>UTF8String</code>转义，不然每个log都会有警告。</p>
-<h2 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h2><p>网络获取数据，做容错处理，判断某个字段是否符合需要的数据类型。之前一度用如下判断方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[NSStringFromClass([userDict[@&quot;plates&quot;] class]) isEqualToString:@&quot;__NSCFArray&quot;]</div></pre></td></tr></table></figure>
-<p>如果<code>userDict[@&quot;plates&quot;]</code>的数据类型是数组的话，打印出来的就是<code>__NSCFArray</code>类型。同样如果是字典类型的话，打印出来的就是<code>__NSCFDictionary</code>。但是iOS10之后，打印出来的不同了，同样的数组类型，打印出来的是<code>__NSSingleObjectArrayI</code>。</p>
-<p>之前的这种判断方法很欠考虑，还是利用下面的方法比较靠谱：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[userDict[@&quot;plates&quot;] isKindOfClass:[NSArray class]]</div></pre></td></tr></table></figure>
-<h2 id="URL-Schemes跳转系统设置"><a href="#URL-Schemes跳转系统设置" class="headerlink" title="URL Schemes跳转系统设置"></a>URL Schemes跳转系统设置</h2><p>跳转系统设置分为<strong>跳转到系统设置列表</strong>和<strong>跳转到自己app的系统设置</strong>。</p>
-<p>跳转系统设置列表的方法在iOS10被彻底关闭了，也就是说你已不能从app跳转到系统设置列表里了。但是还可以跳转到自己app的系统设置</p>
-<p>例如：我的某个app使用地理定位，运行app时会检测是否开启地理定位，如果未开启，提醒alert，用如下代码点击跳转到地理定位的开启设置里。</p>
-<p>iOS10之前使用下面方法可以跳转到系统设置列表，列表里有自己的app，可以点击进去做相应设置.使用时要添加URL Schemes，字段为<code>prefs</code>。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161010-0.png?raw=true" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSURL *url = [NSURL URLWithString:@&quot;prefs:root=LOCATION_SERVICES&quot;];</div><div class="line">if ([[UIApplication sharedApplication] canOpenURL:url]) &#123;</div><div class="line">		[[UIApplication sharedApplication] openURL:url];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>iOS10时该方法被关闭了，只能通过下面方法跳转到自己app的系统设置，使用<code>UIApplicationOpenSettingsURLString</code>，这个字段是在iOS8时出现的。在使用这个方法时，注意iOS8/iOS9时可以使用<code>openURL:</code>，iOS10建议使用<code>openURL:options:completionHandler:</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];</div><div class="line">if ([[UIApplication sharedApplication] canOpenURL:url]) &#123;</div><div class="line">    if (iOS10) &#123;</div><div class="line">        [[UIApplication sharedApplication] openURL:url options:@&#123;&#125; completionHandler:^(BOOL success) &#123;</div><div class="line">            XDLog(@&quot;success = %d&quot;, success);</div><div class="line">        &#125;];</div><div class="line">    &#125; else &#123;</div><div class="line">        [[UIApplication sharedApplication] openURL:url];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">跳转到系统设置列表，iOS10之前可用</th>
-<th style="text-align:center">跳转到自己app的系统设置，iOS8以后可用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.31.12.png?raw=true" alt="img"></td>
-<td style="text-align:center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.33.55.png?raw=true" alt="img"></td>
-</tr>
-</tbody>
-</table>
-<h3 id="附prefs-root"><a href="#附prefs-root" class="headerlink" title="附prefs:root"></a>附prefs:root</h3><p>prefs:root=General&amp;path=About<br>prefs:root=General&amp;path=ACCESSIBILITY<br>prefs:root=AIRPLANE_MODE<br>prefs:root=General&amp;path=AUTOLOCK<br>prefs:root=General&amp;path=USAGE/CELLULAR_USAGE<br>prefs:root=Brightness<br>prefs:root=General&amp;path=Bluetooth<br>prefs:root=General&amp;path=DATE_AND_TIME<br>prefs:root=FACETIME<br>prefs:root=General<br>prefs:root=General&amp;path=Keyboard<br>prefs:root=CASTLE<br>prefs:root=CASTLE&amp;path=STORAGE_AND_BACKUP<br>prefs:root=General&amp;path=INTERNATIONAL<br>prefs:root=LOCATION_SERVICES<br>prefs:root=ACCOUNT_SETTINGS<br>prefs:root=MUSIC<br>prefs:root=MUSIC&amp;path=EQ<br>prefs:root=MUSIC&amp;path=VolumeLimit<br>prefs:root=General&amp;path=Network<br>prefs:root=NIKE_PLUS_IPOD<br>prefs:root=NOTES<br>prefs:root=NOTIFICATIONS_ID<br>prefs:root=Phone<br>prefs:root=Photos<br>prefs:root=General&amp;path=ManagedConfigurationList<br>prefs:root=General&amp;path=Reset<br>prefs:root=Sounds&amp;path=Ringtone<br>prefs:root=Safari<br>prefs:root=General&amp;path=Assistant<br>prefs:root=Sounds<br>prefs:root=General&amp;path=SOFTWARE_UPDATE_LINK<br>prefs:root=STORE<br>prefs:root=TWITTER<br>prefs:root=General&amp;path=USAGE<br>prefs:root=VIDEO<br>prefs:root=General&amp;path=Network/VPN<br>prefs:root=Wallpaper<br>prefs:root=WIFI<br>prefs:root=INTERNET_TETHERING  </p>
-<h2 id="plist里声明获取隐私数据权限"><a href="#plist里声明获取隐私数据权限" class="headerlink" title="plist里声明获取隐私数据权限"></a>plist里声明获取隐私数据权限</h2><p>访问隐私数据需要在plist里声明，在iOS10之前只需要声明地理定位之类的敏感隐私数据，获取照片、相机等不需要再plist里声明。iOS10之后，这些也必须声明，不声明会crash。需要声明的用户数据有：</p>
-<blockquote>
-<p>Contacts（联系人）, Calendar（日历）, Reminders（提醒事件）, Photos（照片）, Bluetooth Sharing（蓝牙共享）, Microphone（麦克风）, Camera（相机）, Location（位置）, Health（健康）, HomeKit（家居）, Media Library（媒体库）, Motion（运动）, CallKit（打电话）, Speech Recognition（语言识别）, SiriKit（Siri）, TV Provider（电视提供商）.</p>
-</blockquote>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-0.png?raw=true" alt="img"></p>
-<p>后面string字段填写弹出用户允许时展示的描述信息。<strong>注意，这里必须要写明获取该权限的用途，不然会被AppStore拒绝上架的。</strong></p>
-<h2 id="某些app链接网络失败"><a href="#某些app链接网络失败" class="headerlink" title="某些app链接网络失败"></a>某些app链接网络失败</h2><p>iOS10之后出现了实用无线局域网与蜂窝移动网络的允许授权弹窗，有些应用没有出现这个弹窗，莫名其妙的就连不上网络了，去设置的“使用无线局域网与蜂窝移动的应用”里找也找不到，搜索该应用，也没有开启使用网络授权的开关。</p>
-<p>其实只需要在“使用无线局域网与蜂窝移动的应用”里面修改任意一个应用的使用网络设置，再打开连不上网的应用，就会出现网络授权弹窗。这是一个系统bug，希望后续的iOS10.x.x系统会修复。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在2016年9月14日凌晨iOS10系统准时推送过来了，作为懒人之前的beta版一直没有升级试用。今天果断手机和Xcode一起升级了，新系统新面貌带来新bug。记录一下升级iOS10和Xcode8.0后遇到的问题。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="iOS10" scheme="http://markmiao.com/tags/iOS10/"/>
     
   </entry>
   
