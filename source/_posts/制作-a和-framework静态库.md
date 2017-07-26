@@ -164,6 +164,14 @@ open "${INSTALL_DIR}"
 
 ![img](https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-5.png)
 
+### 配置Mach-O Type
+
+在`TARGETS`第一个包下面，`Build Settings`下面`Mach-O Type`，修改为`Static Library`。修改后编译打包的才是静态库，不然会是动态库。
+
+![img](http://oalg33nuc.bkt.clouddn.com/2017-07-26-11-05-33.png)
+
+使用动态库需要在`General` -> `Embedded Binaries`下引入动态库，不然会报错。其实苹果禁止开发者使用自己创建的动态库。
+
 ### 编译工程
 
 选中新创建的`TARGETS`，command + b 编译工程，编译完成后会自动弹出Finder里打包完成的.framework静态库。
