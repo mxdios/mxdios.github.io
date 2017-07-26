@@ -1,7 +1,7 @@
 ---
-title: ipachongqianming
+title: ipa重签名
 date: 2017-07-26 10:58:03
-tags:[iOS,ipa]
+tags: [iOS,ipa]
 categories: [iOS开发]
 toc: true
 ---
