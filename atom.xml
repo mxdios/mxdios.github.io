@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-07-26T08:58:03.000Z</updated>
+  <updated>2017-07-27T09:54:08.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>macOS应用上架被拒</title>
+    <link href="http://markmiao.com/2017/07/27/macosapprejected/"/>
+    <id>http://markmiao.com/2017/07/27/macosapprejected/</id>
+    <published>2017-07-27T08:26:58.000Z</published>
+    <updated>2017-07-27T09:54:08.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这是我开发的第一个macOS客户端，名字为<a href="http://markmiao.com/2017/07/26/stenonote/">速记</a>。是用swift3.0，面向Google开发，磕磕绊绊的写完这一两个界面，相比预想功能大概实现了50%，也算完整，没有完成到预想效果，便按耐不住上传App Store，日后迭代呗。</p>
+<a id="more"></a>
+<p>结果昨天上传，今天早上就被苹果爸爸拒了。一看被拒理由，哐哐哐列了四五条之多，一下子有点懵。详细看过之后，发现这些问题还是蛮不错的，都是我没注意到的，特此记录下来：</p>
+<h2 id="问题1：应用程序的完整性"><a href="#问题1：应用程序的完整性" class="headerlink" title="问题1：应用程序的完整性"></a>问题1：应用程序的完整性</h2><p>问题描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Specifically, the app shows no response when click on the menubar extra icon.</div></pre></td></tr></table></figure>
+<p>这个问题拒的我完全没脾气，因为点击一个按钮没有任何反应，苹果据此认为该应用没做完，我竟毫无反驳之力。</p>
+<p>情况是这样的：这个<code>extra icon</code>，在有选中内容时，点击会弹出NSPopover，未选中内容时，点击没有任何反应，所以程序不完整。记住即便是空内容也要做提示处理！</p>
+<h2 id="问题2：应用程序名称不统一"><a href="#问题2：应用程序名称不统一" class="headerlink" title="问题2：应用程序名称不统一"></a>问题2：应用程序名称不统一</h2><p>问题描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">We noticed that your app name to be displayed on the App Store does not sufficiently match the name of the app displayed when installed on macOS.</div><div class="line"></div><div class="line">iTunes Connect Name: 速记</div><div class="line">App Name when Installed: StenoNote</div><div class="line">App Name when Launched: 速记</div><div class="line">App Name in About/Hide/Quit Menu: 速记</div></pre></td></tr></table></figure>
+<p>在iOS开发中，工程名和应用名是完全不同的，应用名可以在<code>Info.plist</code>里的<code>Bundle display name</code>中自定义。但是macOS不同，即便是在<code>Bundle display name</code>自定义了名字，在Dock上鼠标悬浮到应用上时和Launchpad里应用图标下显示的名字仍然是工程名。还有在Mac左上角苹果图标旁边的应用名也是工程名，即便是你在xib或storyboard里改了这里的文字，这里依旧不会变。</p>
+<p>我并不知道如何修改这些名字，后来在<code>Info.plist</code>里修改了<code>Bundle name</code>，Mac左上角苹果图标旁边的应用名改变了，但是Dock上和Launchpad里面的没有变化。提交应用之后，这也成了被拒理由之一。</p>
+<p>解决办法当然是统一应用名称：</p>
+<p>在<code>TARGETS -&gt; Build Settings -&gt; Product Name</code>这里面自定义应用名称。</p>
+<h2 id="问题3：权限配置问题"><a href="#问题3：权限配置问题" class="headerlink" title="问题3：权限配置问题"></a>问题3：权限配置问题</h2><p>问题描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Your app uses one or more entitlements which do not have matching functionality within the app. Apps should have only the minimum set of entitlements necessary for the app to function properly. Please remove all entitlements that are not needed by your app and submit an updated binary for review, including the following:</div><div class="line"></div><div class="line">com.apple.security.files.user-selected.read-only</div></pre></td></tr></table></figure>
+<p>macOS客户端要想上架App Store，必须开启<code>App Sandbox</code>功能。这里面牵扯到一些权限配置：网络访问、硬件资源、联系人、定位、日历，还有文件和目录的访问。应用中不需要的权限一定不要打开，不然就会以上述理由被拒。</p>
+<p>我不知道什么时候开启了<code>User Selected File</code>为<code>Read Only</code>，被拒了，马上改为<code>None</code>。</p>
+<h2 id="问题4：黑暗模式"><a href="#问题4：黑暗模式" class="headerlink" title="问题4：黑暗模式"></a>问题4：黑暗模式</h2><p>问题描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">The user interface of your app is not consistent with the macOS Human Interface Guidelines. Specifically:</div><div class="line"></div><div class="line">We found that when Dark Mode is enabled, the menu bar extra icons aren&apos;t visible.</div></pre></td></tr></table></figure>
+<p>这个问题略惊，之前恍惚听过黑暗模式，从来没用过。启动黑暗模式是在：系统偏好设置 -&gt; 通用 -&gt; 勾选使用暗色菜单和Dock</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-07-27-17-20-20.png" alt="设置黑暗模式"></p>
+<p>黑暗模式下Dock和上方工具条都变为黑色半透明，工具条上的图标齐刷刷变为白色，而我的应用图标不见了…不见了…见了…了…</p>
+<p>在stackoverflow找到一个问题解答：<a href="https://stackoverflow.com/questions/25379525/how-to-detect-dark-mode-in-yosemite-to-change-the-status-bar-menu-icon" target="_blank" rel="external">How to detect dark mode in Yosemite to change the status bar menu icon</a>。</p>
+<p>设置分布式观察者，获取Mac模式变化：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="type">DistributedNotificationCenter</span>.<span class="keyword">default</span>().addObserver(<span class="keyword">self</span>, selector: #selector(changeStatusBarImage(not:)), name: <span class="type">NSNotification</span>.<span class="type">Name</span>(rawValue: <span class="string">"AppleInterfaceThemeChangedNotification"</span>), object: <span class="literal">nil</span>)</div></pre></td></tr></table></figure>
+<p>每次更改模式都会调用通知方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">changeStatusBarImage</span><span class="params">(not: Notification)</span></span> &#123;</div><div class="line">		<span class="built_in">print</span>(<span class="string">"change"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>还可以使用下面方法获取当前Mac的模式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> dict = <span class="type">UserDefaults</span>.standard.persistentDomain(forName: <span class="type">UserDefaults</span>.globalDomain)</div><div class="line"><span class="keyword">let</span> style = dict?[<span class="string">"AppleInterfaceStyle"</span>]</div><div class="line"><span class="built_in">print</span>(style)<span class="comment">//是暗黑模式下style打印Optional(Dark)，普通模式下打印nil</span></div></pre></td></tr></table></figure>
+<p>stackoverflow问题解答中有一个外链，说明了如果不是根据模式切换去更换复杂图片的话，仅是白变黑，黑变白，仅需要如下几行代码设置<code>NSStatusBar</code>的图片即可：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> image:<span class="type">NSImage</span> = <span class="type">NSImage</span>(named: <span class="string">"图片名称"</span>)!</div><div class="line">image.isTemplate = <span class="literal">true</span></div><div class="line">item.button?.image = image</div></pre></td></tr></table></figure>
+<h2 id="问题5：无菜单重新打开主窗口"><a href="#问题5：无菜单重新打开主窗口" class="headerlink" title="问题5：无菜单重新打开主窗口"></a>问题5：无菜单重新打开主窗口</h2><p>问题描述：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">The user interface of your app is not consistent with the macOS Human Interface Guidelines.</div><div class="line"></div><div class="line">Specifically, we found that when the user closes the main application window there is no menu item to re-open it.</div></pre></td></tr></table></figure>
+<p>对于这个问题我是存在异议的，在点击关闭按钮后主窗口退出，点击Dock上的应用图标是可以唤起应用主窗口的。但是文中强调<code>menu item</code>，难道必须右键菜单里需要加上打开客户端主窗口的操作？</p>
+<p>暂且在右键菜单里添加了打开客户端主窗口的功能：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">applicationDockMenu</span><span class="params">(<span class="number">_</span> sender: NSApplication)</span></span> -&gt; <span class="type">NSMenu</span>? &#123;</div><div class="line">   <span class="keyword">let</span> menu = <span class="type">NSMenu</span>()</div><div class="line">   <span class="keyword">let</span> menuItem = <span class="type">NSMenuItem</span>(title: <span class="string">"打开速记"</span>, action: #selector(openNoteViewController), keyEquivalent: <span class="string">"O"</span>)</div><div class="line">   menu.addItem(menuItem)</div><div class="line">   <span class="keyword">return</span> menu</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>写这篇文章的时候，应用经过上述修改再一次提交审核，等待审核中，期待审核结果……</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;这是我开发的第一个macOS客户端，名字为&lt;a href=&quot;http://markmiao.com/2017/07/26/stenonote/&quot;&gt;速记&lt;/a&gt;。是用swift3.0，面向Google开发，磕磕绊绊的写完这一两个界面，相比预想功能大概实现了50%，也算完整，没有完成到预想效果，便按耐不住上传App Store，日后迭代呗。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="macOS开发" scheme="http://markmiao.com/categories/macOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="macOS" scheme="http://markmiao.com/tags/macOS/"/>
+    
+  </entry>
   
   <entry>
     <title>速记 - 快速记录每一段文字</title>
@@ -1628,90 +1687,6 @@
       <category term="生活" scheme="http://markmiao.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="游记" scheme="http://markmiao.com/tags/%E6%B8%B8%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>制作.a和.framework静态库</title>
-    <link href="http://markmiao.com/2016/11/14/%E5%88%B6%E4%BD%9C-a%E5%92%8C-framework%E9%9D%99%E6%80%81%E5%BA%93/"/>
-    <id>http://markmiao.com/2016/11/14/制作-a和-framework静态库/</id>
-    <published>2016-11-14T09:21:55.000Z</published>
-    <updated>2017-07-26T03:07:47.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>iOS库一般有开源库，静态库和动态库。</p>
-<p>开源库是指源代码开放的功能代码，比如AFNetworking。</p>
-<p>静态库是指内部代码逻辑看不到，依靠相应的.h头文件调用内部方法的功能模块。有<code>.a静态库</code>和<code>.framework</code>两种形式。比如：百度导航的<code>libbaiduNaviSDK.a</code>，百度地图<code>BaiduMapAPI_Map.framework</code>。使用时要完全拷贝到工程中，调用。<br><a id="more"></a></p>
-<p>动态库同样看不到内部代码逻辑，有<code>.dylib</code>(现在为<code>.tbd</code>)和<code>.framework</code>两种形式。比如常见的<code>libz.tbd</code>和<code>Foundation.framework</code>。由系统动态加载到内存中调用。</p>
-<p>系统的<code>.framework</code>是动态库，自己创建的<code>.framework</code>是静态库。</p>
-<p>本文中所用到的工程代码详见<a href="https://github.com/mxdios/libXDAttributedTool" target="_blank" rel="external">github地址libXDAttributedTool</a></p>
-<p><strong>注意：</strong></p>
-<p><strong>苹果禁止开发者在项目中使用自己创建的动态库。</strong></p>
-<p><strong>swift无法制作.a静态库，只能创建.framework静态库。因为.a静态库需要.h头文件配合使用。</strong></p>
-<h2 id="制作-a静态库"><a href="#制作-a静态库" class="headerlink" title="制作.a静态库"></a>制作.a静态库</h2><p>.a静态库是iOS开发中常用的一种库文件，通常为一些第三方提供的功能模块。</p>
-<p>以我写的一个工具方法<a href="https://github.com/mxdios/XDAttributedTool" target="_blank" rel="external">给字符串设置富文本模式</a>为例创建.a静态库</p>
-<h3 id="创建工程"><a href="#创建工程" class="headerlink" title="创建工程"></a>创建工程</h3><p>创建项目，选择iOS -&gt; Framework &amp; Library -&gt; Cocoa Touch Static Library</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160908-0.png?raw=true" alt="创建工程"></p>
-<p>将要打包.a静态库的功能代码拖到新建的项目中。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160908-1.png?raw=true" alt="创建工程"></p>
-<h3 id="配置工程"><a href="#配置工程" class="headerlink" title="配置工程"></a>配置工程</h3><p>添加要打包.a静态库的代码文件，和添加相对应的.h头文件</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-1.png?raw=true" alt="添加文件"></p>
-<p>设置release模式</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-2.png?raw=true" alt="设置release模式"></p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-3.png?raw=true" alt="设置release模式"></p>
-<h3 id="编译文件"><a href="#编译文件" class="headerlink" title="编译文件"></a>编译文件</h3><p>真机设备编译，生成真机使用的.a静态库：选择<code>iOS Device</code>设备，<code>command + b</code>编译。编译成功后，<code>.liblibAttributedTool.a</code>由红色变为黑色。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-4.png?raw=true" alt="编译文件"></p>
-<p>模拟器编译，生成模拟器使用的.a静态库：选择一个模拟器，<code>.liblibAttributedTool.a</code>会又变为红色，<code>command + b</code>编译。编译成功后，<code>.liblibAttributedTool.a</code>由红色变为黑色。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-4.png?raw=true" alt="编译文件"></p>
-<p>这时便生成了两个.a文件，分别用于真机和模拟器</p>
-<h3 id="合并-a文件"><a href="#合并-a文件" class="headerlink" title="合并.a文件"></a>合并.a文件</h3><p>选中编译后变黑的<code>liblibAttributedTool.a</code>右键 Show in Finder。<code>Release-iphoneos</code>和<code>Release-iphonesimulator</code>分别为真机和模拟器下生成的静态库文件。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-6.png?raw=true" alt="合并"></p>
-<p>打开终端，输入<code>lipo -create</code> <code>空格</code> 拖入模拟器下的静态库.a <code>空格</code> 拖入真机下的静态库.a <code>空格</code> 输入<code>-output</code> <code>空格</code> 输入合并后的.a存放路径/静态库名字 <code>回车</code>。这里演示合并后的名字为<code>libXDAttributedTool.a</code>存放在桌面了，<code>ls</code>显示当前路径下的文件。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-7.png?raw=true" alt="合并"></p>
-<p>验证合并后的.a静态库支持的有效架构</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160909-8.png?raw=true" alt="验证"></p>
-<h3 id="使用-a静态库"><a href="#使用-a静态库" class="headerlink" title="使用.a静态库"></a>使用.a静态库</h3><p>将合并后的.a静态库和.h头文件(随便在真机或模拟器生成的库文件夹里选一个即可，或者用原项目中的.h头文件)放到一个文件夹内，拖入工程，导入.h文件即可使用。</p>
-<p>项目中的<code>libAttributedTool</code>是打包.a静态库的源文件工程</p>
-<p>项目中的<code>XDAttributedTool</code>是打包完成，使用.a静态库的测试工程</p>
-<p>开源代码使用请见<a href="https://github.com/mxdios/XDAttributedTool" target="_blank" rel="external">XDAttributedTool</a></p>
-<h2 id="制作-framework静态库"><a href="#制作-framework静态库" class="headerlink" title="制作.framework静态库"></a>制作.framework静态库</h2><p>.framework静态库也经常使用，比如百度地图的一系列<code>BaiduMapAPI</code>都是.framework静态库。</p>
-<h3 id="创建工程-1"><a href="#创建工程-1" class="headerlink" title="创建工程"></a>创建工程</h3><p>创建项目，选择iOS -&gt; Framework &amp; Library -&gt; Cocoa Touch Framework。这一步跟打包.a静态库类似，跟打包.a时的截图不一样，是因为Xcode升级了。打包.a时用的Xcode7.3，打包.framework用的Xcode8.0，这就是拖坑不填的结果。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-0.png" alt="img"></p>
-<p>将要打包的功能代码拖到新建的项目中。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-1.png" alt="img"></p>
-<h3 id="配置工程-1"><a href="#配置工程-1" class="headerlink" title="配置工程"></a>配置工程</h3><p>在<code>Build Phases</code>里的<code>Headers</code>，把需要暴露在外面的.h文件拖动到<code>Public</code>下面，把不需要暴露的.m文件拖动到<code>Project</code>下面。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-2.png" alt="img"></p>
-<p>在新创建的工程里有一个和工程名一样的.h头文件，在该文件中引入全部需要暴露的.h文件。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-3.png" alt="img"></p>
-<h3 id="添加脚本"><a href="#添加脚本" class="headerlink" title="添加脚本"></a>添加脚本</h3><p>创建Aggregate，点击<code>TARGETS</code>下面的加号，Xcode8.0在<code>Cross-platform</code>里面的<code>Aggregate</code>，Xcode8之前的在<code>Other</code>里面<code>Aggregate</code>。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/2016-10-144.30.53.png" alt="img"></p>
-<p>在新添加的<code>Aggregate</code>的<code>Build Phases</code>里面，点击加号，选择<code>New Run Script Phase</code>，添加Run Script脚本。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/2016-10-144.44.46.png" alt="img"></p>
-<p>在Run Script代码框中添加脚本。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-4.png" alt="img"></p>
-<p>完整脚本：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"># Sets the target folders and the final framework product.</div><div class="line"># 如果工程名称和Framework的Target名称不一样的话，要自定义FMKNAME</div><div class="line"># 例如: FMK_NAME = &quot;MyFramework&quot;</div><div class="line">FMK_NAME=$&#123;PROJECT_NAME&#125;</div><div class="line"># Install dir will be the final output to the framework.</div><div class="line"># The following line create it in the root folder of the current project.</div><div class="line">INSTALL_DIR=$&#123;SRCROOT&#125;/Products/$&#123;FMK_NAME&#125;.framework</div><div class="line"># Working dir will be deleted after the framework creation.</div><div class="line">WRK_DIR=build</div><div class="line">DEVICE_DIR=$&#123;WRK_DIR&#125;/Release-iphoneos/$&#123;FMK_NAME&#125;.framework</div><div class="line">SIMULATOR_DIR=$&#123;WRK_DIR&#125;/Release-iphonesimulator/$&#123;FMK_NAME&#125;.framework</div><div class="line"># -configuration $&#123;CONFIGURATION&#125;</div><div class="line"># Clean and Building both architectures.</div><div class="line">xcodebuild -configuration &quot;Release&quot; -target &quot;$&#123;FMK_NAME&#125;&quot; -sdk iphoneos clean build</div><div class="line">xcodebuild -configuration &quot;Release&quot; -target &quot;$&#123;FMK_NAME&#125;&quot; -sdk iphonesimulator clean build</div><div class="line"># Cleaning the oldest.</div><div class="line">if [ -d &quot;$&#123;INSTALL_DIR&#125;&quot; ]</div><div class="line">then</div><div class="line">rm -rf &quot;$&#123;INSTALL_DIR&#125;&quot;</div><div class="line">fi</div><div class="line">mkdir -p &quot;$&#123;INSTALL_DIR&#125;&quot;</div><div class="line">cp -R &quot;$&#123;DEVICE_DIR&#125;/&quot; &quot;$&#123;INSTALL_DIR&#125;/&quot;</div><div class="line"># Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.</div><div class="line">lipo -create &quot;$&#123;DEVICE_DIR&#125;/$&#123;FMK_NAME&#125;&quot; &quot;$&#123;SIMULATOR_DIR&#125;/$&#123;FMK_NAME&#125;&quot; -output &quot;$&#123;INSTALL_DIR&#125;/$&#123;FMK_NAME&#125;&quot;</div><div class="line">rm -r &quot;$&#123;WRK_DIR&#125;&quot;</div><div class="line">open &quot;$&#123;INSTALL_DIR&#125;&quot;</div></pre></td></tr></table></figure>
-<h3 id="配置armv7s"><a href="#配置armv7s" class="headerlink" title="配置armv7s"></a>配置armv7s</h3><p>在<code>TARGETS</code>第一个包下面，<code>Build Settings</code>下面<code>Architectures</code>这一行，点击选择<code>Other</code>，在弹出框中加上armv7s。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-5.png" alt="img"></p>
-<h3 id="配置Mach-O-Type"><a href="#配置Mach-O-Type" class="headerlink" title="配置Mach-O Type"></a>配置Mach-O Type</h3><p>在<code>TARGETS</code>第一个包下面，<code>Build Settings</code>下面<code>Mach-O Type</code>，修改为<code>Static Library</code>。修改后编译打包的才是静态库，不然会是动态库。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-07-26-11-05-33.png" alt="img"></p>
-<p>使用动态库需要在<code>General</code> -&gt; <code>Embedded Binaries</code>下引入动态库，不然会报错。其实苹果禁止开发者使用自己创建的动态库。</p>
-<h3 id="编译工程"><a href="#编译工程" class="headerlink" title="编译工程"></a>编译工程</h3><p>选中新创建的<code>TARGETS</code>，command + b 编译工程，编译完成后会自动弹出Finder里打包完成的.framework静态库。</p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-6.png" alt="img"></p>
-<p><img src="https://raw.githubusercontent.com/mxdios/libXDAttributedTool/master/image/QQ20161014-8.png" alt="img"></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;iOS库一般有开源库，静态库和动态库。&lt;/p&gt;
-&lt;p&gt;开源库是指源代码开放的功能代码，比如AFNetworking。&lt;/p&gt;
-&lt;p&gt;静态库是指内部代码逻辑看不到，依靠相应的.h头文件调用内部方法的功能模块。有&lt;code&gt;.a静态库&lt;/code&gt;和&lt;code&gt;.framework&lt;/code&gt;两种形式。比如：百度导航的&lt;code&gt;libbaiduNaviSDK.a&lt;/code&gt;，百度地图&lt;code&gt;BaiduMapAPI_Map.framework&lt;/code&gt;。使用时要完全拷贝到工程中，调用。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="静态库" scheme="http://markmiao.com/tags/%E9%9D%99%E6%80%81%E5%BA%93/"/>
     
   </entry>
   
