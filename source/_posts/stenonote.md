@@ -10,6 +10,11 @@ toc: true
 
 ![速记 - 快速记录每一段文字](http://oalg33nuc.bkt.clouddn.com/QQ20170726-161903.png)
 
+## 安装
+
+点击下载[速记 - 快速记录每一段文字](https://itunes.apple.com/cn/app/id1263819789?mt=12)，在Mac App Store中安装速记
+
+
 ## 功能
 
 * 在工具栏上点击速记标识，可迅速弹出文本输入框，可快速记录文本内容。
