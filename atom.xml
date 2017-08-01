@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-07-27T09:54:08.000Z</updated>
+  <updated>2017-08-01T06:02:42.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://markmiao.com/2017/07/27/macosapprejected/"/>
     <id>http://markmiao.com/2017/07/27/macosapprejected/</id>
     <published>2017-07-27T08:26:58.000Z</published>
-    <updated>2017-07-27T09:54:08.000Z</updated>
+    <updated>2017-08-01T06:02:42.000Z</updated>
     
     <content type="html"><![CDATA[<p>这是我开发的第一个macOS客户端，名字为<a href="http://markmiao.com/2017/07/26/stenonote/">速记</a>。是用swift3.0，面向Google开发，磕磕绊绊的写完这一两个界面，相比预想功能大概实现了50%，也算完整，没有完成到预想效果，便按耐不住上传App Store，日后迭代呗。</p>
 <a id="more"></a>
@@ -59,6 +59,11 @@
 <p>暂且在右键菜单里添加了打开客户端主窗口的功能：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">applicationDockMenu</span><span class="params">(<span class="number">_</span> sender: NSApplication)</span></span> -&gt; <span class="type">NSMenu</span>? &#123;</div><div class="line">   <span class="keyword">let</span> menu = <span class="type">NSMenu</span>()</div><div class="line">   <span class="keyword">let</span> menuItem = <span class="type">NSMenuItem</span>(title: <span class="string">"打开速记"</span>, action: #selector(openNoteViewController), keyEquivalent: <span class="string">"O"</span>)</div><div class="line">   menu.addItem(menuItem)</div><div class="line">   <span class="keyword">return</span> menu</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>写这篇文章的时候，应用经过上述修改再一次提交审核，等待审核中，期待审核结果……</p>
+<hr>
+<p>后面的审核历程颇有些戏剧性，当晚审核被拒，被拒原因是上面的<code>问题1</code>和<code>问题5</code>，说是在macOS10.12.6系统版本下出现的问题，这是当前macOS最新系统版本，我也是在此系统版本下开发并修改上述问题的。</p>
+<p>本着苹果爸爸不欺我的崇拜之心，经过五分钟的测试+Google，最终还是没发现问题所在。十分钟后我反馈了我的疑问，第二天苹果给我的回复是：我们重新测试了你的应用，发现在macOS10.12.6上没有问题，问题是在macOS10.10.5上发现的，你的应用最低系统支持是10.10，所以要解决10.10.5上的问题。</p>
+<p>有理有据，合情合理。</p>
+<p>10.10.5上有问题，那就不支持10.10了，最低系统版本改为10.11，上架成功。</p>
 ]]></content>
     
     <summary type="html">
