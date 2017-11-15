@@ -32,9 +32,9 @@
 <p><em>这种实现方式并不好有诸多问题，当有多个按钮分别设置不同的字体字号颜色时，这种方式无法实现，当找到有效方法再添加….此条权当问题记录</em></p>
 <h2 id="用Application-Loader交付应用程序时，一直正在通过AppStore进行鉴定"><a href="#用Application-Loader交付应用程序时，一直正在通过AppStore进行鉴定" class="headerlink" title="用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定"></a>用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定</h2><p>需要修改Application Loader里的一个文件内容。</p>
 <p>路径为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/itms/java/lib/net.properties</div></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></div></pre></td></tr></table></figure>
 <p>或者路径为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/MacOS/itms/java/lib/net.properties</div></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/MacOS/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></div></pre></td></tr></table></figure>
 <p>打开这个文件，把第34行的http.proxyPort=443 改为https.proxyPort=80  再提交应用就ok了</p>
 <h2 id="pdf的展示"><a href="#pdf的展示" class="headerlink" title="pdf的展示"></a>pdf的展示</h2><p>项目里要求读取从服务器下载下来的pdf，pdf文件是一个发票文件，下载到本地Documents目录下，展示出来。问题来了，发票上的印章不见了。</p>
 <p>我将这个pdf文件放到了各种应用中打开，结果是：微信、qq、印象笔记、掌阅iReader、Safari、iBooks、WPS Office、mac上的预览，除了WPS Office、mac上的预览能显示出印章，其他的全部显示不出印章，甚至微信、掌阅iReader连发票上的分割线都显示不出来。</p>
@@ -71,13 +71,13 @@
 </blockquote>
 <p>如果这个文件是最近一次commit的，并没有进行push操作，换句话说进行push操作的时候报错了。那么需要删除掉本地库中这个文件的commit记录再进行push</p>
 <p>在终端中cd进项目目录，就是项目的<code>.git</code>文件的目录下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cd /Users/XXX(cd后面路径换成自己项目的路径)</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /Users/XXX(<span class="built_in">cd</span>后面路径换成自己项目的路径)</div></pre></td></tr></table></figure>
 <p>输入如下命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git rm --cached /Users/XXX/XXX/libbaiduNaviSDK.a (大文件的路径)</div><div class="line">git commit --amend -CHEAD</div></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git rm <span class="comment">--cached /Users/XXX/XXX/libbaiduNaviSDK.a (大文件的路径)</span></div><div class="line">git <span class="keyword">commit</span> <span class="comment">--amend -CHEAD</span></div></pre></td></tr></table></figure>
 <p>到这一步这个大文件从commit记录中移除了，以后的commit也不会再commit它了。此时进行push即可</p>
 <p>还有一种情况是你无数次commit了，也不知道哪次把这个大文件commit上了，在进行push的时候报错了。</p>
 <p>这时需要将本地代码库回滚，回滚到某个commit之前</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git reset --hard commit-id :回滚到commit-id，讲commit-id之后提交的commit都去除</div><div class="line"></div><div class="line">git reset --hard HEAD~3：将最近3次的提交回滚</div></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git <span class="keyword">reset</span> <span class="comment">--hard commit-id :回滚到commit-id，讲commit-id之后提交的commit都去除</span></div><div class="line"></div><div class="line">git <span class="keyword">reset</span> <span class="comment">--hard HEAD~3：将最近3次的提交回滚</span></div></pre></td></tr></table></figure>
 <h2 id="删除苹果开发者平台Developer里的App-ID"><a href="#删除苹果开发者平台Developer里的App-ID" class="headerlink" title="删除苹果开发者平台Developer里的App ID"></a>删除苹果开发者平台Developer里的App ID</h2><p>删除苹果开发者平台Developer里的某个AppID本来是很容易的事情，点击Edit -&gt; Delete -&gt; 警示框中红色Delete即可。但是真实情况却坑的一逼……</p>
 <p>Developer中的AppID对应项目中的Bundle id，是一个app的唯一标识，包括在App Store中，在各大第三方开放平台中。一般为了保证唯一性，采用公司域名反写＋app项目名的方式命名。</p>
 <p>我经历过替换开发者账号的事。事情是这样的：开发某款app在上线AppStore当天，甲方觉得提供商名字不好(因为是个人开发者账号，显示的是人名拼音)要求下架，重新提供开发者账号提交。甲方是上帝，您高兴就好，反正$99不用我掏腰包。就这样上架第一天我亲手点了下架按钮，</p>

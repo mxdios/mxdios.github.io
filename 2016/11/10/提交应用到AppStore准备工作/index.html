@@ -32,9 +32,9 @@
 <p>在交付应用程序的时候，点背的话会一直显示<code>正在通过AppStore进行鉴定</code>，然后就一直等然后也没有然后，我曾晚上11点交付应用程序，然后就这样显示了一夜，第二天醒来依旧正在通过AppStore进行鉴定。</p>
 <p>至于为什么会这样，相信大家都心知肚明。好多开发者选择翻墙交付应用程序，我也经常这么干，亲测挺快的。其实有时候人品正，在墙内也可以很快交付。我还在网上找到过一个解决办法，需要修改Application Loader里的一个文件内容，亲测过确实有效。</p>
 <p>路径为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/itms/java/lib/net.properties</div></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></div></pre></td></tr></table></figure>
 <p>或者路径为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/MacOS/itms/java/lib/net.properties</div></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/MacOS/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></div></pre></td></tr></table></figure>
 <p>打开这个文件，把第34行的<code>http.proxyPort=443</code> 改为<code>https.proxyPort=80</code> 再提交应用就ok了。</p>
 <h2 id="App综合信息"><a href="#App综合信息" class="headerlink" title="App综合信息"></a>App综合信息</h2><h3 id="app图标"><a href="#app图标" class="headerlink" title="app图标"></a>app图标</h3><p>此图标将用于 App Store，其格式必须为 JPG 或 PNG，最低分辨率至少为 72 DPI，并采用 RGB 色彩空间。它不能包含图层或圆角。尺寸为1024*1024。</p>
 <p>在开发中，只需要让设计同事提供一个1024*1024的app图标即可，可以用<a href="https://itunes.apple.com/cn/app/prepo/id476533227?mt=12" target="_blank" rel="external">Prepo</a>生成各种需要的图标尺寸。</p>
