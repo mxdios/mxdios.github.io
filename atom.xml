@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-12-01T06:58:04.000Z</updated>
+  <updated>2017-12-01T07:00:40.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -20,11 +20,11 @@
     <link href="http://markmiao.com/2017/12/01/duoyuyan/"/>
     <id>http://markmiao.com/2017/12/01/duoyuyan/</id>
     <published>2017-12-01T06:53:14.000Z</published>
-    <updated>2017-12-01T06:58:04.000Z</updated>
+    <updated>2017-12-01T07:00:40.000Z</updated>
     
     <content type="html"><![CDATA[<p>旧文新录，好多主流app都支持多语言(或者叫本地化)，有的是自动适应系统语言，有的是用户选择修改。比如微信支持如下语言，可以根据系统自适应，也可以用户更改。</p>
 <a id="more"></a>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161117-0.png?raw=true" alt="img"></p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161117-0.png?raw=true" alt="微信支持的语言环境"></p>
 <h2 id="创建多语言文件"><a href="#创建多语言文件" class="headerlink" title="创建多语言文件"></a>创建多语言文件</h2><p>在工程中<code>command + n</code>创建文件，选择<code>iOS</code> -&gt; <code>Resource</code> -&gt; <code>Strings File</code>文件，自定义文件名，创建完成。</p>
 <h2 id="添加多语言"><a href="#添加多语言" class="headerlink" title="添加多语言"></a>添加多语言</h2><p>选中新创建的多语言文件，展开右侧的侧边栏，在侧边栏里，点击<code>Localization</code>下的<code>Localize...</code>按钮，选择<code>English</code>，点击<code>Localize</code>。</p>
 <p>选中工程在<code>PROJECT</code>里面的<code>Localizations</code>，添加语言。</p>
