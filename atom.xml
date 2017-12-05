@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-12-05T05:00:58.000Z</updated>
+  <updated>2017-12-05T06:42:38.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -16,13 +16,13 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>APP多语言开发</title>
+    <title>APP国际化</title>
     <link href="http://markmiao.com/2017/12/01/duoyuyan/"/>
     <id>http://markmiao.com/2017/12/01/duoyuyan/</id>
     <published>2017-12-01T06:53:14.000Z</published>
-    <updated>2017-12-05T05:00:58.000Z</updated>
+    <updated>2017-12-05T06:42:38.000Z</updated>
     
-    <content type="html"><![CDATA[<p>旧文新录，好多主流app都支持多语言(或者叫本地化)，有的是自动适应系统语言，有的是用户选择修改。比如微信支持如下语言，可以根据系统自适应，也可以用户更改。</p>
+    <content type="html"><![CDATA[<p>旧文新录，好多主流app都支持多语言(或者叫本地化/国际化)，有的是自动适应系统语言，有的是用户选择修改。比如微信支持如下语言，可以根据系统自适应，也可以用户更改。</p>
 <a id="more"></a>
 <p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161117-0.png?raw=true" alt="微信支持的语言环境"></p>
 <h2 id="创建多语言文件"><a href="#创建多语言文件" class="headerlink" title="创建多语言文件"></a>创建多语言文件</h2><p>在工程中<code>command + n</code>创建文件，选择<code>iOS</code> -&gt; <code>Resource</code> -&gt; <code>Strings File</code>文件，自定义文件名，创建完成。</p>
@@ -70,7 +70,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;旧文新录，好多主流app都支持多语言(或者叫本地化)，有的是自动适应系统语言，有的是用户选择修改。比如微信支持如下语言，可以根据系统自适应，也可以用户更改。&lt;/p&gt;
+      &lt;p&gt;旧文新录，好多主流app都支持多语言(或者叫本地化/国际化)，有的是自动适应系统语言，有的是用户选择修改。比如微信支持如下语言，可以根据系统自适应，也可以用户更改。&lt;/p&gt;
     
     </summary>
     
