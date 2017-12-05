@@ -165,5 +165,19 @@ UILaunchStoryboardName = "LaunchScreen_en";//英文文件下添加的
 
 有一个很大的问题是多语言文本不能实时更新，当你新拖入一个控件，多语言文件中并不会更新该控件的`ObjectID`。添加脚本，实现编译工程多语言文件实时更新。
 
-[脚本AutoLocalization](https://github.com/onezens/AutoLocalization)
+1. Xcode中添加脚本，脚本地址和添加脚本的方法：[AutoLocalization](https://github.com/onezens/AutoLocalization)
+
+2. 终端运行脚本，首先更改脚本文件中的`filePath`
+
+```Python
+#如果在终端运行，注意要修改自己需要国际化的项目文件夹的路径！
+filePath = '/Users/inspiry/Desktop/work/workCode/XDProject/mremind/mremind'
+```
+
+然后在终端中执行Python文件
+
+```
+python AutoGenStrings.py
+```
+
 
