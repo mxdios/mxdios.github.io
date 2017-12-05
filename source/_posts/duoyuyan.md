@@ -146,3 +146,24 @@ UILaunchStoryboardName = "LaunchScreen_en";//英文文件下添加的
 其实这样做也有局限性，在首次安装启动时能选择正确的语言显示，手动更改手机语言环境，重新打开app则无法显示更改后的语言。—— 在模拟器上测试
 
 
+## storyboard和xib多语言
+
+`storyboard`和`xib`多语言只支持跟随系统，不支持手动切换。
+
+选中`storyboard`或`xib`文件，在右侧面板的`Localization`中添加语言文件，语言文件会自动检测该`storyboard`或`xib`文件中哪些地方进行多语言化。并在文件中给出类似下面的内容，只需要在相应语言文件中修改`"title"`文本即可
+
+```
+/* Class = "NSMenuItem"; title = "Item 1"; ObjectID = "sxW-84-y91"; */
+"sxW-84-y91.title" = "title";
+```
+
+`storyboard`和`xib`的多语言化是根据`ObjectID`来区分的。
+
+![ObjectID](http://oalg33nuc.bkt.clouddn.com/2017-12-05-11-49-56.png)
+
+### 国际化自动脚本
+
+有一个很大的问题是多语言文本不能实时更新，当你新拖入一个控件，多语言文件中并不会更新该控件的`ObjectID`。添加脚本，实现编译工程多语言文件实时更新。
+
+[脚本AutoLocalization](https://github.com/onezens/AutoLocalization)
+
