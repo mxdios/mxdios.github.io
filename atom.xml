@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-12-05T06:42:38.000Z</updated>
+  <updated>2017-12-05T07:53:19.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://markmiao.com/2017/12/01/duoyuyan/"/>
     <id>http://markmiao.com/2017/12/01/duoyuyan/</id>
     <published>2017-12-01T06:53:14.000Z</published>
-    <updated>2017-12-05T06:42:38.000Z</updated>
+    <updated>2017-12-05T07:53:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>旧文新录，好多主流app都支持多语言(或者叫本地化/国际化)，有的是自动适应系统语言，有的是用户选择修改。比如微信支持如下语言，可以根据系统自适应，也可以用户更改。</p>
 <a id="more"></a>
@@ -65,7 +65,15 @@
 <p><code>storyboard</code>和<code>xib</code>的多语言化是根据<code>ObjectID</code>来区分的。</p>
 <p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-05-11-49-56.png" alt="ObjectID"></p>
 <h3 id="国际化自动脚本"><a href="#国际化自动脚本" class="headerlink" title="国际化自动脚本"></a>国际化自动脚本</h3><p>有一个很大的问题是多语言文本不能实时更新，当你新拖入一个控件，多语言文件中并不会更新该控件的<code>ObjectID</code>。添加脚本，实现编译工程多语言文件实时更新。</p>
-<p><a href="https://github.com/onezens/AutoLocalization" target="_blank" rel="external">脚本AutoLocalization</a></p>
+<ol>
+<li><p>Xcode中添加脚本，脚本地址和添加脚本的方法：<a href="https://github.com/onezens/AutoLocalization" target="_blank" rel="external">AutoLocalization</a></p>
+</li>
+<li><p>终端运行脚本，首先更改脚本文件中的<code>filePath</code></p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#如果在终端运行，注意要修改自己需要国际化的项目文件夹的路径！</span></div><div class="line">filePath = <span class="string">'/Users/inspiry/Desktop/work/workCode/XDProject/mremind/mremind'</span></div></pre></td></tr></table></figure>
+<p>然后在终端中执行Python文件</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">python</span> AutoGenStrings.<span class="keyword">py</span></div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
