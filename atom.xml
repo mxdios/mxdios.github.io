@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-12-05T07:53:19.000Z</updated>
+  <updated>2017-12-07T08:22:39.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,73 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>macOS开发笔记(1)</title>
+    <link href="http://markmiao.com/2017/12/07/macosdevelnote1/"/>
+    <id>http://markmiao.com/2017/12/07/macosdevelnote1/</id>
+    <published>2017-12-07T08:05:19.000Z</published>
+    <updated>2017-12-07T08:22:39.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>旧坑不填，喜开新坑。这两天又计划开发一款macOS应用，之前开发的<a href="http://markmiao.com/2017/07/26/stenonote/">速记</a>完全是练手，反正现在是不想填坑了，索性再开一个。实际做一个项目，是学习的最佳途径。本文记录了我在开发中遇到的各种问题，以及找到的解决办法，权当以后查阅的笔记。如果能给某位朋友带来帮助，是我的荣幸。如果发现问题，敬请评论吐槽。</p>
+<a id="more"></a>
+<p>开发环境：<strong>Xcode 9.1 + Swift4</strong></p>
+<h2 id="StatusBar"><a href="#StatusBar" class="headerlink" title="StatusBar"></a>StatusBar</h2><h3 id="设置按钮"><a href="#设置按钮" class="headerlink" title="设置按钮"></a>设置按钮</h3><p>在<code>applicationDidFinishLaunching</code>方法中调用下面代码，设置StatusBar按钮</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">createButtonStatusBar</span><span class="params">()</span></span> &#123;</div><div class="line">   <span class="keyword">let</span> statusBar = <span class="type">NSStatusBar</span>.system</div><div class="line">   <span class="keyword">let</span> item = statusBar.statusItem(withLength: <span class="type">NSStatusItem</span>.squareLength)</div><div class="line">   item.button?.target = <span class="keyword">self</span></div><div class="line">   item.button?.action = #selector(itemActionShowView(<span class="number">_</span>:))</div><div class="line">   <span class="keyword">let</span> image:<span class="type">NSImage</span> = <span class="type">NSImage</span>(named: <span class="type">NSImage</span>.<span class="type">Name</span>(rawValue: <span class="string">"mremindbaricon"</span>))!</div><div class="line">   image.isTemplate = <span class="literal">true</span></div><div class="line">   item.button?.image = image</div><div class="line">   statusItem = item;</div><div class="line">&#125;</div><div class="line"><span class="meta">@objc</span> <span class="function"><span class="keyword">func</span> <span class="title">itemActionShowView</span><span class="params">(<span class="number">_</span> sender: NSStatusBarButton)</span></span> &#123;</div><div class="line">   <span class="built_in">print</span>(<span class="string">"点击"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>itemActionShowView</code>是实现的点击方法，Swift4.0之后，必须增加<code>@objc</code>修饰符，是因为Swift4.0之后去掉了Swift3.x对隐式类型推断的特性，必须手动管理<code>@objc</code>，保证oc和Swift代码能互相调用。</p>
+<h3 id="设置菜单"><a href="#设置菜单" class="headerlink" title="设置菜单"></a>设置菜单</h3><p>在<code>Main.storyboard</code>的<code>Application Scene</code>中拖入<code>NSMenu</code>，将<code>NSMenu</code>拖线到<code>AppDelegate</code>中。如同上面设置statusBar按钮一样，不需要设置按钮的<code>target</code>和<code>action</code>，需要设置<code>menu</code>。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> toolMenu: <span class="type">NSMenu</span>!</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">item.menu = toolMenu</div></pre></td></tr></table></figure>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-04-15-48-40.png" alt="添加NSMenu"></p>
+<p>添加<code>NSMenu</code>的点击事件，直接拖线<code>action</code>即可。</p>
+<h2 id="Dock和Window"><a href="#Dock和Window" class="headerlink" title="Dock和Window"></a>Dock和Window</h2><h3 id="隐藏Dock上的应用图标"><a href="#隐藏Dock上的应用图标" class="headerlink" title="隐藏Dock上的应用图标"></a>隐藏Dock上的应用图标</h3><p>开发statusBar应用，不需要弹出Window界面，可以在<code>Main.storyboard</code>中的<code>Window Controller Scene</code>中取消<code>Is Initial Controller</code>的勾选。</p>
+<p>不需要在Dock上出现应用图标，<code>Info.plist</code>中添加Key - Value：<code>Application is agent (UIElement)</code> - <code>YES</code></p>
+<h3 id="Window居中"><a href="#Window居中" class="headerlink" title="Window居中"></a>Window居中</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">window.center()<span class="comment">//居中</span></div></pre></td></tr></table></figure>
+<h3 id="Window的层级关系"><a href="#Window的层级关系" class="headerlink" title="Window的层级关系"></a>Window的层级关系</h3><p>Window有一个<code>level</code>属性，标识Window的层级关系。设置Window的<code>level</code>：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.window?.level = .floating <span class="comment">//Window设置为浮动的</span></div></pre></td></tr></table></figure>
+<p>还有好多其他层级关系，诸如<code>normal</code>、<code>submenu</code>、<code>tornOffMenu</code>……</p>
+<h3 id="启动Window"><a href="#启动Window" class="headerlink" title="启动Window"></a>启动Window</h3><p>弹出一个Window页面，并将其设置为<code>keyWindow</code>（第一响应者的Window窗口）：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//将addWindowController.window启动，并设置为keyWindow</span></div><div class="line">addWindowController.window!.makeKeyAndOrderFront(<span class="keyword">self</span>)</div></pre></td></tr></table></figure>
+<p>有时候该方法只能将Window显示出来，并不能设置为keyWindow，如果是<code>normal</code>层级的Window，Window都不能覆盖其他应用窗口，只会在其他应用窗口下面显示。特别是statusBar应用，在其他应用窗口为<code>keyWindow</code>时，点击工具条上的statusBar，启动Window，无法完成<code>keyWindow</code>设置。</p>
+<p>需要调用下面代码，将其他应用都取消<code>keyWindow</code></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="type">NSApp</span>.activate(ignoringOtherApps: <span class="literal">true</span>)</div></pre></td></tr></table></figure>
+<h2 id="NSTextField"><a href="#NSTextField" class="headerlink" title="NSTextField"></a>NSTextField</h2><h3 id="输入时隐藏蓝色边框"><a href="#输入时隐藏蓝色边框" class="headerlink" title="输入时隐藏蓝色边框"></a>输入时隐藏蓝色边框</h3><p><code>xib</code>中在<code>Focus Ring</code>中选择<code>None</code></p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-05-10-45-36.png" alt="隐藏蓝色边框"></p>
+<p>或者在代码中执行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">textField.focusRingType = .<span class="keyword">none</span></div></pre></td></tr></table></figure>
+<h3 id="文本框第一响应者"><a href="#文本框第一响应者" class="headerlink" title="文本框第一响应者"></a>文本框第一响应者</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.window?.makeFirstResponder(textField)<span class="comment">//设置为第一响应者</span></div><div class="line"><span class="keyword">self</span>.window?.makeFirstResponder(<span class="literal">nil</span>) <span class="comment">//取消第一响应者</span></div></pre></td></tr></table></figure>
+<h2 id="获取版本号"><a href="#获取版本号" class="headerlink" title="获取版本号"></a>获取版本号</h2><h3 id="macOS版本号"><a href="#macOS版本号" class="headerlink" title="macOS版本号"></a>macOS版本号</h3><p>macOS10.10及以上，使用下面的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> version = <span class="type">ProcessInfo</span>.processInfo.operatingSystemVersion</div><div class="line"><span class="built_in">print</span>(<span class="string">"<span class="subst">\(version.majorVersion)</span>.<span class="subst">\(version.minorVersion)</span>.<span class="subst">\(version.patchVersion)</span>"</span>)</div></pre></td></tr></table></figure>
+<p>还有如下方式（已弃用）</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#<span class="keyword">import</span> &lt;CoreServices/CoreServices.h&gt;</div><div class="line"></div><div class="line"><span class="type">SInt32</span> major, minor, bugfix;</div><div class="line"><span class="type">Gestalt</span>(gestaltSystemVersionMajor, &amp;major);</div><div class="line"><span class="type">Gestalt</span>(gestaltSystemVersionMinor, &amp;minor);</div><div class="line"><span class="type">Gestalt</span>(gestaltSystemVersionBugFix, &amp;bugfix);</div><div class="line"><span class="built_in">print</span>(<span class="string">"<span class="subst">\(major)</span>.<span class="subst">\(minor)</span>.<span class="subst">\(bugfix)</span>"</span>)</div></pre></td></tr></table></figure>
+<p>其他方式请见：<a href="https://stackoverflow.com/questions/6492038/find-mac-os-x-version-number-in-objective-c" target="_blank" rel="external">查找Mac OS X版本号</a></p>
+<h3 id="app版本号"><a href="#app版本号" class="headerlink" title="app版本号"></a>app版本号</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> version = <span class="type">Bundle</span>.main.object(forInfoDictionaryKey: <span class="string">"CFBundleShortVersionString"</span>)</div><div class="line"><span class="keyword">let</span> bundle = <span class="type">Bundle</span>.main.object(forInfoDictionaryKey: <span class="string">"CFBundleVersion"</span>)</div></pre></td></tr></table></figure>
+<h2 id="设置快捷键和关闭退出应用"><a href="#设置快捷键和关闭退出应用" class="headerlink" title="设置快捷键和关闭退出应用"></a>设置快捷键和关闭退出应用</h2><h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><p>xib或storyboard设置快捷键很方便，直接在<code>Key Equivalend</code>输入快捷键即可。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-42-28.png" alt="设置快捷键"></p>
+<h3 id="退出应用"><a href="#退出应用" class="headerlink" title="退出应用"></a>退出应用</h3><p>从<code>action</code>拖线到<code>Application</code>，选择<code>stop:</code>方法即可：</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20171207-154727.png" alt="拖线到Application"></p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-48-21.png" alt="选择stop:方法"></p>
+<p>或者拖线到<code>First Responder</code>，选择<code>terminate:</code>方法</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20171207-155548.png" alt="拖线到First Responder"></p>
+<p>或者调用代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="type">NSApplication</span>.shared().terminate(<span class="keyword">self</span>)</div></pre></td></tr></table></figure>
+<h3 id="关闭应用"><a href="#关闭应用" class="headerlink" title="关闭应用"></a>关闭应用</h3><p>拖线到<code>First Responder</code>，选择<code>performClose:</code>方法</p>
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><h3 id="发送邮件"><a href="#发送邮件" class="headerlink" title="发送邮件"></a>发送邮件</h3><p>使用<code>NSSharingService</code>调用macOS邮件应用，发送邮件。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> emailService = <span class="type">NSSharingService</span>(named: <span class="type">NSSharingService</span>.<span class="type">Name</span>.composeEmail)!</div><div class="line">emailService.recipients = [<span class="string">"i@markmiao.com"</span>]</div><div class="line">emailService.subject = <span class="string">"邮件内容"</span></div><div class="line"><span class="keyword">if</span> emailService.canPerform(withItems: [<span class="string">"邮件内容"</span>]) &#123;</div><div class="line">  emailService.perform(withItems: [<span class="string">"邮件内容"</span>])</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">  <span class="built_in">print</span>(<span class="string">"没配置邮件账户"</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="在浏览器中打开网页"><a href="#在浏览器中打开网页" class="headerlink" title="在浏览器中打开网页"></a>在浏览器中打开网页</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="type">NSWorkspace</span>.shared.open(<span class="type">URL</span>(string: <span class="string">"http://markmiao.com"</span>)!)</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;旧坑不填，喜开新坑。这两天又计划开发一款macOS应用，之前开发的&lt;a href=&quot;http://markmiao.com/2017/07/26/stenonote/&quot;&gt;速记&lt;/a&gt;完全是练手，反正现在是不想填坑了，索性再开一个。实际做一个项目，是学习的最佳途径。本文记录了我在开发中遇到的各种问题，以及找到的解决办法，权当以后查阅的笔记。如果能给某位朋友带来帮助，是我的荣幸。如果发现问题，敬请评论吐槽。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="macOS开发" scheme="http://markmiao.com/categories/macOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="macOS" scheme="http://markmiao.com/tags/macOS/"/>
+    
+  </entry>
   
   <entry>
     <title>APP国际化</title>
@@ -1270,145 +1337,6 @@
       <category term="iOS" scheme="http://markmiao.com/tags/iOS/"/>
     
       <category term="私有API" scheme="http://markmiao.com/tags/%E7%A7%81%E6%9C%89API/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Quartz 2D（三）样式、阴影、渐变</title>
-    <link href="http://markmiao.com/2016/12/21/Quartz2D3/"/>
-    <id>http://markmiao.com/2016/12/21/Quartz2D3/</id>
-    <published>2016-12-21T07:03:09.000Z</published>
-    <updated>2016-12-21T07:04:57.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Pattern"><a href="#Pattern" class="headerlink" title="Pattern"></a>Pattern</h2><p>Pattern可翻译为样式、模型。类似于iOS中自定义的view，可以重复多次把自定义的view添加到控制器的view上。样式(Pattern)是绘制操作的一个序列，可以重复的绘制到一个图形上下文上。</p>
-<a id="more"></a>
-<h3 id="样式单元格"><a href="#样式单元格" class="headerlink" title="样式单元格"></a>样式单元格</h3><p>样式单元格是样式的基本组件，在创建的时候就要定义单元格的边界，并在这个范围内进行绘制。在图形上下文上绘制单元格时，可以随意指定两个单元格之间上下左右间距，也可以指定负数，单元格重合而已。像极了添加view控件。</p>
-<h3 id="着色样式和模板样式"><a href="#着色样式和模板样式" class="headerlink" title="着色样式和模板样式"></a>着色样式和模板样式</h3><p>着色样式是有固定颜色的，在创建样式单元格的时候就指定其颜色了，跟绘制流程没有关系。</p>
-<p>模板样式即为非着色样式，在创建样式单元格的时候只指定了形状，并没有指定颜色，在绘制过程中指定颜色。</p>
-<p>在Quartz 2D中可以使用这两种样式实现样式绘图，将创建好的样式绘制到page上的过程称为平铺，有三种平铺选项：1、没有失真，2、最小的失真的恒定间距，3、恒定间距。</p>
-<h3 id="绘制着色样式"><a href="#绘制着色样式" class="headerlink" title="绘制着色样式"></a>绘制着色样式</h3><p>绘制着色样式一般需要下面几步：1、设置样式单元格的回调函数，2、设置着色模式单元格，3、绘制操作。下面是绘制着色样式的示例代码和运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    clorePatternPaingting(context, CGRectMake(0, 0, 300, 500));</div><div class="line">&#125;</div><div class="line">void clorePatternPaingting(CGContextRef context, CGRect rect) &#123;</div><div class="line">    CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);</div><div class="line">    CGContextSetFillColorSpace(context, patternSpace);</div><div class="line">    CGColorSpaceRelease(patternSpace);</div><div class="line">    static const CGPatternCallbacks call = &#123;0, &amp;drawPattern, NULL&#125;;</div><div class="line">    CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 30, 30), CGAffineTransformIdentity, 30, 30, kCGPatternTilingConstantSpacing, true, &amp;call);</div><div class="line">    CGFloat alpha = 1.0;</div><div class="line">    CGContextSetFillPattern(context, pattern, &amp;alpha);</div><div class="line">    CGPatternRelease(pattern);</div><div class="line">    CGContextFillRect(context, rect);</div><div class="line">&#125;</div><div class="line">void drawPattern(void *info, CGContextRef context) &#123;</div><div class="line">    CGContextSetRGBFillColor(context, 1, 0, 0, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(0, 0, 10, 10));</div><div class="line">    CGContextSetRGBFillColor(context, 0, 1, 0, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(10, 0, 10, 10));</div><div class="line">    CGContextSetRGBFillColor(context, 0, 0, 1, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(0, 10, 10, 10));</div><div class="line">    CGContextSetRGBFillColor(context, 0.5, 0, 0.5, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(10, 10, 10, 10));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161220-0.png" alt="绘制着色模式的运行结果"></p>
-<p><strong>代码解释：</strong></p>
-<p>上述代码块中第三个函数<code>drawPattern</code>的作用就是第1步：设置样式单元格的回调函数。参数<code>info</code>:是指向模式相关数据的指针，可以传<code>NULL</code>。<code>context</code>:是图形上下文。在该函数中指定了每个颜色块的大小和填充色。因为是着色样式，所以指定填充色。</p>
-<p>第二个函数，也是在<code>drawRect</code>方法中调用的函数<code>clorePatternPaingting</code>，执行了第2步:设置着色模式单元格和第3步:绘制操作。下面对每块代码进行解释：</p>
-<p><strong>清空基本颜色空间：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);</div><div class="line">CGContextSetFillColorSpace(context, patternSpace);</div><div class="line">CGColorSpaceRelease(patternSpace);</div></pre></td></tr></table></figure>
-<p>因为我们要使用着色样式里面的颜色，所以清空基本颜色空间，以确保着色样式上的颜色能显示。可以试一下把这段代码注释的结果，绘制着色样式的空间为黑色，因为基本颜色空间没清空也没着色，所以呈黑色。</p>
-<p><strong>设置着色模式单元格：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">static const CGPatternCallbacks call = &#123;0, &amp;drawPattern, NULL&#125;;</div><div class="line">CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 30, 30), CGAffineTransformIdentity, 30, 30, kCGPatternTilingConstantSpacing, true, &amp;call);</div></pre></td></tr></table></figure>
-<p>模式单元格的信息保存在<code>CGPatternRef</code>类型的<code>CGPattern</code>对象中，使用<code>CGPatternCreate</code>创建该对象。需要传入的参数依次解释为：</p>
-<ol>
-<li>info：是一个指针，指向我们要传递给绘制回调函数的数据。这里传的是<code>NULL</code></li>
-<li>bound：指定模式单元格的大小</li>
-<li>matrix：指定模式矩阵，它将模式坐标系统映射到图形上下文的默认坐标系统。如果希望两个坐标系统是一样的，则可以使用单位矩阵。</li>
-<li>xStep, yStep：指定单元格之间的水平和竖直间距。</li>
-<li>tiling：平铺模式，可以是kCGPatternTilingNoDistortion、kCGPatternTilingConstantSpacingMinimalDistortion、kCGPatternTilingConstantSpacing</li>
-<li>isColored：指定模式单元格是着色模式(true)还是模板模式(false)</li>
-<li>callbacks：是一个指向CGPatternCallbacks结构体的指针。格式如下：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">struct CGPatternCallbacks &#123;</div><div class="line">    unsigned int version;</div><div class="line">    CGPatternDrawPatternCallback __nullable drawPattern;</div><div class="line">    CGPatternReleaseInfoCallback __nullable releaseInfo;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-<p><code>version</code>一般设置为<code>0</code>，<code>drawPattern</code>是指向设置样式单元格的回调函数，<code>releaseInfo</code>是指向回调函数，释放CGPattern对象时调用，以释放存储在我们传递给绘制回调的info参数中的数据。如果在这个参数中没有传递任何数据传<code>NULL</code>。</p>
-<p>所以<code>CGPatternCallbacks</code>结构体定义为<code>static const CGPatternCallbacks call = {0, &amp;drawPattern, NULL};</code></p>
-<p><strong>绘制着色样式</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CGFloat alpha = 1.0;</div><div class="line">CGContextSetFillPattern(context, pattern, &amp;alpha);</div><div class="line">CGPatternRelease(pattern);</div><div class="line">CGContextFillRect(context, rect);</div></pre></td></tr></table></figure>
-<p>调用函数<code>CGContextSetFillPattern</code>使用着色样式进行填充操作，或者调用函数<code>CGContextSetStrokePattern</code>进行描边操作。需要指定着色样式在填充或描边过程的透明度。</p>
-<p>样式使用完毕后需要释放，调用函数：<code>CGPatternRelease</code></p>
-<p>将定义的着色样式使用函数<code>CGContextFillRect</code>填充到指定<code>rect</code>的矩形中。</p>
-<p>这一系列操作都放到函数<code>clorePatternPaingting</code>内，在<code>drawRect</code>方法中直接调用该函数即可完成着色样式的定义和绘制。</p>
-<h3 id="绘制模板样式"><a href="#绘制模板样式" class="headerlink" title="绘制模板样式"></a>绘制模板样式</h3><p>绘制模板样式的步骤和绘制着色样式的一样：1、设置样式单元格的回调函数，2、设置模板模式单元格，3、绘制操作。下面是绘制模板样式的示例代码和运行结果：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    stencilPatternPaingting(context, CGRectMake(0, 0, 300, 500));</div><div class="line">&#125;</div><div class="line">void stencilPatternPaingting(CGContextRef context, CGRect rect) &#123;</div><div class="line">    CGColorSpaceRef baseSpace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(baseSpace);</div><div class="line">    CGContextSetFillColorSpace(context, patternSpace);</div><div class="line">    CGColorSpaceRelease(patternSpace);</div><div class="line">    CGColorSpaceRelease(baseSpace);</div><div class="line">    static const CGPatternCallbacks cell = &#123;0, &amp;drawStencilPattern, NULL&#125;;</div><div class="line">    CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 30, 30), CGAffineTransformIdentity, 40, 40, kCGPatternTilingConstantSpacing, false, &amp;cell);</div><div class="line">    static const CGFloat color[] = &#123;1, 0, 0, 1&#125;;</div><div class="line">    CGContextSetFillPattern(context, pattern, color);</div><div class="line">    CGPatternRelease(pattern);</div><div class="line">    CGContextFillRect(context, rect);</div><div class="line">&#125;</div><div class="line">void drawStencilPattern(void *info, CGContextRef context) &#123;</div><div class="line">    CGContextAddEllipseInRect(context, CGRectMake(0, 0, 30, 30));</div><div class="line">    CGContextFillPath(context);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161220-1.png" alt="绘制模板样式的运行结果"></p>
-<p>代码解释参考上文中着色样式的代码解释。区别1是用下述代码设置样式单元格的颜色：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">static const CGFloat color[] = &#123;1, 0, 0, 1&#125;;</div><div class="line">CGContextSetFillPattern(context, pattern, color);</div></pre></td></tr></table></figure>
-<p>区别2是<code>CGPatternCreate</code>函数中传的参数是<code>false</code>。</p>
-<h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><p>阴影有三个属性：x偏移量，y偏移量，模糊度</p>
-<p>阴影通过函数<code>CGContextSetShadow</code>设置，指定图形上下文、x偏移量、y偏移量、模糊度。设置阴影后，绘制的对象都会有阴影，阴影的色值为0.3透明度的黑色，颜色RGBA值为{0, 0, 0, 0.3}。</p>
-<p>也可以是使用函数<code>CGContextSetShadowWithColor</code>设置彩色阴影。</p>
-<p>在调用<code>CGContextSetShadow</code>或<code>CGContextSetShadowWithColor</code>之前保存图形状态，可以通过恢复图形状态来关闭阴影。或者设置阴影颜色为<code>NULL</code>关闭阴影。</p>
-<p>分别设置彩色阴影和普通阴影：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextSaveGState(context);</div><div class="line">CGContextSetShadowWithColor(context, CGSizeMake(10, 10), 2, [UIColor redColor].CGColor);</div><div class="line">CGContextSetRGBFillColor (context, 0, 1, 0, 1);</div><div class="line">CGContextAddEllipseInRect(context, CGRectMake(40, 40, 100, 100));</div><div class="line">CGContextFillPath(context);</div><div class="line">CGContextSetShadow(context, CGSizeMake(10, 10), 2);</div><div class="line">CGContextFillRect(context, CGRectMake(200, 40, 100, 100));</div><div class="line">CGContextRestoreGState(context);</div></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161220-2.png" alt="圆形的红色阴影和矩形的灰色阴影"></p>
-<p>x偏移量正值在图形右边，负值在图形左边。y偏移量和坐标有关，在iOS中，UIKit坐标系y轴和Quartz 2D坐标系y轴相反，所以如果是由UIKit创建的图形上下文则正值在图形下面，负值在图形上面。macOS的坐标系和Quartz 2D坐标系一样，所以正值在图形上面，负值在图形下面。阴影绘制不受CTM影响。</p>
-<h2 id="渐变"><a href="#渐变" class="headerlink" title="渐变"></a>渐变</h2><p>可以使用函数<code>CGShadingRef</code>和<code>CGGradientRef</code>创建渐变。渐变分为轴向渐变和径向渐变。渐变的颜色变化有很多，可以是一种颜色到另一种颜色过度，也可以是多种颜色依次过度变化，还有是一种颜色的透明度<code>alpha</code>变化，但是这种无法绘制到PDF上，无法打印。</p>
-<p><code>CGShading</code>和<code>CGGradient</code>的区别：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">CGGradient</th>
-<th style="text-align:left">CGShading</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">可以使用同一对象绘制轴向和径向梯度</td>
-<td style="text-align:left">需要创建单独的对象的轴向和径向梯度</td>
-</tr>
-<tr>
-<td style="text-align:left">在绘图时设置渐变的几何体</td>
-<td style="text-align:left">在对象创建时间设置渐变的几何体</td>
-</tr>
-<tr>
-<td style="text-align:left">Quartz计算梯度中每个点的颜色</td>
-<td style="text-align:left">需要提供一个回调函数，用来计算渐变中每个点的颜色</td>
-</tr>
-<tr>
-<td style="text-align:left">可以定义两个以上的位置和颜色</td>
-<td style="text-align:left">需要设计回调，使用两个以上的位置和颜色</td>
-</tr>
-</tbody>
-</table>
-<h3 id="CGGradient"><a href="#CGGradient" class="headerlink" title="CGGradient"></a>CGGradient</h3><p>使用CGGradient创建渐变。</p>
-<ol>
-<li>首先调用函数<code>CGGradientCreateWithColorComponents</code>创建<code>CGGradient</code>对象，参数含义分别是：颜色空间、颜色数组（采用RGBA颜色）、位置数组（0.0-1.0之间的数值，0.0为轴线起点，1.0为轴线终点。传递NULL默认0为起始位置，1为终点位置，相当于{0.0, 1.0}）、数组中元素个数。</li>
-<li>调用<code>CGContextDrawLinearGradient</code>函数绘制轴向渐变或<code>CGContextDrawRadialGradient</code>函数绘制径向渐变，参数含义分别是：图形上下文、<code>CGGradient</code>对象、起始位置、终止位置、绘图选项。</li>
-<li>绘制完毕后，释放颜色空间和<code>CGGradient</code>对象。</li>
-</ol>
-<p>绘制轴向渐变:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGFloat compoents[] = &#123;1,0,1,1, 0.3,0.5,1,1.0&#125;;</div><div class="line">CGFloat locations[] = &#123;0.0, 1.0&#125;;</div><div class="line">CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);</div><div class="line">CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, compoents, locations, 2);</div><div class="line">CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, 100), kCGGradientDrawsBeforeStartLocation);</div><div class="line">CGColorSpaceRelease(colorSpace);</div><div class="line">CGGradientRelease(gradient);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-0.png" alt="使用CGGradient绘制轴向渐变"></p>
-<p>绘制径向渐变:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGFloat compoents[] = &#123;1,0,1,1, 0.3,0.5,1,1.0&#125;;</div><div class="line">CGFloat locations[] = &#123;0.0, 1.0&#125;;</div><div class="line">CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);</div><div class="line">CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, compoents, locations, 2);</div><div class="line">CGContextDrawRadialGradient(context, gradient, CGPointMake(200, 50), 20, CGPointMake(200, 400), 70, kCGGradientDrawsAfterEndLocation);</div><div class="line">CGColorSpaceRelease(colorSpace);</div><div class="line">CGGradientRelease(gradient);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-1.png" alt="使用CGGradient绘制径向渐变"></p>
-<h3 id="CGShading"><a href="#CGShading" class="headerlink" title="CGShading"></a>CGShading</h3><p>绘制轴向渐变需要以下步骤：</p>
-<ol>
-<li>设置 CGFunction 对象来计算颜色值</li>
-<li>创建轴向渐变的 CGShading 对象</li>
-<li>裁减上下文</li>
-<li>使用 CGShading 对象来绘制轴向渐变</li>
-<li>释放对象</li>
-</ol>
-<p>绘制轴向渐变完整代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGFunctionRef functionObj = getFunction(colorspace);</div><div class="line">    CGShadingRef shading = CGShadingCreateAxial(colorspace, CGPointMake(0, 0.5), CGPointMake(1, 0.5), functionObj, false, false);</div><div class="line">    CGAffineTransform myTransform = CGAffineTransformMakeScale(100, 100);</div><div class="line">    CGContextConcatCTM (context, myTransform);</div><div class="line">    CGContextSaveGState (context);</div><div class="line">    CGContextBeginPath(context);</div><div class="line">    CGContextAddArc(context,  .5, .5, .3, 0, M_PI, 0);</div><div class="line">    CGContextClosePath(context);</div><div class="line">    CGContextClip(context);</div><div class="line">    CGContextDrawShading(context, shading);</div><div class="line">    CGShadingRelease(shading);</div><div class="line">    CGColorSpaceRelease(colorspace);</div><div class="line">    CGFunctionRelease(functionObj);</div><div class="line">    CGContextRestoreGState (context);</div><div class="line">&#125;</div><div class="line"></div><div class="line">static CGFunctionRef getFunction(CGColorSpaceRef colorspace) &#123;</div><div class="line">    size_t numComponents = 1 + CGColorSpaceGetNumberOfComponents(colorspace);</div><div class="line">    CGFloat input_value_range[] = &#123;0, 1&#125;;</div><div class="line">    CGFloat output_value_range[] = &#123;0, 1, 0, 0, 0,0,1,1&#125;;</div><div class="line">    CGFunctionCallbacks callbacks = &#123;0, &amp;calculateShadingValues, NULL&#125;;</div><div class="line">    return CGFunctionCreate((void *) numComponents, 1, input_value_range, numComponents, output_value_range, &amp;callbacks);</div><div class="line">&#125;</div><div class="line"></div><div class="line">static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) &#123;</div><div class="line">    CGFloat v;</div><div class="line">    size_t k, compoents;</div><div class="line">    static const CGFloat c[] = &#123;1,0,0.5,1&#125;;</div><div class="line">    compoents = (size_t)info;</div><div class="line">    v = *in;</div><div class="line">    for (k = 0; k &lt; compoents - 1; k ++)</div><div class="line">        *out ++ = c[k] * v;</div><div class="line">    *out++ = 1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-2.png" alt="使用CGShading绘制轴向渐变"></p>
-<p>绘制径向渐变，需要以下步骤：</p>
-<ol>
-<li>设置 CGFunction 对象来计算颜色值</li>
-<li>创建径向渐变的 CGShading 对象</li>
-<li>使用 CGShading 对象来绘制径向渐变</li>
-<li>释放对象</li>
-</ol>
-<p>绘制径向渐变完整代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line"></div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    </div><div class="line">    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGFunctionRef functionObj = getFunction(colorspace);</div><div class="line">    CGShadingRef shading = CGShadingCreateRadial(colorspace, CGPointMake(0.25, 0.3), 0.1, CGPointMake(0.7, 0.7), 0.25, functionObj, false, false);</div><div class="line"></div><div class="line">    CGAffineTransform myTransform = CGAffineTransformMakeScale(100, 100);</div><div class="line">    CGContextConcatCTM (context, myTransform);</div><div class="line">    CGContextSaveGState (context);</div><div class="line">    </div><div class="line">    CGContextClipToRect (context, CGRectMake(0, 0, 1, 1));</div><div class="line">    CGContextSetRGBFillColor (context, 1, 1, 1, 1);</div><div class="line">    CGContextFillRect (context, CGRectMake(0, 0, 1, 1));</div><div class="line">    </div><div class="line">    CGContextDrawShading(context, shading);</div><div class="line">    </div><div class="line">    CGShadingRelease(shading);</div><div class="line">    CGColorSpaceRelease(colorspace);</div><div class="line">    CGFunctionRelease(functionObj);</div><div class="line">    CGContextRestoreGState (context);</div><div class="line">&#125;</div><div class="line"></div><div class="line">static CGFunctionRef getFunction(CGColorSpaceRef colorspace) &#123;</div><div class="line">    size_t numComponents = 1 + CGColorSpaceGetNumberOfComponents(colorspace);</div><div class="line">    </div><div class="line">    CGFloat input_value_range[] = &#123;0, 1&#125;;</div><div class="line">    CGFloat output_value_range[] = &#123;0, 1, 0, 0, 0,0,1,1&#125;;</div><div class="line">    </div><div class="line">    CGFunctionCallbacks callbacks = &#123;0, &amp;calculateShadingValues, NULL&#125;;</div><div class="line">    return CGFunctionCreate((void *) numComponents, 1, input_value_range, numComponents, output_value_range, &amp;callbacks);</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) &#123;</div><div class="line">    </div><div class="line">    size_t k, compoents;</div><div class="line">    double frequency[] = &#123;55, 220, 110, 0&#125;;</div><div class="line">    compoents = (size_t)info;</div><div class="line">    for (k = 0; k &lt; compoents - 1; k ++)</div><div class="line">        *out++ = (1 + sin(*in * frequency[k])) / 2;</div><div class="line">    *out++ = 1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-3.png" alt="使用CGShading绘制径向渐变"></p>
-<hr>
-<p>参考文章：<a href="http://southpeak.github.io/categories/translate/" target="_blank" rel="external">南峰子翻译的Quartz2D编程指南</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Pattern&quot;&gt;&lt;a href=&quot;#Pattern&quot; class=&quot;headerlink&quot; title=&quot;Pattern&quot;&gt;&lt;/a&gt;Pattern&lt;/h2&gt;&lt;p&gt;Pattern可翻译为样式、模型。类似于iOS中自定义的view，可以重复多次把自定义的view添加到控制器的view上。样式(Pattern)是绘制操作的一个序列，可以重复的绘制到一个图形上下文上。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="Quartz2D" scheme="http://markmiao.com/tags/Quartz2D/"/>
     
   </entry>
   
