@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2017-12-07T08:22:39.000Z</updated>
+  <updated>2017-12-22T08:58:28.000Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,45 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>吐槽苹果APP审核</title>
+    <link href="http://markmiao.com/2017/12/22/tucaoappshenhe/"/>
+    <id>http://markmiao.com/2017/12/22/tucaoappshenhe/</id>
+    <published>2017-12-22T08:55:11.000Z</published>
+    <updated>2017-12-22T08:58:28.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>前两天看图神发了一篇文章<a href="https://imtx.me/archives/2399.html" target="_blank" rel="external">谈谈 Apple 的「审核玄学」</a>，看完之后深以为然，苹果的APP上架审核堪称不可捉摸的玄学秘术。我也曾就这个问题吐槽过：<a href="http://markmiao.com/2017/08/12/talkingtoapple/">被苹果爸爸完全碾压的通话记录</a>，也记录过因各种问题被拒的经历：<a href="http://markmiao.com/2016/11/10/%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0AppStore%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/#%E4%B9%8B%E5%89%8D%E4%B8%8D%E5%B9%B8%E8%B8%A9%E8%BF%87%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9D%91%EF%BC%8C%E8%A2%ABAppStore%E6%8B%92%E4%BA%86">之前不幸踩过的一些坑，被AppStore拒了</a>、<a href="http://markmiao.com/2017/07/27/macosapprejected/">macOS应用上架被拒</a>。</p>
+<a id="more"></a>
+<p>细数这些年我被苹果审核拒绝的经历，貌似还没有离谱到玄学境地的（这个flag先立起来，等遇到了回来还愿）。虽然我没遇到，但其审核作风就是：“上联：说你行你就行，不行也行。下联：说不行就不行，行也不行。横批：不服不行。“</p>
+<p>曾经一个app上架，被苹果以不支持IPv6-only为理由，拒绝了七八次。最后苹果警告，再不修复该问题，等待审核时间会加倍延长。我各种测试在IPv6-only网络环境下，APP网络访问完全没问题，当时在想是不是服务器接口被墙了？苹果审核时访问不了。给苹果拍视频，写邮件解释，换来的还是拒绝。</p>
+<p>真实情况是根本不存在不支持IPv6-only的问题，而是苹果审核时未允许地理位置获取，导致某个接口缺少位置参数，结果返回网络连接失败。我和服务端都忽略了这个问题。其实只有这一个接口访问不了，其他接口完全没问题。但是苹果只给我截了这一页的截图，说接口访问失败，不支持IPv6-only。当时只顾着死怼IPv6-only，完全搞错了方向。</p>
+<p>曾经还因为APP太简单被拒绝，苹果给的理由是应用过于简单，建议用HTML网页实现。其实APP界面跳转挺多的，只是意见反馈和教程讲解占了大部分功能，苹果认为这两个功能应用性太低，所以将其归类于太简单。然而你却没有权利反驳。</p>
+<p>App Store上应用繁多，有好多APP的内容或功能违反了苹果审核条例，比如：盛名列车时刻就存在软件更新功能。但是这些并不是你可以这么做的理由。我曾经因APP被拒，向苹果审核人员抱怨：“有的应用就是这么做的。”结果被直接怼回来了：“如果你认为有应用存在违规，可以举报，但你的应用违反审核条例，不能上架。”</p>
+<p>其实苹果也有宽宏大量的时候，我曾上架过一款TCP通讯的APP，需要和Windows客户端配合使用。APP打开只有一个登录界面，需要Windows客户端配合生成登录校验码，才能登录。使用时也需要开启Windows客户端，并输入Windows的IP和端口进行TCP通讯。</p>
+<p>上架前曾绞尽脑汁考虑，怎么让苹果使用并审核APP呢？最后我拍了一段500M的视频，详细记录了使用过程，在提交APP的备注里加上视频地址。结果是APP审核通过，顺利上架。那一刻简直想高呼苹果万岁。</p>
+<p>好人多吐槽过苹果的审核时间，APP上架会经历这几种状态：准备提交，等待审核，审核中，审核通过或被拒。APP提交后，等待审核这个阶段是最漫长的，平均一周左右。苹果审核太慢也是导致JSPatch等热更新技术兴起的一大原因。今年苹果明令禁止上架APP采用热更新技术，同时审核速度有所提高，运气好的话通常一两天就可以审核完成，运气不好就没准了。</p>
+<p>我经历的APP审核绝大多数是在晚上，通常半夜睡觉前会收到进入审核状态的通知，第二天会收到通过或被拒的通知。而且发现周五晚上进入审核状态的几率比较高。感觉macOS应用比iOS应用审核快，我经历过最快的一次macOS应用审核，从APP提交到审核通过只用了2小时16分。</p>
+<p>苹果的应用审核机构神秘莫测，鲜为人知；审核手段大道无形，难以捉摸。惹不起，惹不起。</p>
+<p>做iOS开发，你不仅惹不起，还躲不起。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;前两天看图神发了一篇文章&lt;a href=&quot;https://imtx.me/archives/2399.html&quot;&gt;谈谈 Apple 的「审核玄学」&lt;/a&gt;，看完之后深以为然，苹果的APP上架审核堪称不可捉摸的玄学秘术。我也曾就这个问题吐槽过：&lt;a href=&quot;http://markmiao.com/2017/08/12/talkingtoapple/&quot;&gt;被苹果爸爸完全碾压的通话记录&lt;/a&gt;，也记录过因各种问题被拒的经历：&lt;a href=&quot;http://markmiao.com/2016/11/10/%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0AppStore%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/#%E4%B9%8B%E5%89%8D%E4%B8%8D%E5%B9%B8%E8%B8%A9%E8%BF%87%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9D%91%EF%BC%8C%E8%A2%ABAppStore%E6%8B%92%E4%BA%86&quot;&gt;之前不幸踩过的一些坑，被AppStore拒了&lt;/a&gt;、&lt;a href=&quot;http://markmiao.com/2017/07/27/macosapprejected/&quot;&gt;macOS应用上架被拒&lt;/a&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="程序人生" scheme="http://markmiao.com/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/"/>
+    
+    
+      <category term="应用" scheme="http://markmiao.com/tags/%E5%BA%94%E7%94%A8/"/>
+    
+      <category term="短文" scheme="http://markmiao.com/tags/%E7%9F%AD%E6%96%87/"/>
+    
+      <category term="AppStore" scheme="http://markmiao.com/tags/AppStore/"/>
+    
+  </entry>
   
   <entry>
     <title>macOS开发笔记(1)</title>
@@ -1231,112 +1270,6 @@
       <category term="总结" scheme="http://markmiao.com/tags/%E6%80%BB%E7%BB%93/"/>
     
       <category term="生活" scheme="http://markmiao.com/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>私有API的使用</title>
-    <link href="http://markmiao.com/2016/12/28/%E7%A7%81%E6%9C%89API%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
-    <id>http://markmiao.com/2016/12/28/私有API的使用/</id>
-    <published>2016-12-28T09:42:20.000Z</published>
-    <updated>2016-12-28T09:45:50.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>私有API是指苹果未公开的一些方法，通常情况下这些方法不允许开发者使用，通常情况是指上架AppStore。私有API可以实现一些开放API不能实现的效果，功能强大，效果非凡。苹果不允许使用，是因为有些私有API会侵犯用户隐私，但使用私有API也并非一定会侵犯用户隐私，这要看开发者怎么用了。</p>
-<a id="more"></a>
-<p>企业级账号发布供内部人使用的APP，可以使用私有API。发布到其他APP平台供越狱手机下载的APP，也有可能使用了私有API。这两者没有苹果审核把关，私有API可以随便使用。<strong>苹果明令禁止使用私有API的APP上架AppStore！</strong>但凡事无绝对，AppStore上也不乏使用私有API的应用，使用办法有很多，比如热更新。不被苹果发现就行，发现了轻者下架，重者封号。</p>
-<p>我想看看私有API到底能干些啥，写了一个测试私有API的小项目，涉及到的知识点大多数来源于网络，在此感谢大神们的知识共享。项目很小，知识很浅，欢迎拍砖吐槽。</p>
-<p>项目代码: <a href="https://github.com/mxdios/privateApiApps" target="_blank" rel="external">privateApiApps</a></p>
-<p>开发环境: Xcode 8.2.1，iPhone 6，iOS 10.2</p>
-<p>项目截图:</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/WechatIMG241.jpeg" alt="获取iPhone上的所有APP"></th>
-<th style="text-align:center"><img src="http://oalg33nuc.bkt.clouddn.com/WechatIMG242.jpeg" alt="APP相关信息"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"></td>
-</tr>
-</tbody>
-</table>
-<p>参考资料:</p>
-<ol>
-<li><a href="https://github.com/nst/iOS-Runtime-Headers" target="_blank" rel="external">iOS-Runtime-Headers</a></li>
-<li><a href="http://octree.me/2016/08/01/get-installed-apps/" target="_blank" rel="external">获取iOS设备上安装的应用列表</a></li>
-</ol>
-<h2 id="获取iPhone中安装的APP列表"><a href="#获取iPhone中安装的APP列表" class="headerlink" title="获取iPhone中安装的APP列表"></a>获取iPhone中安装的APP列表</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Class LSAppClass = objc_getClass(&quot;LSApplicationWorkspace&quot;);</div><div class="line">NSObject *workspace = [LSAppClass performSelector:@selector(defaultWorkspace)];</div><div class="line">NSArray *appsArray = [workspace performSelector:@selector(allApplications)];</div></pre></td></tr></table></figure>
-<p>这里面使用了runtime的方法<code>- (id)performSelector:(SEL)aSelector;</code>，需要引入<code>&lt;objc/runtime.h&gt;</code>。该方法的作用是给接收者传递进去一个方法，返回值就是这个方法执行后的返回值。</p>
-<p>由于调用的是私有API，传入的方法相当于一个字符串，编译器不会检测该方法是否正确，相反会一直报警告。例如上面传递的方法<code>defaultWorkspace</code>，这是个私有API的方法。通常还有另一种调用<code>performSelector</code>方法的写法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NSObject *workspace = [LSAppClass performSelector:NSSelectorFromString(@&quot;defaultWorkspace&quot;)];</div></pre></td></tr></table></figure>
-<p>如果传递进去的私有API方法名写错了，程序就会找不到该方法而崩溃。所以通常会通过下面方法检测接收者或接收者的父类是否实现了传递进去的方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- (BOOL)respondsToSelector:(SEL)aSelector;</div></pre></td></tr></table></figure>
-<p>使用方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if ([LSAppClass respondsToSelector:@selector(defaultWorkspace)]) &#123;</div><div class="line">   	NSObject *workspace = [LSAppClass performSelector:@selector(defaultWorkspace)];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>真实情况中，该方法并非必要。传入的私有API方法名都是固定的，程序崩溃了说明方法名写错了，改成正确的即可。使用该方法不会崩溃，反而不易发现错误。</p>
-<h2 id="获取每个APP的相关信息"><a href="#获取每个APP的相关信息" class="headerlink" title="获取每个APP的相关信息"></a>获取每个APP的相关信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[appsArray enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) &#123;   </div><div class="line">	AppsObject *appsObj = [[AppsObject alloc] init];</div><div class="line">	appsObj.appName = [obj performSelector:@selector(localizedName)];</div><div class="line">	appsObj.version = [obj performSelector:@selector(shortVersionString)];</div><div class="line">	appsObj.bundleId = [obj performSelector:@selector(applicationIdentifier)];</div><div class="line">	appsObj.appFullName = [obj performSelector:@selector(itemName)];</div><div class="line">	appsObj.appType = [obj performSelector:@selector(applicationType)];</div><div class="line">	appsObj.appVendorName = [obj performSelector:@selector(vendorName)];</div><div class="line">	appsObj.appRating = [obj performSelector:@selector(ratingLabel)];</div><div class="line">	[_appsObjArray addObject:appsObj];</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
-<p>遍历获取的APP列表，通过私有API获取每个app的各种信息：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">私有API方法名</th>
-<th style="text-align:left">用途</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">localizedName</td>
-<td style="text-align:left">app名字</td>
-</tr>
-<tr>
-<td style="text-align:left">shortVersionString</td>
-<td style="text-align:left">版本号</td>
-</tr>
-<tr>
-<td style="text-align:left">applicationIdentifier</td>
-<td style="text-align:left">Bundle Identifier</td>
-</tr>
-<tr>
-<td style="text-align:left">itemName</td>
-<td style="text-align:left">app在AppStore显示的名字</td>
-</tr>
-<tr>
-<td style="text-align:left">applicationType</td>
-<td style="text-align:left">app类型,分为:System和User</td>
-</tr>
-<tr>
-<td style="text-align:left">vendorName</td>
-<td style="text-align:left">app供应商</td>
-</tr>
-<tr>
-<td style="text-align:left">ratingLabel</td>
-<td style="text-align:left">app评级</td>
-</tr>
-</tbody>
-</table>
-<h2 id="获取APP图标"><a href="#获取APP图标" class="headerlink" title="获取APP图标"></a>获取APP图标</h2><p>上述中并没有获取APP图标的方法，获取app图标比较麻烦。</p>
-<h3 id="获取APP图标路径"><a href="#获取APP图标路径" class="headerlink" title="获取APP图标路径"></a>获取APP图标路径</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">NSDictionary *dict = [object performSelector:@selector(boundIconsDictionary)];</div><div class="line">NSString *appIconPath = [NSString stringWithFormat:@&quot;%@/%@.png&quot;,[[object performSelector:@selector(resourcesDirectoryURL)] path],[[[dict objectForKey:@&quot;CFBundlePrimaryIcon&quot;] objectForKey:@&quot;CFBundleIconFiles&quot;] lastObject]];</div></pre></td></tr></table></figure>
-<p>iOS10.2亲测，该方法只能获取模拟器上的APP图标，真机无效。</p>
-<h3 id="获取图标data数据"><a href="#获取图标data数据" class="headerlink" title="获取图标data数据"></a>获取图标data数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">appsObj.iconData = [obj performSelector:@selector(iconDataForVariant:) withObject:@(2)];</div></pre></td></tr></table></figure>
-<p>该data数据并不能直接转为UIImage，需要对data数据进行截取转换，方法如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">+ (UIImage *)getAppIcon:(NSData *)iconData &#123;</div><div class="line">    NSInteger lenth = iconData.length;</div><div class="line">    NSInteger width = 87;</div><div class="line">    NSInteger height = 87;</div><div class="line">    uint32_t *pixels = (uint32_t *)malloc(width * height * sizeof(uint32_t));</div><div class="line">    [iconData getBytes:pixels range:NSMakeRange(32, lenth - 32)];</div><div class="line">    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGContextRef ctx = CGBitmapContextCreate(pixels, width, height, 8, (width + 1) * sizeof(uint32_t), colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);</div><div class="line">    CGImageRef cgImage = CGBitmapContextCreateImage(ctx);</div><div class="line">    CGContextRelease(ctx);</div><div class="line">    CGColorSpaceRelease(colorSpace);</div><div class="line">    UIImage *icon = [UIImage imageWithCGImage: cgImage];</div><div class="line">    CGImageRelease(cgImage);</div><div class="line">    return icon;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="打开APP"><a href="#打开APP" class="headerlink" title="打开APP"></a>打开APP</h2><p>在iOS 9以后要想打开其他app需要添加URL Scheme，设置白名单，否则将无法打开，白名单的上限为50个。上文中我们可以获取APP的<code>Bundle Id</code>，依靠<code>Bundle Id</code>使用私有API可以打开其他APP，并没有数量限制。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Class LSAppClass = NSClassFromString(@&quot;LSApplicationWorkspace&quot;);</div><div class="line">id workSpace = [(id)LSAppClass performSelector:@selector(defaultWorkspace)];</div><div class="line">[workSpace performSelector:@selector(openApplicationWithBundleID:) withObject:self.appsObj.bundleId];</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;私有API是指苹果未公开的一些方法，通常情况下这些方法不允许开发者使用，通常情况是指上架AppStore。私有API可以实现一些开放API不能实现的效果，功能强大，效果非凡。苹果不允许使用，是因为有些私有API会侵犯用户隐私，但使用私有API也并非一定会侵犯用户隐私，这要看开发者怎么用了。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="iOS" scheme="http://markmiao.com/tags/iOS/"/>
-    
-      <category term="私有API" scheme="http://markmiao.com/tags/%E7%A7%81%E6%9C%89API/"/>
     
   </entry>
   
