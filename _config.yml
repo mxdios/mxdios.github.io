@@ -5,9 +5,9 @@
 # Site
 title: Mark Miao
 subtitle: Mark’s blog
-description:
+description: Hello world, Life coding;
 author: Mark
-language: zh-CN
+language: zh-Hans
 timezone:
 
 # URL
@@ -73,7 +73,8 @@ tag_generator:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: maupassants
+# theme: maupassants
+theme: next
 
 # RSS订阅支持
 plugin: hexo-generator-feed
