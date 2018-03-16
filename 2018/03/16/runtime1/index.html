@@ -64,7 +64,7 @@
 
 
 
-  <meta name="keywords" content="iOS10," />
+  <meta name="keywords" content="Runtime," />
 
 
 
@@ -77,26 +77,16 @@
 
 
 
-<meta name="description" content="在2016年9月14日凌晨iOS10系统准时推送过来了，作为懒人之前的beta版一直没有升级试用。今天果断手机和Xcode一起升级了，新系统新面貌带来新bug。记录一下升级iOS10和Xcode8.0后遇到的问题。">
+<meta name="description" content="OC是动态语言，只有在运行时才会根据方法名去调用方法，称为给方法发送消息，是因为当调用[demoObj setTest]方法时，编译器会转化为objc_msgSend(demoObj, @selector(setTest))。如果携带参数，如[demoObj setTest:str]，会转化为objc_msgSend(demoObj, @selector(setTest), str)。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS10升级后的一些问题">
-<meta property="og:url" content="http://markmiao.com/2016/11/11/iOS10升级后的一些问题/index.html">
+<meta property="og:title" content="Runtime(1)：消息传递">
+<meta property="og:url" content="http://markmiao.com/2018/03/16/runtime1/index.html">
 <meta property="og:site_name" content="Mark Miao">
-<meta property="og:description" content="在2016年9月14日凌晨iOS10系统准时推送过来了，作为懒人之前的beta版一直没有升级试用。今天果断手机和Xcode一起升级了，新系统新面貌带来新bug。记录一下升级iOS10和Xcode8.0后遇到的问题。">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG79.jpeg?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-0.png?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-1.png?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-2.png?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-3.png?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161010-0.png?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.31.12.png?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.33.55.png?raw=true">
-<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-0.png?raw=true">
-<meta property="og:updated_time" content="2016-11-27T05:14:18.000Z">
+<meta property="og:description" content="OC是动态语言，只有在运行时才会根据方法名去调用方法，称为给方法发送消息，是因为当调用[demoObj setTest]方法时，编译器会转化为objc_msgSend(demoObj, @selector(setTest))。如果携带参数，如[demoObj setTest:str]，会转化为objc_msgSend(demoObj, @selector(setTest), str)。">
+<meta property="og:updated_time" content="2018-03-16T09:37:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS10升级后的一些问题">
-<meta name="twitter:description" content="在2016年9月14日凌晨iOS10系统准时推送过来了，作为懒人之前的beta版一直没有升级试用。今天果断手机和Xcode一起升级了，新系统新面貌带来新bug。记录一下升级iOS10和Xcode8.0后遇到的问题。">
-<meta name="twitter:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG79.jpeg?raw=true">
+<meta name="twitter:title" content="Runtime(1)：消息传递">
+<meta name="twitter:description" content="OC是动态语言，只有在运行时才会根据方法名去调用方法，称为给方法发送消息，是因为当调用[demoObj setTest]方法时，编译器会转化为objc_msgSend(demoObj, @selector(setTest))。如果携带参数，如[demoObj setTest:str]，会转化为objc_msgSend(demoObj, @selector(setTest), str)。">
 
 
 
@@ -126,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="http://markmiao.com/2016/11/11/iOS10升级后的一些问题/"/>
+  <link rel="canonical" href="http://markmiao.com/2018/03/16/runtime1/"/>
 
 
 
 
 
-  <title>iOS10升级后的一些问题 | Mark Miao</title>
+  <title>Runtime(1)：消息传递 | Mark Miao</title>
   
 
 
@@ -279,7 +269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2016/11/11/iOS10升级后的一些问题/">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2018/03/16/runtime1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
@@ -296,7 +286,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">iOS10升级后的一些问题</h1>
+          <h1 class="post-title" itemprop="name headline">Runtime(1)：消息传递</h1>
         
 
         <div class="post-meta">
@@ -308,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-11T21:07:52+08:00">
-                2016-11-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T17:35:50+08:00">
+                2018-03-16
               </time>
             
 
@@ -349,8 +339,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2016/11/11/iOS10升级后的一些问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2016/11/11/iOS10升级后的一些问题/" itemprop="commentsCount"></span>
+                <a href="/2018/03/16/runtime1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/16/runtime1/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -358,7 +348,7 @@
 
           
           
-             <span id="/2016/11/11/iOS10升级后的一些问题/" class="leancloud_visitors" data-flag-title="iOS10升级后的一些问题">
+             <span id="/2018/03/16/runtime1/" class="leancloud_visitors" data-flag-title="Runtime(1)：消息传递">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -389,69 +379,54 @@
       
 
       
-        <p>在2016年9月14日凌晨iOS10系统准时推送过来了，作为懒人之前的beta版一直没有升级试用。今天果断手机和Xcode一起升级了，新系统新面貌带来新bug。记录一下升级iOS10和Xcode8.0后遇到的问题。</p>
+        <p>OC是动态语言，只有在运行时才会根据方法名去调用方法，称为给方法发送消息，是因为当调用<code>[demoObj setTest]</code>方法时，编译器会转化为<code>objc_msgSend(demoObj, @selector(setTest))</code>。如果携带参数，如<code>[demoObj setTest:str]</code>，会转化为<code>objc_msgSend(demoObj, @selector(setTest), str)</code>。</p>
 <a id="more"></a>
-<h2 id="开发者证书不能使用"><a href="#开发者证书不能使用" class="headerlink" title="开发者证书不能使用"></a>开发者证书不能使用</h2><p>General里面Signing变成如下样子，Automatically manage signing 自动签名管理。报错了，之前一直使用的企业级开发者证书不可用了。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/WechatIMG79.jpeg?raw=true" alt="img"></p>
-<p>Build Settings 里面的 Code Signing Identity 清一色选择为企业级开发者证书。还是报错</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-0.png?raw=true" alt="img"></p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-1.png?raw=true" alt="img"></p>
-<p><strong>解决办法：</strong></p>
-<p>取消Automatically manage signing的选择，会出现两个Signing，分别对应Debug和Release，选择该项目对应使用的Provisioning Profiles即可</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-2.png?raw=true" alt="img"></p>
-<h2 id="注释快捷键command-失效"><a href="#注释快捷键command-失效" class="headerlink" title="注释快捷键command+/失效"></a>注释快捷键command+/失效</h2><p>Xcode8.0的注释// 生成快捷键 command+/失效了</p>
-<p><strong>解决办法：</strong></p>
-<p>终端运行命令：<code>sudo /usr/libexec/xpccachectl</code><br>Password：<code>输入开机密码</code><br>重启Mac生效</p>
-<p>生效后空行快捷键，只在代码行能产生/解除注释，空行不能产生注释。记得之前可以来这….</p>
-<h2 id="Xcode控制台输出问题"><a href="#Xcode控制台输出问题" class="headerlink" title="Xcode控制台输出问题"></a>Xcode控制台输出问题</h2><h3 id="无用log打印"><a href="#无用log打印" class="headerlink" title="无用log打印"></a>无用log打印</h3><p>升级Xcode8.0之后运行项目，控制台疯狂打印了N多东西，完全看不懂啊，完犊子了，这么多需要适配的…</p>
-<p>眼不见心不烦，下面就提供去掉这些乱七八糟打印内容的方法。</p>
-<p><strong>解决办法：</strong></p>
-<p>在<code>Edit Scheme...</code>下的Run -&gt; Arguments -&gt; Environment Variables 添加  <code>OS_ACTIVITY_MODE</code> = <code>disable</code></p>
-<p>具体见下图</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160914-3.png?raw=true" alt="img"></p>
-<h3 id="真机测试log屏蔽"><a href="#真机测试log屏蔽" class="headerlink" title="真机测试log屏蔽"></a>真机测试log屏蔽</h3><p>经过上述修改，在iOS10模拟器中无用的log输出被屏蔽了，但是真机测试的时候，没有log输出，log日志被完全屏蔽了。不知是屏蔽无用log的设置，还是xcode8为了提高真机测试性能屏蔽了log日志？真机测试的log也很重要。</p>
-<p>为了app正式发布时不打印log，让打印操作<code>NSLog</code>只在<code>Debug</code>环境下运行，采用了下面的办法自定义<code>NSLog</code>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#ifdef DEBUG</div><div class="line">#define XDLog(...) NSLog(__VA_ARGS__)</div><div class="line">#else</div><div class="line">#define XDLog(...)</div><div class="line">#endif</div></pre></td></tr></table></figure>
-<p>iOS10之后，在真机中<code>NSLog</code>无法打印log，可以使用<code>printf()</code>，具体修改见下面自定义log：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#ifdef DEBUG</div><div class="line">#define XDString [NSString stringWithFormat:@&quot;%s&quot;, __FILE__].lastPathComponent</div><div class="line">#define XDLog(...) printf(&quot;%s %d行: %s\n\n&quot;,[XDString UTF8String], __LINE__, [[NSString stringWithFormat:__VA_ARGS__] UTF8String]);</div><div class="line">#else</div><div class="line">#define XDLog(...)</div><div class="line">#endif</div></pre></td></tr></table></figure>
-<p><code>XDString</code>是获取的该log在哪个文件里，<code>__LINE__</code>该log在第几行。<code>printf()</code>是c语言方法，所以要用<code>UTF8String</code>转义，不然每个log都会有警告。</p>
-<h2 id="类型判断"><a href="#类型判断" class="headerlink" title="类型判断"></a>类型判断</h2><p>网络获取数据，做容错处理，判断某个字段是否符合需要的数据类型。之前一度用如下判断方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[NSStringFromClass([userDict[@&quot;plates&quot;] class]) isEqualToString:@&quot;__NSCFArray&quot;]</div></pre></td></tr></table></figure>
-<p>如果<code>userDict[@&quot;plates&quot;]</code>的数据类型是数组的话，打印出来的就是<code>__NSCFArray</code>类型。同样如果是字典类型的话，打印出来的就是<code>__NSCFDictionary</code>。但是iOS10之后，打印出来的不同了，同样的数组类型，打印出来的是<code>__NSSingleObjectArrayI</code>。</p>
-<p>之前的这种判断方法很欠考虑，还是利用下面的方法比较靠谱：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[userDict[@&quot;plates&quot;] isKindOfClass:[NSArray class]]</div></pre></td></tr></table></figure>
-<h2 id="URL-Schemes跳转系统设置"><a href="#URL-Schemes跳转系统设置" class="headerlink" title="URL Schemes跳转系统设置"></a>URL Schemes跳转系统设置</h2><p>跳转系统设置分为<strong>跳转到系统设置列表</strong>和<strong>跳转到自己app的系统设置</strong>。</p>
-<p>跳转系统设置列表的方法在iOS10被彻底关闭了，也就是说你已不能从app跳转到系统设置列表里了。但是还可以跳转到自己app的系统设置</p>
-<p>例如：我的某个app使用地理定位，运行app时会检测是否开启地理定位，如果未开启，提醒alert，用如下代码点击跳转到地理定位的开启设置里。</p>
-<p>iOS10之前使用下面方法可以跳转到系统设置列表，列表里有自己的app，可以点击进去做相应设置.使用时要添加URL Schemes，字段为<code>prefs</code>。</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161010-0.png?raw=true" alt="img"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSURL *url = [NSURL URLWithString:@&quot;prefs:root=LOCATION_SERVICES&quot;];</div><div class="line">if ([[UIApplication sharedApplication] canOpenURL:url]) &#123;</div><div class="line">		[[UIApplication sharedApplication] openURL:url];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>iOS10时该方法被关闭了，只能通过下面方法跳转到自己app的系统设置，使用<code>UIApplicationOpenSettingsURLString</code>，这个字段是在iOS8时出现的。在使用这个方法时，注意iOS8/iOS9时可以使用<code>openURL:</code>，iOS10建议使用<code>openURL:options:completionHandler:</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];</div><div class="line">if ([[UIApplication sharedApplication] canOpenURL:url]) &#123;</div><div class="line">    if (iOS10) &#123;</div><div class="line">        [[UIApplication sharedApplication] openURL:url options:@&#123;&#125; completionHandler:^(BOOL success) &#123;</div><div class="line">            XDLog(@&quot;success = %d&quot;, success);</div><div class="line">        &#125;];</div><div class="line">    &#125; else &#123;</div><div class="line">        [[UIApplication sharedApplication] openURL:url];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行结果：</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">跳转到系统设置列表，iOS10之前可用</th>
-<th style="text-align:center">跳转到自己app的系统设置，iOS8以后可用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.31.12.png?raw=true" alt="img"></td>
-<td style="text-align:center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016年10月10日上午11.33.55.png?raw=true" alt="img"></td>
-</tr>
-</tbody>
-</table>
-<h3 id="附prefs-root"><a href="#附prefs-root" class="headerlink" title="附prefs:root"></a>附prefs:root</h3><p>prefs:root=General&amp;path=About<br>prefs:root=General&amp;path=ACCESSIBILITY<br>prefs:root=AIRPLANE_MODE<br>prefs:root=General&amp;path=AUTOLOCK<br>prefs:root=General&amp;path=USAGE/CELLULAR_USAGE<br>prefs:root=Brightness<br>prefs:root=General&amp;path=Bluetooth<br>prefs:root=General&amp;path=DATE_AND_TIME<br>prefs:root=FACETIME<br>prefs:root=General<br>prefs:root=General&amp;path=Keyboard<br>prefs:root=CASTLE<br>prefs:root=CASTLE&amp;path=STORAGE_AND_BACKUP<br>prefs:root=General&amp;path=INTERNATIONAL<br>prefs:root=LOCATION_SERVICES<br>prefs:root=ACCOUNT_SETTINGS<br>prefs:root=MUSIC<br>prefs:root=MUSIC&amp;path=EQ<br>prefs:root=MUSIC&amp;path=VolumeLimit<br>prefs:root=General&amp;path=Network<br>prefs:root=NIKE_PLUS_IPOD<br>prefs:root=NOTES<br>prefs:root=NOTIFICATIONS_ID<br>prefs:root=Phone<br>prefs:root=Photos<br>prefs:root=General&amp;path=ManagedConfigurationList<br>prefs:root=General&amp;path=Reset<br>prefs:root=Sounds&amp;path=Ringtone<br>prefs:root=Safari<br>prefs:root=General&amp;path=Assistant<br>prefs:root=Sounds<br>prefs:root=General&amp;path=SOFTWARE_UPDATE_LINK<br>prefs:root=STORE<br>prefs:root=TWITTER<br>prefs:root=General&amp;path=USAGE<br>prefs:root=VIDEO<br>prefs:root=General&amp;path=Network/VPN<br>prefs:root=Wallpaper<br>prefs:root=WIFI<br>prefs:root=INTERNET_TETHERING  </p>
-<h2 id="plist里声明获取隐私数据权限"><a href="#plist里声明获取隐私数据权限" class="headerlink" title="plist里声明获取隐私数据权限"></a>plist里声明获取隐私数据权限</h2><p>访问隐私数据需要在plist里声明，在iOS10之前只需要声明地理定位之类的敏感隐私数据，获取照片、相机等不需要再plist里声明。iOS10之后，这些也必须声明，不声明会crash。需要声明的用户数据有：</p>
-<blockquote>
-<p>Contacts（联系人）, Calendar（日历）, Reminders（提醒事件）, Photos（照片）, Bluetooth Sharing（蓝牙共享）, Microphone（麦克风）, Camera（相机）, Location（位置）, Health（健康）, HomeKit（家居）, Media Library（媒体库）, Motion（运动）, CallKit（打电话）, Speech Recognition（语言识别）, SiriKit（Siri）, TV Provider（电视提供商）.</p>
-</blockquote>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-0.png?raw=true" alt="img"></p>
-<p>后面string字段填写弹出用户允许时展示的描述信息。<strong>注意，这里必须要写明获取该权限的用途，不然会被AppStore拒绝上架的。</strong></p>
-<h2 id="某些app链接网络失败"><a href="#某些app链接网络失败" class="headerlink" title="某些app链接网络失败"></a>某些app链接网络失败</h2><p>iOS10之后出现了实用无线局域网与蜂窝移动网络的允许授权弹窗，有些应用没有出现这个弹窗，莫名其妙的就连不上网络了，去设置的“使用无线局域网与蜂窝移动的应用”里找也找不到，搜索该应用，也没有开启使用网络授权的开关。</p>
-<p>其实只需要在“使用无线局域网与蜂窝移动的应用”里面修改任意一个应用的使用网络设置，再打开连不上网的应用，就会出现网络授权弹窗。这是一个系统bug，希望后续的iOS10.x.x系统会修复。</p>
+<h2 id="unrecognized-selector-sent-to-instance"><a href="#unrecognized-selector-sent-to-instance" class="headerlink" title="unrecognized selector sent to instance"></a>unrecognized selector sent to instance</h2><p><code>unrecognized selector sent to instance</code>是开发中经常遇到的异常，诸如点击事件没有实现，调用了只声明未实现的方法，向NSArray调用了NSMutableArray的方法等等。</p>
+<p>我们定义类<code>DemoObject</code>，在<code>.h</code>中声明方法<code>- (void)setTest;</code>，<code>.m</code>中不写方法实现。然后调用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">DemoObject *demoObj = [[DemoObject alloc] init];</div><div class="line">[demoObj setTest];</div></pre></td></tr></table></figure>
+<p>程序会很听话的崩掉，并抛出异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-[DemoObject setTest]: unrecognized selector sent to instance 0x60000000bda0</div></pre></td></tr></table></figure>
+<p>在程序崩溃之前，消息会经过下面几个方法转发：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</div><div class="line">    NSLog(@&quot;解析实例方法&quot;);</div><div class="line">    return [super resolveInstanceMethod:sel];</div><div class="line">&#125;</div><div class="line">+ (BOOL)resolveClassMethod:(SEL)sel &#123;</div><div class="line">    NSLog(@&quot;解析类方法&quot;);</div><div class="line">    return [super resolveClassMethod:sel];</div><div class="line">&#125;</div><div class="line">- (id)forwardingTargetForSelector:(SEL)aSelector &#123;</div><div class="line">    NSLog(@&quot;转发目标选择器&quot;);</div><div class="line">    return [super forwardingTargetForSelector:aSelector];</div><div class="line">&#125;</div><div class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</div><div class="line">    NSLog(@&quot;选择器方法签名&quot;);</div><div class="line">    return [super methodSignatureForSelector:aSelector];</div><div class="line">&#125;</div><div class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</div><div class="line">    NSLog(@&quot;转发调用&quot;);</div><div class="line">&#125;</div><div class="line">- (void)doesNotRecognizeSelector:(SEL)aSelector &#123;</div><div class="line">    NSLog(@&quot;不识别选择器，崩溃&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>消息会经过上述方法传递，最终未果才会崩溃。在上述方法中我们有三次机会操作消息传递，防止崩溃。</p>
+<ol>
+<li>动态添加方法：<code>+ (BOOL)resolveInstanceMethod:(SEL)sel</code>或<code>+ (BOOL)resolveClassMethod:(SEL)sel</code></li>
+<li>方法重定向：<code>- (id)forwardingTargetForSelector:(SEL)aSelector</code></li>
+<li>消息转发：<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector</code>和<code>- (void)forwardInvocation:(NSInvocation *)anInvocation</code></li>
+</ol>
+<h2 id="动态添加方法"><a href="#动态添加方法" class="headerlink" title="动态添加方法"></a>动态添加方法</h2><h3 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h3><p>在类DemoObject中引入runtime：<code>#import &lt;objc/runtime.h&gt;</code>，使用<code>class_addMethod</code>动态添加方法实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">void resolveTest(id self, SEL _cmd) &#123;</div><div class="line">    NSLog(@&quot;动态添加方法调用 = %@&quot;, NSStringFromSelector(_cmd));</div><div class="line">&#125;</div><div class="line">+ (BOOL)resolveInstanceMethod:(SEL)sel &#123;</div><div class="line">    if (sel == @selector(setTest)) &#123;</div><div class="line">        class_addMethod([self class], sel, (IMP)resolveTest, &quot;v@:&quot;);</div><div class="line">        return YES;</div><div class="line">    &#125;</div><div class="line">    return [super resolveInstanceMethod:sel];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>方法<code>class_addMethod</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">OBJC_EXPORT BOOL</div><div class="line">class_addMethod(Class _Nullable cls, SEL _Nonnull name, IMP _Nonnull imp, </div><div class="line">                const char * _Nullable types) </div><div class="line">    OBJC_AVAILABLE(10.5, 2.0, 9.0, 1.0, 2.0);</div></pre></td></tr></table></figure>
+<p>参数意义如下：</p>
+<ul>
+<li>cls：消息接收者</li>
+<li>name：SEL方法名</li>
+<li>imp：要动态添加方法的IMP指针</li>
+<li>types：参数和返回值的符号字符串，<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html" target="_blank" rel="external">查看格式文档</a></li>
+</ul>
+<h3 id="类方法"><a href="#类方法" class="headerlink" title="类方法"></a>类方法</h3><p>解析类方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">+ (BOOL)resolveClassMethod:(SEL)sel &#123;</div><div class="line">    if (sel == @selector(setTestClass)) &#123;</div><div class="line">        class_addMethod(object_getClass(self), sel, (IMP)resolveTest, &quot;v@:&quot;);</div><div class="line">        return YES;</div><div class="line">    &#125;</div><div class="line">    return [super resolveClassMethod:sel];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里的区别在于cls：消息接收者，解析实例方法使用的<code>[self class]</code>，解析类方法使用的<code>object_getClass(self)</code>。</p>
+<p>当self为实例对象时，<code>[self class]</code>与<code>object_getClass(self)</code>等价，因为前者会调用后者。<code>object_getClass([self class])</code>得到元类。</p>
+<p>当self为类对象时，<code>[self class]</code>返回值为自身，还是self，所以上面解析实例方法将<code>[self class]</code>换成<code>self</code>也可以。<code>object_getClass(self)</code>与<code>object_getClass([self class])</code>等价。</p>
+<h2 id="方法重定向"><a href="#方法重定向" class="headerlink" title="方法重定向"></a>方法重定向</h2><h3 id="实例方法-1"><a href="#实例方法-1" class="headerlink" title="实例方法"></a>实例方法</h3><p>重写<code>- (id)forwardingTargetForSelector:(SEL)aSelector</code>方法，可以将消息的接收者替换成其他对象。</p>
+<p>新创建一个类<code>DemoNewObject</code>，将类<code>DemoObject</code>未实现的方法<code>- (void)setTest</code>，在<code>.m</code>中实现，无需在<code>.h</code>中暴露方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)setTest &#123;</div><div class="line">    NSLog(@&quot;实例方法重定向&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>方法重定向操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (id)forwardingTargetForSelector:(SEL)aSelector &#123;</div><div class="line">    if (aSelector == @selector(setTest)) &#123;</div><div class="line">        DemoNewObject *obj = [[DemoNewObject alloc] init];</div><div class="line">        return obj;</div><div class="line">    &#125;</div><div class="line">    return [super forwardingTargetForSelector:aSelector];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="类方法-1"><a href="#类方法-1" class="headerlink" title="类方法"></a>类方法</h3><p>类方法重定向需要重写<code>+ (id)forwardingTargetForSelector:(SEL)aSelector</code>方法，注意是<code>+</code>开头的类方法。</p>
+<p>同样在新类<code>DemoNewObject</code>中实现类方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">+ (void)setTestClass &#123;</div><div class="line">    NSLog(@&quot;类方法重定向&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>重写重定向方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+ (id)forwardingTargetForSelector:(SEL)aSelector &#123;</div><div class="line">    if (aSelector == @selector(setTestClass)) &#123;</div><div class="line">        return NSClassFromString(@&quot;DemoNewObject&quot;);</div><div class="line">    &#125;</div><div class="line">    return [super forwardingTargetForSelector:aSelector];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>方法重定向就是将当前类未实现的方法，重定向到一个实现该方法的新类中，调用新类中的方法实现。实例方法中返回实例对象，类方法中返回类对象。</p>
+<h2 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h2><p>消息转发是通过方法<code>- (void)forwardInvocation:(NSInvocation *)anInvocation</code>实现的，它可以将不能处理的消息转发给其他对象处理，参数<code>anInvocation</code>是通过方法<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector</code>产生的。</p>
+<p>所以需要重写两个方法，<code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector</code>和<code>- (void)forwardInvocation:(NSInvocation *)anInvocation</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector &#123;</div><div class="line">    NSMethodSignature *signature = [super methodSignatureForSelector:aSelector];</div><div class="line">    if (!signature) &#123;</div><div class="line">        if ([DemoNewObject instancesRespondToSelector:aSelector]) &#123;</div><div class="line">            signature = [DemoNewObject instanceMethodSignatureForSelector:aSelector];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return signature;</div><div class="line">&#125;</div><div class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation &#123;</div><div class="line">    if ([DemoNewObject instancesRespondToSelector:anInvocation.selector]) &#123;</div><div class="line">        [anInvocation invokeWithTarget:[[DemoNewObject alloc] init]];</div><div class="line">    &#125; else &#123;</div><div class="line">        [super forwardInvocation:anInvocation];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>参考资料</strong></p>
+<p><a href="http://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/" target="_blank" rel="external">Objective-C Runtime</a></p>
+<p><a href="https://www.jianshu.com/p/60c251712df7" target="_blank" rel="external">iOS中的unrecognized selector sent to instance..</a></p>
 
       
     </div>
@@ -498,7 +473,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/iOS10/" rel="tag"># iOS10</a>
+            <a href="/tags/Runtime/" rel="tag"># Runtime</a>
           
         </div>
       
@@ -511,8 +486,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/11/10/记个人博客时代的开始/" rel="next" title="记个人博客时代的开始">
-                <i class="fa fa-chevron-left"></i> 记个人博客时代的开始
+              <a href="/2018/03/02/ios3/" rel="next" title="iOS开发笔记三">
+                <i class="fa fa-chevron-left"></i> iOS开发笔记三
               </a>
             
           </div>
@@ -520,10 +495,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/11/14/制作-a和-framework静态库/" rel="prev" title="制作.a和.framework静态库">
-                制作.a和.framework静态库 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -690,7 +661,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开发者证书不能使用"><span class="nav-number">1.</span> <span class="nav-text">开发者证书不能使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释快捷键command-失效"><span class="nav-number">2.</span> <span class="nav-text">注释快捷键command+/失效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Xcode控制台输出问题"><span class="nav-number">3.</span> <span class="nav-text">Xcode控制台输出问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无用log打印"><span class="nav-number">3.1.</span> <span class="nav-text">无用log打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#真机测试log屏蔽"><span class="nav-number">3.2.</span> <span class="nav-text">真机测试log屏蔽</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型判断"><span class="nav-number">4.</span> <span class="nav-text">类型判断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL-Schemes跳转系统设置"><span class="nav-number">5.</span> <span class="nav-text">URL Schemes跳转系统设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#附prefs-root"><span class="nav-number">5.1.</span> <span class="nav-text">附prefs:root</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#plist里声明获取隐私数据权限"><span class="nav-number">6.</span> <span class="nav-text">plist里声明获取隐私数据权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#某些app链接网络失败"><span class="nav-number">7.</span> <span class="nav-text">某些app链接网络失败</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#unrecognized-selector-sent-to-instance"><span class="nav-number">1.</span> <span class="nav-text">unrecognized selector sent to instance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态添加方法"><span class="nav-number">2.</span> <span class="nav-text">动态添加方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例方法"><span class="nav-number">2.1.</span> <span class="nav-text">实例方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类方法"><span class="nav-number">2.2.</span> <span class="nav-text">类方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法重定向"><span class="nav-number">3.</span> <span class="nav-text">方法重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例方法-1"><span class="nav-number">3.1.</span> <span class="nav-text">实例方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类方法-1"><span class="nav-number">3.2.</span> <span class="nav-text">类方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息转发"><span class="nav-number">4.</span> <span class="nav-text">消息转发</span></a></li></ol></div>
             
 
           </div>
