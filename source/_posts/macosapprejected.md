@@ -71,7 +71,7 @@ We found that when Dark Mode is enabled, the menu bar extra icons aren't visible
 
 这个问题略惊，之前恍惚听过黑暗模式，从来没用过。启动黑暗模式是在：系统偏好设置 -> 通用 -> 勾选使用暗色菜单和Dock
 
-![设置黑暗模式](http://oalg33nuc.bkt.clouddn.com/2017-07-27-17-20-20.png)
+![设置黑暗模式](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-07-27-17-20-20.png)
 
 黑暗模式下Dock和上方工具条都变为黑色半透明，工具条上的图标齐刷刷变为白色，而我的应用图标不见了...不见了...见了...了...
 

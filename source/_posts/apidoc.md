@@ -61,7 +61,7 @@ npm install apidoc -g
 
 apiDoc最大的亮点是可以版本比较，接口更改过，可以通过接口右侧的版本号选择进行变化比较。
 
-![版本比较](http://oalg33nuc.bkt.clouddn.com/2017-11-14-09-36-28.png)
+![版本比较](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-36-28.png)
 
 这需要在源文档中保留每个历史版本，所以每个接口都可能对应N个历史版本，所以建议一个接口用一个文件。
 
@@ -106,7 +106,7 @@ HTTP/1.0 0 ok
 */
 ```
 
-![部署完成后的显示样式](http://oalg33nuc.bkt.clouddn.com/2017-11-14-09-52-10.png)
+![部署完成后的显示样式](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-52-10.png)
 
 ### 字段解释
 

@@ -20,7 +20,7 @@ toc: true
 
 项目截图:
 
-|![获取iPhone上的所有APP](http://oalg33nuc.bkt.clouddn.com/WechatIMG241.jpeg)|![APP相关信息](http://oalg33nuc.bkt.clouddn.com/WechatIMG242.jpeg)|
+|![获取iPhone上的所有APP](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG241.jpeg)|![APP相关信息](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG242.jpeg)|
 |:---:|:---:|
 
 参考资料:

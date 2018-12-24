@@ -253,7 +253,7 @@ CGContextDrawPath(context, kCGPathStroke);
 
 非零缠绕数的填充规则与绘制的方向有关、偶数-奇数规则则与方向无关。如图。
 
-![非零缠绕数规则和偶数奇数规则](http://oalg33nuc.bkt.clouddn.com/eosampleone.gif)
+![非零缠绕数规则和偶数奇数规则](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/eosampleone.gif)
 
 |函数|解释|
 |:---|:---|
@@ -285,7 +285,7 @@ Quartz默认使用普通混合模式，也就是`kCGBlendModeNormal`。下面举
 
 |kCGBlendModeNormal|kCGBlendModeMultiply|kCGBlendModeScreen|
 |:---:|:---:|:---:|
-|![普通模式](http://oalg33nuc.bkt.clouddn.com/QQ20161213-0.png)|![正片叠底](http://oalg33nuc.bkt.clouddn.com/QQ20161213-1.png)|![屏幕混合](http://oalg33nuc.bkt.clouddn.com/QQ20161213-2.png)|
+|![普通模式](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161213-0.png)|![正片叠底](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161213-1.png)|![屏幕混合](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161213-2.png)|
 
 16种混合模式：
 
@@ -345,7 +345,7 @@ CGContextFillRect(context, CGRectMake(20, 250, 350, 50));
 
 执行结果：
 
-![裁剪路径和混合模式的执行结果](http://oalg33nuc.bkt.clouddn.com/QQ20161213-3.png)
+![裁剪路径和混合模式的执行结果](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161213-3.png)
 
 ---
 

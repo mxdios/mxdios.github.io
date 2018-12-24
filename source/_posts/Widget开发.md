@@ -99,11 +99,11 @@ func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, 
 
 `File` -> `New` -> `Target`
 
-![创建framework](http://oalg33nuc.bkt.clouddn.com/QQ20170330-150955.png)
+![创建framework](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-150955.png)
 
 在`framework`的`Build Phases` -> `Compile Sources`里面添加要共享的代码文件。
 
-![添加共享的代码文件](http://oalg33nuc.bkt.clouddn.com/QQ20170330-152310.png)
+![添加共享的代码文件](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152310.png)
 
 在`TARGETS`里面，分别在主项目和widget下面的`Linked Frameworks and Libraries`里面添加新建的`framework`
 
@@ -132,7 +132,7 @@ ld: warning: linking against a dylib which is not safe for use in application ex
 
 解决办法：勾选framework里面的` Allow app extension API only`
 
-![注意](http://oalg33nuc.bkt.clouddn.com/QQ20170330-152418.png)
+![注意](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152418.png)
 
 ### 问题2.方法调用不到
 
@@ -148,7 +148,7 @@ public func getString(a: Int) -> String {
 
 如果有共用的oc代码，需要将.m文件引入到`Compile Sources`，将.h文件拖入`Headers`的`Public`里面，然后在framework的.h头文件中`#import`共用oc代码的.h头文件
 
-![引入oc共享代码](http://oalg33nuc.bkt.clouddn.com/2017-04-02-14-17-36.png)
+![引入oc共享代码](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-04-02-14-17-36.png)
 
 ## 数据共享
 
@@ -158,19 +158,19 @@ public func getString(a: Int) -> String {
 2. 在`App Group`添加一个`App Group`，在写`Identifier`，会在前面自动添加`group.`
 3. 添加`App Group`之后，在`App IDs`点开第1步创建的id，点击edit，把`App Group`添加上，`App Group`的黄点会变成绿点。
 
-![创建的App Group](http://oalg33nuc.bkt.clouddn.com/WX20170402-113444@2x.png)
+![创建的App Group](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113444@2x.png)
 
-![配置完成的Identifier](http://oalg33nuc.bkt.clouddn.com/WX20170402-113344@2x.png)
+![配置完成的Identifier](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113344@2x.png)
 
 ### 添加证书
 
 在Xcode的`TARGEST`下面，主程序和widget的`Capabilities`里面，都要打开`App Groups`。下面的Steps不能有红色叹号的错误。
 
-![正确显示](http://oalg33nuc.bkt.clouddn.com/WX20170402-113739@2x.png)
+![正确显示](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113739@2x.png)
 
 在证书配置正确的前提下，还出现了红色叹号的错误警告，有可能是因为主项目或者widget的`General`里面没有选择好正确的签名Team。
 
-![配置正确的签名](http://oalg33nuc.bkt.clouddn.com/WX20170402-112029@2x.png)
+![配置正确的签名](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-112029@2x.png)
 
 
 ### 用NSUserDefaults共享数据，

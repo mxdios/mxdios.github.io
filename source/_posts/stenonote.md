@@ -10,7 +10,7 @@ toc: true
 
 <!--more-->
 
-![速记 - 快速记录每一段文字](http://oalg33nuc.bkt.clouddn.com/QQ20170726-161903.png)
+![速记 - 快速记录每一段文字](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170726-161903.png)
 
 ## 安装
 

@@ -168,7 +168,7 @@ open "${INSTALL_DIR}"
 
 在`TARGETS`第一个包下面，`Build Settings`下面`Mach-O Type`，修改为`Static Library`。修改后编译打包的才是静态库，不然会是动态库。
 
-![img](http://oalg33nuc.bkt.clouddn.com/2017-07-26-11-05-33.png)
+![img](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-07-26-11-05-33.png)
 
 使用动态库需要在`General` -> `Embedded Binaries`下引入动态库，不然会报错。其实苹果禁止开发者使用自己创建的动态库。
 

@@ -159,7 +159,7 @@ UILaunchStoryboardName = "LaunchScreen_en";//英文文件下添加的
 
 `storyboard`和`xib`的多语言化是根据`ObjectID`来区分的。
 
-![ObjectID](http://oalg33nuc.bkt.clouddn.com/2017-12-05-11-49-56.png)
+![ObjectID](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-05-11-49-56.png)
 
 ### 国际化自动脚本
 

@@ -27,7 +27,7 @@ toc: true
 
 您的 App 在 App Store 中显示的名称。名称长度不能超过~~255个字符~~ 50个字符（新审核指南修改）。并不等同于app安装完成在手机上显示的名字，这里的名称可以写为名字+简介。
 
-例如：天猫在AppStore展示的名称如下图，应用名为“天猫”![天猫](http://oalg33nuc.bkt.clouddn.com/image/%E5%9B%BE%E7%89%87%201.png)
+例如：天猫在AppStore展示的名称如下图，应用名为“天猫”![天猫](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/%E5%9B%BE%E7%89%87%201.png)
 
 ### 隐私政策网址(可不填)
 
@@ -87,7 +87,7 @@ toc: true
 
 提交app到AppStore审核最重要的地方！提交打包好的.api文件
 
-![构建版本](http://oalg33nuc.bkt.clouddn.com/image/QQ20160815-11.png)
+![构建版本](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/QQ20160815-11.png)
 
 但并不是在这里面上传.api文件。而是需要用`Application Loader`交付应用程序。`Application Loader`的位置在`Xcode` -> `Open DeveloperTool` -> `Application loader`，或者在应用程序里`Xcode.app`右键显示包内容 -> `Contents` -> `Applications` -> `Application loader.app`，选择交付应用程序。这里要事先登录上架应用的开发者账号，也就是打包.api文件时配置发布证书的开发者账号。
 

@@ -59,7 +59,7 @@ void drawPattern(void *info, CGContextRef context) {
 
 运行结果：
 
-![绘制着色模式的运行结果](http://oalg33nuc.bkt.clouddn.com/QQ20161220-0.png)
+![绘制着色模式的运行结果](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-0.png)
 
 **代码解释：**
 
@@ -154,7 +154,7 @@ void drawStencilPattern(void *info, CGContextRef context) {
 
 运行结果：
 
-![绘制模板样式的运行结果](http://oalg33nuc.bkt.clouddn.com/QQ20161220-1.png)
+![绘制模板样式的运行结果](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-1.png)
 
 代码解释参考上文中着色样式的代码解释。区别1是用下述代码设置样式单元格的颜色：
 
@@ -191,7 +191,7 @@ CGContextRestoreGState(context);
 
 运行结果：
 
-![圆形的红色阴影和矩形的灰色阴影](http://oalg33nuc.bkt.clouddn.com/QQ20161220-2.png)
+![圆形的红色阴影和矩形的灰色阴影](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-2.png)
 
 x偏移量正值在图形右边，负值在图形左边。y偏移量和坐标有关，在iOS中，UIKit坐标系y轴和Quartz 2D坐标系y轴相反，所以如果是由UIKit创建的图形上下文则正值在图形下面，负值在图形上面。macOS的坐标系和Quartz 2D坐标系一样，所以正值在图形上面，负值在图形下面。阴影绘制不受CTM影响。
 
@@ -229,7 +229,7 @@ CGColorSpaceRelease(colorSpace);
 CGGradientRelease(gradient);
 ```
 
-![使用CGGradient绘制轴向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-0.png)
+![使用CGGradient绘制轴向渐变](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-0.png)
 
 绘制径向渐变:
 
@@ -244,7 +244,7 @@ CGColorSpaceRelease(colorSpace);
 CGGradientRelease(gradient);
 ```
 
-![使用CGGradient绘制径向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-1.png)
+![使用CGGradient绘制径向渐变](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-1.png)
 
 ### CGShading
 
@@ -301,7 +301,7 @@ static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) 
 
 运行结果：
 
-![使用CGShading绘制轴向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-2.png)
+![使用CGShading绘制轴向渐变](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-2.png)
 
 绘制径向渐变，需要以下步骤：
 
@@ -360,7 +360,7 @@ static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) 
 }
 ```
 
-![使用CGShading绘制径向渐变](http://oalg33nuc.bkt.clouddn.com/QQ20161221-3.png)
+![使用CGShading绘制径向渐变](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-3.png)
 
 ---
 

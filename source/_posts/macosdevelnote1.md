@@ -48,7 +48,7 @@ func createButtonStatusBar() {
 item.menu = toolMenu
 ```
 
-![添加NSMenu](http://oalg33nuc.bkt.clouddn.com/2017-12-04-15-48-40.png)
+![添加NSMenu](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-04-15-48-40.png)
 
 添加`NSMenu`的点击事件，直接拖线`action`即可。
 
@@ -100,7 +100,7 @@ NSApp.activate(ignoringOtherApps: true)
 
 `xib`中在`Focus Ring`中选择`None`
 
-![隐藏蓝色边框](http://oalg33nuc.bkt.clouddn.com/2017-12-05-10-45-36.png)
+![隐藏蓝色边框](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-05-10-45-36.png)
 
 或者在代码中执行：
 
@@ -153,19 +153,19 @@ let bundle = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion")
 
 xib或storyboard设置快捷键很方便，直接在`Key Equivalend`输入快捷键即可。
 
-![设置快捷键](http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-42-28.png)
+![设置快捷键](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-07-15-42-28.png)
 
 ### 退出应用
 
 从`action`拖线到`Application`，选择`stop:`方法即可：
 
-![拖线到Application](http://oalg33nuc.bkt.clouddn.com/WX20171207-154727.png)
+![拖线到Application](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-154727.png)
 
-![选择stop:方法](http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-48-21.png)
+![选择stop:方法](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-07-15-48-21.png)
 
 或者拖线到`First Responder`，选择`terminate:`方法
 
-![拖线到First Responder](http://oalg33nuc.bkt.clouddn.com/WX20171207-155548.png)
+![拖线到First Responder](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-155548.png)
 
 或者调用代码：
 

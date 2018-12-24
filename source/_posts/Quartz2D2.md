@@ -87,7 +87,7 @@ CGContextSetGrayFillColor(context, 0.5, 1);
 }
 ```
 
-![正常图片和灰度处理的图片](http://oalg33nuc.bkt.clouddn.com/QQ20161215-0.png)
+![正常图片和灰度处理的图片](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-0.png)
 
 `CGColorSpaceCreateDeviceRGB` 创建设备依赖RGB颜色空间，实现代码如下：
 
@@ -109,7 +109,7 @@ CGContextSetRGBStrokeColor(context, 0.3, 1.0, 0.9, 1.0);
 CGContextSetRGBFillColor(context, 0.3, 1.0, 0.9, 1.0);
 ```
 
-![设备依赖RGB颜色空间](http://oalg33nuc.bkt.clouddn.com/QQ20161215-1.png)
+![设备依赖RGB颜色空间](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-1.png)
 
 `CGColorSpaceCreateDeviceCMYK` 创建设备依赖CMYK颜色空间，实现代码如下：
 
@@ -131,7 +131,7 @@ CGContextSetCMYKStrokeColor(context, 80, 100, 0, 0, 1.0);
 CGContextSetCMYKFillColor(context, 80, 100, 0, 0, 1.0);
 ```
 
-![设备依赖CMYK颜色空间](http://oalg33nuc.bkt.clouddn.com/QQ20161215-2.png)
+![设备依赖CMYK颜色空间](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-2.png)
 
 
 ## 设置和创建颜色
@@ -148,7 +148,7 @@ CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);
 CGContextFillRect(context, CGRectMake(100, 50, 100, 50));
 ```
 
-![填充路径设置线框](http://oalg33nuc.bkt.clouddn.com/QQ20161215-3.png)
+![填充路径设置线框](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-3.png)
 
 ## 设置再现意图
 
@@ -173,7 +173,7 @@ CTM是Current Transformation Matrix，当前变换矩阵。可以操作CTM来平
 CGContextDrawImage(context, CGRectMake(20, 40, 100, 150), [UIImage imageNamed:@"img"].CGImage);
 ```
 
-![将图片绘制到page上](http://oalg33nuc.bkt.clouddn.com/QQ20161215-4.png)
+![将图片绘制到page上](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-4.png)
 
 可以看到，图片是上下颠倒的。是因为iOS的UIKit坐标是以左上角为原点，y轴向下，Quartz 2D的图形绘制引擎坐标是左下角为原点，y轴向上。因为坐标轴上下相反，所以图片上下颠倒。macOS的坐标布局和Quartz 2D一样，以左下角为坐标原点，y轴向上。
 
@@ -195,7 +195,7 @@ CGContextTranslateCTM(context, 100, 50);
 CGContextRotateCTM(context, M_PI_4);
 ```
 
-![旋转前与旋转后的图片比较](http://oalg33nuc.bkt.clouddn.com/QQ20161215-5.png)
+![旋转前与旋转后的图片比较](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-5.png)
 
 函数传入的是弧度值，可以定义以下方法，传入角度值：
 
@@ -217,7 +217,7 @@ CGContextRotateCTM(context, radians(45.));
 CGContextScaleCTM(context, 0.5, 0.5);
 ```
 
-![缩放前后的图片比较](http://oalg33nuc.bkt.clouddn.com/QQ20161215-6.png)
+![缩放前后的图片比较](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-6.png)
 
 ### 累计变换操作
 
@@ -230,7 +230,7 @@ CGContextRotateCTM(context, M_PI);
 CGContextDrawImage(context, imgRect, [UIImage imageNamed:@"img"].CGImage);
 ```
 
-![图片扶正结果](http://oalg33nuc.bkt.clouddn.com/QQ20161216-0.png)
+![图片扶正结果](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161216-0.png)
 
 ## 仿射变换
 

@@ -146,7 +146,7 @@ links_layout: block
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
 # in site  directory(source/uploads): /uploads/avatar.gif
-avatar: http://oalg33nuc.bkt.clouddn.com/7787970.jpg #/images/avatar.gif
+avatar: https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg #/images/avatar.gif
 
 # Table Of Contents in the Sidebar
 toc:
@@ -235,8 +235,8 @@ post_wordcount:
 
 # Reward
 reward_comment: 打赏作者一杯咖啡
-wechatpay: http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg
-alipay: http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg
+wechatpay: https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg
+alipay: https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg
 #bitcoin: /images/bitcoin.png
 
 # Declare license on posts

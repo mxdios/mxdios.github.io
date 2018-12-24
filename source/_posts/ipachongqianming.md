@@ -20,7 +20,7 @@ toc: true
 
 [iReSign](https://github.com/maciekish/iReSign)是一个重签名工具
 
-![iReSign](http://oalg33nuc.bkt.clouddn.com/2017-07-25-19-21-04.png)
+![iReSign](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-07-25-19-21-04.png)
 
 操作步骤：
 
@@ -33,7 +33,7 @@ toc: true
 
 结果是失败了。
 
-![iResign运行结果](http://oalg33nuc.bkt.clouddn.com/6111501034232_.pic.jpg)
+![iResign运行结果](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/6111501034232_.pic.jpg)
 
 错误信息如下，可以查看该错误的[IResign上的issues](https://github.com/maciekish/iReSign/issues/99)
 
@@ -77,7 +77,7 @@ iOS9以后，企业级应用不会出现信任按钮，如果ipa包和网页的`
 4. 在`Signing Identity:`上面会出现一串可用的`identity`，这里要输入这些`identity`的十六进制串。回车
 5. 成功了：`Successfully signed 路径/xxx.ipa!`原来文件夹中的.ipa已经被重签名了。上传到蒲公英内测平台，完全可以下载使用。
 
-![操作步骤](http://oalg33nuc.bkt.clouddn.com/QQ20170726-104243.png)
+![操作步骤](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170726-104243.png)
 
 本文涉及到的知识点都是从网上Google的，感谢网友们分享的资料，还涉及的一些参考资料：
 
