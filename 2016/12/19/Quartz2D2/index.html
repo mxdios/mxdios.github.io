@@ -83,19 +83,19 @@
 <meta property="og:url" content="http://markmiao.com/2016/12/19/Quartz2D2/index.html">
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="颜色和颜色空间不同设备的颜色处理方式各不相同，每种设备都有各自的颜色值范围。就是使用指定函数解析一组数值组成的颜色信息，比如RGB颜色、CMYK颜色。">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-0.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-1.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-2.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-3.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-4.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-5.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-6.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161216-0.png">
-<meta property="og:updated_time" content="2016-12-21T07:02:30.000Z">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-0.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-1.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-2.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-3.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-4.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-5.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-6.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161216-0.png">
+<meta property="og:updated_time" content="2018-12-24T08:00:31.271Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Quartz 2D（二）颜色和颜色空间、变换">
 <meta name="twitter:description" content="颜色和颜色空间不同设备的颜色处理方式各不相同，每种设备都有各自的颜色值范围。就是使用指定函数解析一组数值组成的颜色信息，比如RGB颜色、CMYK颜色。">
-<meta name="twitter:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161215-0.png">
+<meta name="twitter:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-0.png">
 
 
 
@@ -283,7 +283,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://oalg33nuc.bkt.clouddn.com/7787970.jpg">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -446,20 +446,20 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CGContextSetGrayStrokeColor(context, 0.5, 1);</div><div class="line">CGContextSetGrayFillColor(context, 0.5, 1);</div></pre></td></tr></table></figure>
 <p>还可以使用该函数获取灰度图片，方法如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">- (UIImage *)getGrayImage:(UIImage*)sourceImage &#123;</div><div class="line">    CGFloat width = sourceImage.size.width;</div><div class="line">    CGFloat height = sourceImage.size.height;</div><div class="line">    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray();</div><div class="line">    CGContextRef context = CGBitmapContextCreate(nil,width,height,8,0,colorSpace,kCGImageAlphaNone);</div><div class="line">    CGColorSpaceRelease(colorSpace);</div><div class="line">    if (context == NULL) &#123;</div><div class="line">        return nil;</div><div class="line">    &#125;</div><div class="line">    CGContextDrawImage(context,CGRectMake(0, 0, width, height), sourceImage.CGImage);</div><div class="line">    UIImage *grayImage = [UIImage imageWithCGImage:CGBitmapContextCreateImage(context)];</div><div class="line">    CGContextRelease(context);</div><div class="line">    return grayImage;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161215-0.png" alt="正常图片和灰度处理的图片"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-0.png" alt="正常图片和灰度处理的图片"></p>
 <p><code>CGColorSpaceCreateDeviceRGB</code> 创建设备依赖RGB颜色空间，实现代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGFloat colors[4] = &#123;0.3, 1.0, 0.9, 1.0&#125;;</div><div class="line">CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();</div><div class="line">CGColorRef color = CGColorCreate(colorSpace, colors);</div><div class="line">CGContextSetFillColorWithColor(context, color);</div><div class="line">CGContextFillRect(context, CGRectMake(100, 50, 100, 50));</div><div class="line">CGColorSpaceRelease(colorSpace);</div><div class="line">CGColorRelease(color);</div></pre></td></tr></table></figure>
 <p>以及快速设置设备依赖RGB颜色空间的方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CGContextSetRGBStrokeColor(context, 0.3, 1.0, 0.9, 1.0);</div><div class="line">CGContextSetRGBFillColor(context, 0.3, 1.0, 0.9, 1.0);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161215-1.png" alt="设备依赖RGB颜色空间"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-1.png" alt="设备依赖RGB颜色空间"></p>
 <p><code>CGColorSpaceCreateDeviceCMYK</code> 创建设备依赖CMYK颜色空间，实现代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGFloat colors[] = &#123;80, 100, 0, 0, 1.0&#125;;</div><div class="line">CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceCMYK();</div><div class="line">CGColorRef color = CGColorCreate(colorSpace, colors);</div><div class="line">CGContextSetFillColorWithColor(context, color);</div><div class="line">CGContextFillRect(context, CGRectMake(100, 50, 100, 50));</div><div class="line">CGColorSpaceRelease(colorSpace);</div><div class="line">CGColorRelease(color);</div></pre></td></tr></table></figure>
 <p>以及快速设置设备依赖CMYK颜色空间的方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CGContextSetCMYKStrokeColor(context, 80, 100, 0, 0, 1.0);</div><div class="line">CGContextSetCMYKFillColor(context, 80, 100, 0, 0, 1.0);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161215-2.png" alt="设备依赖CMYK颜色空间"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-2.png" alt="设备依赖CMYK颜色空间"></p>
 <h2 id="设置和创建颜色"><a href="#设置和创建颜色" class="headerlink" title="设置和创建颜色"></a>设置和创建颜色</h2><p>通过函数<code>CGContextSetStrokeColorWithColor</code>和<code>CGContextSetFillColorWithColor</code>分别填充路径颜色和设置线框颜色。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextSetLineWidth(context, 20);</div><div class="line">CGContextAddRect(context, CGRectMake(100, 50, 100, 50));</div><div class="line">CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);</div><div class="line">CGContextStrokePath(context);</div><div class="line">CGContextSetFillColorWithColor(context, [UIColor redColor].CGColor);    </div><div class="line">CGContextFillRect(context, CGRectMake(100, 50, 100, 50));</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161215-3.png" alt="填充路径设置线框"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-3.png" alt="填充路径设置线框"></p>
 <h2 id="设置再现意图"><a href="#设置再现意图" class="headerlink" title="设置再现意图"></a>设置再现意图</h2><p>“再现意图”用于指定如何将源颜色空间的颜色映射到图形上下文的目标颜色空间的颜色范围内。调用函数<code>CGContextSetRenderingIntent</code>设置再现意图，传入枚举类型<code>CGColorRenderingIntent</code></p>
 <ol>
 <li>kCGRenderingIntentDefault：使用默认的渲染意图。</li>
@@ -471,24 +471,24 @@
 <h2 id="修改CTM"><a href="#修改CTM" class="headerlink" title="修改CTM"></a>修改CTM</h2><p>CTM是Current Transformation Matrix，当前变换矩阵。可以操作CTM来平移、旋转、缩放page，绘制对象在page上，自然也会变换。</p>
 <p>通过<code>CGContextDrawImage</code>函数绘制图片到page上。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CGContextDrawImage(context, CGRectMake(20, 40, 100, 150), [UIImage imageNamed:@&quot;img&quot;].CGImage);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161215-4.png" alt="将图片绘制到page上"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-4.png" alt="将图片绘制到page上"></p>
 <p>可以看到，图片是上下颠倒的。是因为iOS的UIKit坐标是以左上角为原点，y轴向下，Quartz 2D的图形绘制引擎坐标是左下角为原点，y轴向上。因为坐标轴上下相反，所以图片上下颠倒。macOS的坐标布局和Quartz 2D一样，以左下角为坐标原点，y轴向上。</p>
 <p>注意要先进行CTM变换操作，再<code>CGContextDrawImage</code>画图。</p>
 <h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>调用函数<code>CGContextTranslateCTM</code>指定沿x轴和y轴的平移位置。沿x轴平移100，沿y轴平移50：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CGContextTranslateCTM(context, 100, 50);</div></pre></td></tr></table></figure>
 <h3 id="旋转"><a href="#旋转" class="headerlink" title="旋转"></a>旋转</h3><p>调用函数<code>CGContextRotateCTM</code>指定旋转角度，是以坐标原点为中心，旋转指定角度。这个坐标原点是指iOS的UIKit的左上角坐标原点。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CGContextRotateCTM(context, M_PI_4);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161215-5.png" alt="旋转前与旋转后的图片比较"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-5.png" alt="旋转前与旋转后的图片比较"></p>
 <p>函数传入的是弧度值，可以定义以下方法，传入角度值：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">static inline double radians (double degrees) &#123;return degrees * M_PI/180;&#125;</div></pre></td></tr></table></figure>
 <p>等价于上面的旋转函数调用：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CGContextRotateCTM(context, radians(45.));</div></pre></td></tr></table></figure>
 <h3 id="缩放"><a href="#缩放" class="headerlink" title="缩放"></a>缩放</h3><p>调用函数<code>CGContextScaleCTM</code>实现缩放操作，也是以坐标原点为中心，x，y，w，h皆缩放为指定比例</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CGContextScaleCTM(context, 0.5, 0.5);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161215-6.png" alt="缩放前后的图片比较"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161215-6.png" alt="缩放前后的图片比较"></p>
 <h3 id="累计变换操作"><a href="#累计变换操作" class="headerlink" title="累计变换操作"></a>累计变换操作</h3><p>上文说道，使用<code>CGContextDrawImage</code>函数画的图片上下颠倒，可以使用累计变换操作将图片扶正。累计变换操作的执行顺序不同，会导致不同结果。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CGRect imgRect = CGRectMake(100, 40, 100, 130);</div><div class="line">CGContextTranslateCTM(context, imgRect.size.width + imgRect.origin.x * 2, imgRect.size.height + imgRect.origin.y * 2);</div><div class="line">CGContextRotateCTM(context, M_PI);</div><div class="line">CGContextDrawImage(context, imgRect, [UIImage imageNamed:@&quot;img&quot;].CGImage);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161216-0.png" alt="图片扶正结果"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161216-0.png" alt="图片扶正结果"></p>
 <h2 id="仿射变换"><a href="#仿射变换" class="headerlink" title="仿射变换"></a>仿射变换</h2><p>仿射变换可以实现与CTM函数相同的变换操作，使用仿射变换函数构造矩阵，调用函数<code>CGContextConcatCTM</code>应用于CTM，达到变换效果。</p>
 <p>仿射变换函数：</p>
 <table>
@@ -551,14 +551,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -677,7 +677,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://oalg33nuc.bkt.clouddn.com/7787970.jpg"
+                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
                 alt="Mark" />
             
               <p class="site-author-name" itemprop="name">Mark</p>
@@ -691,7 +691,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

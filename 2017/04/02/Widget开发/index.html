@@ -86,16 +86,16 @@
 <meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016-10-094.36.08.png?raw=true">
 <meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016-10-094.40.27.png?raw=true">
 <meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-0.png?raw=true">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20170330-150955.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20170330-152310.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20170330-152418.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-04-02-14-17-36.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/WX20170402-113444@2x.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/WX20170402-113344@2x.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/WX20170402-113739@2x.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/WX20170402-112029@2x.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-150955.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152310.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152418.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-04-02-14-17-36.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113444@2x.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113344@2x.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113739@2x.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-112029@2x.png">
 <meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-1.png?raw=true">
-<meta property="og:updated_time" content="2017-04-05T09:38:58.000Z">
+<meta property="og:updated_time" content="2018-12-24T08:02:00.498Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Widget开发">
 <meta name="twitter:description" content="widget是iOS8时推出的窗口小部件功能，窗口小部件在Android上早已大行其道。记得当年用过的第一部Android是深圳出产的国产机，当时滑过三四个屏幕的应用，还能继续再滑三四个屏幕的窗口小部件。用的最多的窗口小部件就是日历了，屏幕上一目了然。">
@@ -287,7 +287,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://oalg33nuc.bkt.clouddn.com/7787970.jpg">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -424,9 +424,9 @@
 <h2 id="代码共享"><a href="#代码共享" class="headerlink" title="代码共享"></a>代码共享</h2><p>虽然widget附属于主应用，但其实是独立的。在widget中无法调用主应用中的代码，这样一来就蛋疼了。有些公共方法或者控件，在主应用中写完了，在widget却无法使用。当然把主应用中的代码拷贝一份到widget中也是可以的，这种做法太low。</p>
 <p>可以使用framework做代码共享。创建一个framework</p>
 <p><code>File</code> -&gt; <code>New</code> -&gt; <code>Target</code></p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170330-150955.png" alt="创建framework"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-150955.png" alt="创建framework"></p>
 <p>在<code>framework</code>的<code>Build Phases</code> -&gt; <code>Compile Sources</code>里面添加要共享的代码文件。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170330-152310.png" alt="添加共享的代码文件"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152310.png" alt="添加共享的代码文件"></p>
 <p>在<code>TARGETS</code>里面，分别在主项目和widget下面的<code>Linked Frameworks and Libraries</code>里面添加新建的<code>framework</code></p>
 <p>并在widget中用到共享代码的地方引入<code>framework</code></p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> ShareToday</div></pre></td></tr></table></figure>
@@ -436,23 +436,23 @@
 <figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ld: warning: linking <span class="keyword">against</span> a dylib which <span class="keyword">is</span> <span class="keyword">not</span> safe <span class="keyword">for</span> use <span class="keyword">in</span> <span class="built_in">application</span> extensions:</div></pre></td></tr></table></figure>
 <p>是因为application extensions限制了一些API的使用，而在新建的framework里面，可能包含了这些API，所以才会出现这个警告。</p>
 <p>解决办法：勾选framework里面的<code>Allow app extension API only</code></p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170330-152418.png" alt="注意"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152418.png" alt="注意"></p>
 <h3 id="问题2-方法调用不到"><a href="#问题2-方法调用不到" class="headerlink" title="问题2.方法调用不到"></a>问题2.方法调用不到</h3><p>swift中，加入到framework的一些方法，在引入头文件后的widget调用不到。</p>
 <p>解决办法：需要把方法设置为公用的，用<code>public</code>修饰方法，例如</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">getString</span><span class="params">(a: Int)</span></span> -&gt; <span class="type">String</span> &#123;</div><div class="line">	  <span class="keyword">return</span> <span class="string">"<span class="subst">\(a)</span>"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>如果有共用的oc代码，需要将.m文件引入到<code>Compile Sources</code>，将.h文件拖入<code>Headers</code>的<code>Public</code>里面，然后在framework的.h头文件中<code>#import</code>共用oc代码的.h头文件</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-04-02-14-17-36.png" alt="引入oc共享代码"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-04-02-14-17-36.png" alt="引入oc共享代码"></p>
 <h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><h3 id="配置证书："><a href="#配置证书：" class="headerlink" title="配置证书："></a>配置证书：</h3><ol>
 <li>在<code>Certificates, Identifiers &amp; Profiles</code>里的<code>Identifiers</code>下面添加<code>App IDs</code>时，要勾选<code>App Groups</code>。</li>
 <li>在<code>App Group</code>添加一个<code>App Group</code>，在写<code>Identifier</code>，会在前面自动添加<code>group.</code></li>
 <li>添加<code>App Group</code>之后，在<code>App IDs</code>点开第1步创建的id，点击edit，把<code>App Group</code>添加上，<code>App Group</code>的黄点会变成绿点。</li>
 </ol>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-113444@2x.png" alt="创建的App Group"></p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-113344@2x.png" alt="配置完成的Identifier"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113444@2x.png" alt="创建的App Group"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113344@2x.png" alt="配置完成的Identifier"></p>
 <h3 id="添加证书"><a href="#添加证书" class="headerlink" title="添加证书"></a>添加证书</h3><p>在Xcode的<code>TARGEST</code>下面，主程序和widget的<code>Capabilities</code>里面，都要打开<code>App Groups</code>。下面的Steps不能有红色叹号的错误。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-113739@2x.png" alt="正确显示"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113739@2x.png" alt="正确显示"></p>
 <p>在证书配置正确的前提下，还出现了红色叹号的错误警告，有可能是因为主项目或者widget的<code>General</code>里面没有选择好正确的签名Team。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20170402-112029@2x.png" alt="配置正确的签名"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-112029@2x.png" alt="配置正确的签名"></p>
 <h3 id="用NSUserDefaults共享数据，"><a href="#用NSUserDefaults共享数据，" class="headerlink" title="用NSUserDefaults共享数据，"></a>用NSUserDefaults共享数据，</h3><p>存储数据</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shareDefaults = <span class="type">UserDefaults</span>(suiteName: <span class="string">"group.xxx.xxx.xx"</span>)<span class="comment">//App Groups ID</span></div><div class="line">shareDefaults?.<span class="keyword">set</span>(worksArray, forKey: <span class="string">"worksArray"</span>)</div><div class="line">shareDefaults?.synchronize()</div></pre></td></tr></table></figure>
 <p>读取数据</p>
@@ -481,14 +481,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -607,7 +607,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://oalg33nuc.bkt.clouddn.com/7787970.jpg"
+                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
                 alt="Mark" />
             
               <p class="site-author-name" itemprop="name">Mark</p>
@@ -621,7 +621,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

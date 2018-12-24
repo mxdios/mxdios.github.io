@@ -83,18 +83,18 @@
 <meta property="og:url" content="http://markmiao.com/2016/12/21/Quartz2D3/index.html">
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="PatternPattern可翻译为样式、模型。类似于iOS中自定义的view，可以重复多次把自定义的view添加到控制器的view上。样式(Pattern)是绘制操作的一个序列，可以重复的绘制到一个图形上下文上。">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161220-0.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161220-1.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161220-2.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161221-0.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161221-1.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161221-2.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161221-3.png">
-<meta property="og:updated_time" content="2016-12-21T07:04:57.000Z">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-0.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-1.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-2.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-0.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-1.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-2.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-3.png">
+<meta property="og:updated_time" content="2018-12-24T08:00:42.933Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Quartz 2D（三）样式、阴影、渐变">
 <meta name="twitter:description" content="PatternPattern可翻译为样式、模型。类似于iOS中自定义的view，可以重复多次把自定义的view添加到控制器的view上。样式(Pattern)是绘制操作的一个序列，可以重复的绘制到一个图形上下文上。">
-<meta name="twitter:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20161220-0.png">
+<meta name="twitter:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-0.png">
 
 
 
@@ -282,7 +282,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://oalg33nuc.bkt.clouddn.com/7787970.jpg">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -396,7 +396,7 @@
 <h3 id="绘制着色样式"><a href="#绘制着色样式" class="headerlink" title="绘制着色样式"></a>绘制着色样式</h3><p>绘制着色样式一般需要下面几步：1、设置样式单元格的回调函数，2、设置着色模式单元格，3、绘制操作。下面是绘制着色样式的示例代码和运行结果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    clorePatternPaingting(context, CGRectMake(0, 0, 300, 500));</div><div class="line">&#125;</div><div class="line">void clorePatternPaingting(CGContextRef context, CGRect rect) &#123;</div><div class="line">    CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(NULL);</div><div class="line">    CGContextSetFillColorSpace(context, patternSpace);</div><div class="line">    CGColorSpaceRelease(patternSpace);</div><div class="line">    static const CGPatternCallbacks call = &#123;0, &amp;drawPattern, NULL&#125;;</div><div class="line">    CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 30, 30), CGAffineTransformIdentity, 30, 30, kCGPatternTilingConstantSpacing, true, &amp;call);</div><div class="line">    CGFloat alpha = 1.0;</div><div class="line">    CGContextSetFillPattern(context, pattern, &amp;alpha);</div><div class="line">    CGPatternRelease(pattern);</div><div class="line">    CGContextFillRect(context, rect);</div><div class="line">&#125;</div><div class="line">void drawPattern(void *info, CGContextRef context) &#123;</div><div class="line">    CGContextSetRGBFillColor(context, 1, 0, 0, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(0, 0, 10, 10));</div><div class="line">    CGContextSetRGBFillColor(context, 0, 1, 0, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(10, 0, 10, 10));</div><div class="line">    CGContextSetRGBFillColor(context, 0, 0, 1, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(0, 10, 10, 10));</div><div class="line">    CGContextSetRGBFillColor(context, 0.5, 0, 0.5, 1);</div><div class="line">    CGContextFillRect(context, CGRectMake(10, 10, 10, 10));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161220-0.png" alt="绘制着色模式的运行结果"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-0.png" alt="绘制着色模式的运行结果"></p>
 <p><strong>代码解释：</strong></p>
 <p>上述代码块中第三个函数<code>drawPattern</code>的作用就是第1步：设置样式单元格的回调函数。参数<code>info</code>:是指向模式相关数据的指针，可以传<code>NULL</code>。<code>context</code>:是图形上下文。在该函数中指定了每个颜色块的大小和填充色。因为是着色样式，所以指定填充色。</p>
 <p>第二个函数，也是在<code>drawRect</code>方法中调用的函数<code>clorePatternPaingting</code>，执行了第2步:设置着色模式单元格和第3步:绘制操作。下面对每块代码进行解释：</p>
@@ -427,7 +427,7 @@
 <h3 id="绘制模板样式"><a href="#绘制模板样式" class="headerlink" title="绘制模板样式"></a>绘制模板样式</h3><p>绘制模板样式的步骤和绘制着色样式的一样：1、设置样式单元格的回调函数，2、设置模板模式单元格，3、绘制操作。下面是绘制模板样式的示例代码和运行结果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    stencilPatternPaingting(context, CGRectMake(0, 0, 300, 500));</div><div class="line">&#125;</div><div class="line">void stencilPatternPaingting(CGContextRef context, CGRect rect) &#123;</div><div class="line">    CGColorSpaceRef baseSpace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGColorSpaceRef patternSpace = CGColorSpaceCreatePattern(baseSpace);</div><div class="line">    CGContextSetFillColorSpace(context, patternSpace);</div><div class="line">    CGColorSpaceRelease(patternSpace);</div><div class="line">    CGColorSpaceRelease(baseSpace);</div><div class="line">    static const CGPatternCallbacks cell = &#123;0, &amp;drawStencilPattern, NULL&#125;;</div><div class="line">    CGPatternRef pattern = CGPatternCreate(NULL, CGRectMake(0, 0, 30, 30), CGAffineTransformIdentity, 40, 40, kCGPatternTilingConstantSpacing, false, &amp;cell);</div><div class="line">    static const CGFloat color[] = &#123;1, 0, 0, 1&#125;;</div><div class="line">    CGContextSetFillPattern(context, pattern, color);</div><div class="line">    CGPatternRelease(pattern);</div><div class="line">    CGContextFillRect(context, rect);</div><div class="line">&#125;</div><div class="line">void drawStencilPattern(void *info, CGContextRef context) &#123;</div><div class="line">    CGContextAddEllipseInRect(context, CGRectMake(0, 0, 30, 30));</div><div class="line">    CGContextFillPath(context);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161220-1.png" alt="绘制模板样式的运行结果"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-1.png" alt="绘制模板样式的运行结果"></p>
 <p>代码解释参考上文中着色样式的代码解释。区别1是用下述代码设置样式单元格的颜色：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">static const CGFloat color[] = &#123;1, 0, 0, 1&#125;;</div><div class="line">CGContextSetFillPattern(context, pattern, color);</div></pre></td></tr></table></figure>
 <p>区别2是<code>CGPatternCreate</code>函数中传的参数是<code>false</code>。</p>
@@ -438,7 +438,7 @@
 <p>分别设置彩色阴影和普通阴影：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGContextSaveGState(context);</div><div class="line">CGContextSetShadowWithColor(context, CGSizeMake(10, 10), 2, [UIColor redColor].CGColor);</div><div class="line">CGContextSetRGBFillColor (context, 0, 1, 0, 1);</div><div class="line">CGContextAddEllipseInRect(context, CGRectMake(40, 40, 100, 100));</div><div class="line">CGContextFillPath(context);</div><div class="line">CGContextSetShadow(context, CGSizeMake(10, 10), 2);</div><div class="line">CGContextFillRect(context, CGRectMake(200, 40, 100, 100));</div><div class="line">CGContextRestoreGState(context);</div></pre></td></tr></table></figure>
 <p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161220-2.png" alt="圆形的红色阴影和矩形的灰色阴影"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161220-2.png" alt="圆形的红色阴影和矩形的灰色阴影"></p>
 <p>x偏移量正值在图形右边，负值在图形左边。y偏移量和坐标有关，在iOS中，UIKit坐标系y轴和Quartz 2D坐标系y轴相反，所以如果是由UIKit创建的图形上下文则正值在图形下面，负值在图形上面。macOS的坐标系和Quartz 2D坐标系一样，所以正值在图形上面，负值在图形下面。阴影绘制不受CTM影响。</p>
 <h2 id="渐变"><a href="#渐变" class="headerlink" title="渐变"></a>渐变</h2><p>可以使用函数<code>CGShadingRef</code>和<code>CGGradientRef</code>创建渐变。渐变分为轴向渐变和径向渐变。渐变的颜色变化有很多，可以是一种颜色到另一种颜色过度，也可以是多种颜色依次过度变化，还有是一种颜色的透明度<code>alpha</code>变化，但是这种无法绘制到PDF上，无法打印。</p>
 <p><code>CGShading</code>和<code>CGGradient</code>的区别：</p>
@@ -476,10 +476,10 @@
 </ol>
 <p>绘制轴向渐变:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGFloat compoents[] = &#123;1,0,1,1, 0.3,0.5,1,1.0&#125;;</div><div class="line">CGFloat locations[] = &#123;0.0, 1.0&#125;;</div><div class="line">CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);</div><div class="line">CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, compoents, locations, 2);</div><div class="line">CGContextDrawLinearGradient(context, gradient, CGPointMake(0, 0), CGPointMake(0, 100), kCGGradientDrawsBeforeStartLocation);</div><div class="line">CGColorSpaceRelease(colorSpace);</div><div class="line">CGGradientRelease(gradient);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-0.png" alt="使用CGGradient绘制轴向渐变"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-0.png" alt="使用CGGradient绘制轴向渐变"></p>
 <p>绘制径向渐变:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">CGFloat compoents[] = &#123;1,0,1,1, 0.3,0.5,1,1.0&#125;;</div><div class="line">CGFloat locations[] = &#123;0.0, 1.0&#125;;</div><div class="line">CGColorSpaceRef colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);</div><div class="line">CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, compoents, locations, 2);</div><div class="line">CGContextDrawRadialGradient(context, gradient, CGPointMake(200, 50), 20, CGPointMake(200, 400), 70, kCGGradientDrawsAfterEndLocation);</div><div class="line">CGColorSpaceRelease(colorSpace);</div><div class="line">CGGradientRelease(gradient);</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-1.png" alt="使用CGGradient绘制径向渐变"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-1.png" alt="使用CGGradient绘制径向渐变"></p>
 <h3 id="CGShading"><a href="#CGShading" class="headerlink" title="CGShading"></a>CGShading</h3><p>绘制轴向渐变需要以下步骤：</p>
 <ol>
 <li>设置 CGFunction 对象来计算颜色值</li>
@@ -491,7 +491,7 @@
 <p>绘制轴向渐变完整代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGFunctionRef functionObj = getFunction(colorspace);</div><div class="line">    CGShadingRef shading = CGShadingCreateAxial(colorspace, CGPointMake(0, 0.5), CGPointMake(1, 0.5), functionObj, false, false);</div><div class="line">    CGAffineTransform myTransform = CGAffineTransformMakeScale(100, 100);</div><div class="line">    CGContextConcatCTM (context, myTransform);</div><div class="line">    CGContextSaveGState (context);</div><div class="line">    CGContextBeginPath(context);</div><div class="line">    CGContextAddArc(context,  .5, .5, .3, 0, M_PI, 0);</div><div class="line">    CGContextClosePath(context);</div><div class="line">    CGContextClip(context);</div><div class="line">    CGContextDrawShading(context, shading);</div><div class="line">    CGShadingRelease(shading);</div><div class="line">    CGColorSpaceRelease(colorspace);</div><div class="line">    CGFunctionRelease(functionObj);</div><div class="line">    CGContextRestoreGState (context);</div><div class="line">&#125;</div><div class="line"></div><div class="line">static CGFunctionRef getFunction(CGColorSpaceRef colorspace) &#123;</div><div class="line">    size_t numComponents = 1 + CGColorSpaceGetNumberOfComponents(colorspace);</div><div class="line">    CGFloat input_value_range[] = &#123;0, 1&#125;;</div><div class="line">    CGFloat output_value_range[] = &#123;0, 1, 0, 0, 0,0,1,1&#125;;</div><div class="line">    CGFunctionCallbacks callbacks = &#123;0, &amp;calculateShadingValues, NULL&#125;;</div><div class="line">    return CGFunctionCreate((void *) numComponents, 1, input_value_range, numComponents, output_value_range, &amp;callbacks);</div><div class="line">&#125;</div><div class="line"></div><div class="line">static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) &#123;</div><div class="line">    CGFloat v;</div><div class="line">    size_t k, compoents;</div><div class="line">    static const CGFloat c[] = &#123;1,0,0.5,1&#125;;</div><div class="line">    compoents = (size_t)info;</div><div class="line">    v = *in;</div><div class="line">    for (k = 0; k &lt; compoents - 1; k ++)</div><div class="line">        *out ++ = c[k] * v;</div><div class="line">    *out++ = 1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>运行结果：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-2.png" alt="使用CGShading绘制轴向渐变"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-2.png" alt="使用CGShading绘制轴向渐变"></p>
 <p>绘制径向渐变，需要以下步骤：</p>
 <ol>
 <li>设置 CGFunction 对象来计算颜色值</li>
@@ -501,7 +501,7 @@
 </ol>
 <p>绘制径向渐变完整代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">- (void)drawRect:(CGRect)rect &#123;</div><div class="line">    [super drawRect:rect];</div><div class="line"></div><div class="line">    CGContextRef context = UIGraphicsGetCurrentContext();</div><div class="line">    </div><div class="line">    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();</div><div class="line">    CGFunctionRef functionObj = getFunction(colorspace);</div><div class="line">    CGShadingRef shading = CGShadingCreateRadial(colorspace, CGPointMake(0.25, 0.3), 0.1, CGPointMake(0.7, 0.7), 0.25, functionObj, false, false);</div><div class="line"></div><div class="line">    CGAffineTransform myTransform = CGAffineTransformMakeScale(100, 100);</div><div class="line">    CGContextConcatCTM (context, myTransform);</div><div class="line">    CGContextSaveGState (context);</div><div class="line">    </div><div class="line">    CGContextClipToRect (context, CGRectMake(0, 0, 1, 1));</div><div class="line">    CGContextSetRGBFillColor (context, 1, 1, 1, 1);</div><div class="line">    CGContextFillRect (context, CGRectMake(0, 0, 1, 1));</div><div class="line">    </div><div class="line">    CGContextDrawShading(context, shading);</div><div class="line">    </div><div class="line">    CGShadingRelease(shading);</div><div class="line">    CGColorSpaceRelease(colorspace);</div><div class="line">    CGFunctionRelease(functionObj);</div><div class="line">    CGContextRestoreGState (context);</div><div class="line">&#125;</div><div class="line"></div><div class="line">static CGFunctionRef getFunction(CGColorSpaceRef colorspace) &#123;</div><div class="line">    size_t numComponents = 1 + CGColorSpaceGetNumberOfComponents(colorspace);</div><div class="line">    </div><div class="line">    CGFloat input_value_range[] = &#123;0, 1&#125;;</div><div class="line">    CGFloat output_value_range[] = &#123;0, 1, 0, 0, 0,0,1,1&#125;;</div><div class="line">    </div><div class="line">    CGFunctionCallbacks callbacks = &#123;0, &amp;calculateShadingValues, NULL&#125;;</div><div class="line">    return CGFunctionCreate((void *) numComponents, 1, input_value_range, numComponents, output_value_range, &amp;callbacks);</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">static void calculateShadingValues(void *info, const CGFloat *in, CGFloat *out) &#123;</div><div class="line">    </div><div class="line">    size_t k, compoents;</div><div class="line">    double frequency[] = &#123;55, 220, 110, 0&#125;;</div><div class="line">    compoents = (size_t)info;</div><div class="line">    for (k = 0; k &lt; compoents - 1; k ++)</div><div class="line">        *out++ = (1 + sin(*in * frequency[k])) / 2;</div><div class="line">    *out++ = 1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20161221-3.png" alt="使用CGShading绘制径向渐变"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20161221-3.png" alt="使用CGShading绘制径向渐变"></p>
 <hr>
 <p>参考文章：<a href="http://southpeak.github.io/categories/translate/" target="_blank" rel="external">南峰子翻译的Quartz2D编程指南</a></p>
 
@@ -524,14 +524,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -650,7 +650,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://oalg33nuc.bkt.clouddn.com/7787970.jpg"
+                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
                 alt="Mark" />
             
               <p class="site-author-name" itemprop="name">Mark</p>
@@ -664,7 +664,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

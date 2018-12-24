@@ -83,17 +83,17 @@
 <meta property="og:url" content="http://markmiao.com/2017/12/07/macosdevelnote1/index.html">
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="旧坑不填，喜开新坑。这两天又计划开发一款macOS应用，之前开发的速记完全是练手，反正现在是不想填坑了，索性再开一个。实际做一个项目，是学习的最佳途径。本文记录了我在开发中遇到的各种问题，以及找到的解决办法，权当以后查阅的笔记。如果能给某位朋友带来帮助，是我的荣幸。如果发现问题，敬请评论吐槽。">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-12-04-15-48-40.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-12-05-10-45-36.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-42-28.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/WX20171207-154727.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-48-21.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/WX20171207-155548.png">
-<meta property="og:updated_time" content="2017-12-07T08:22:39.000Z">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-04-15-48-40.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-05-10-45-36.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-07-15-42-28.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-154727.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-07-15-48-21.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-155548.png">
+<meta property="og:updated_time" content="2018-12-24T07:59:56.614Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="macOS开发笔记(1)">
 <meta name="twitter:description" content="旧坑不填，喜开新坑。这两天又计划开发一款macOS应用，之前开发的速记完全是练手，反正现在是不想填坑了，索性再开一个。实际做一个项目，是学习的最佳途径。本文记录了我在开发中遇到的各种问题，以及找到的解决办法，权当以后查阅的笔记。如果能给某位朋友带来帮助，是我的荣幸。如果发现问题，敬请评论吐槽。">
-<meta name="twitter:image" content="http://oalg33nuc.bkt.clouddn.com/2017-12-04-15-48-40.png">
+<meta name="twitter:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-04-15-48-40.png">
 
 
 
@@ -281,7 +281,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://oalg33nuc.bkt.clouddn.com/7787970.jpg">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -394,7 +394,7 @@
 <p><code>itemActionShowView</code>是实现的点击方法，Swift4.0之后，必须增加<code>@objc</code>修饰符，是因为Swift4.0之后去掉了Swift3.x对隐式类型推断的特性，必须手动管理<code>@objc</code>，保证oc和Swift代码能互相调用。</p>
 <h3 id="设置菜单"><a href="#设置菜单" class="headerlink" title="设置菜单"></a>设置菜单</h3><p>在<code>Main.storyboard</code>的<code>Application Scene</code>中拖入<code>NSMenu</code>，将<code>NSMenu</code>拖线到<code>AppDelegate</code>中。如同上面设置statusBar按钮一样，不需要设置按钮的<code>target</code>和<code>action</code>，需要设置<code>menu</code>。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@IBOutlet</span> <span class="keyword">weak</span> <span class="keyword">var</span> toolMenu: <span class="type">NSMenu</span>!</div><div class="line"></div><div class="line">...</div><div class="line"></div><div class="line">item.menu = toolMenu</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-04-15-48-40.png" alt="添加NSMenu"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-04-15-48-40.png" alt="添加NSMenu"></p>
 <p>添加<code>NSMenu</code>的点击事件，直接拖线<code>action</code>即可。</p>
 <h2 id="Dock和Window"><a href="#Dock和Window" class="headerlink" title="Dock和Window"></a>Dock和Window</h2><h3 id="隐藏Dock上的应用图标"><a href="#隐藏Dock上的应用图标" class="headerlink" title="隐藏Dock上的应用图标"></a>隐藏Dock上的应用图标</h3><p>开发statusBar应用，不需要弹出Window界面，可以在<code>Main.storyboard</code>中的<code>Window Controller Scene</code>中取消<code>Is Initial Controller</code>的勾选。</p>
 <p>不需要在Dock上出现应用图标，<code>Info.plist</code>中添加Key - Value：<code>Application is agent (UIElement)</code> - <code>YES</code></p>
@@ -408,7 +408,7 @@
 <p>需要调用下面代码，将其他应用都取消<code>keyWindow</code></p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="type">NSApp</span>.activate(ignoringOtherApps: <span class="literal">true</span>)</div></pre></td></tr></table></figure>
 <h2 id="NSTextField"><a href="#NSTextField" class="headerlink" title="NSTextField"></a>NSTextField</h2><h3 id="输入时隐藏蓝色边框"><a href="#输入时隐藏蓝色边框" class="headerlink" title="输入时隐藏蓝色边框"></a>输入时隐藏蓝色边框</h3><p><code>xib</code>中在<code>Focus Ring</code>中选择<code>None</code></p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-05-10-45-36.png" alt="隐藏蓝色边框"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-05-10-45-36.png" alt="隐藏蓝色边框"></p>
 <p>或者在代码中执行：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">textField.focusRingType = .<span class="keyword">none</span></div></pre></td></tr></table></figure>
 <h3 id="文本框第一响应者"><a href="#文本框第一响应者" class="headerlink" title="文本框第一响应者"></a>文本框第一响应者</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">self</span>.window?.makeFirstResponder(textField)<span class="comment">//设置为第一响应者</span></div><div class="line"><span class="keyword">self</span>.window?.makeFirstResponder(<span class="literal">nil</span>) <span class="comment">//取消第一响应者</span></div></pre></td></tr></table></figure>
@@ -419,12 +419,12 @@
 <p>其他方式请见：<a href="https://stackoverflow.com/questions/6492038/find-mac-os-x-version-number-in-objective-c" target="_blank" rel="external">查找Mac OS X版本号</a></p>
 <h3 id="app版本号"><a href="#app版本号" class="headerlink" title="app版本号"></a>app版本号</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> version = <span class="type">Bundle</span>.main.object(forInfoDictionaryKey: <span class="string">"CFBundleShortVersionString"</span>)</div><div class="line"><span class="keyword">let</span> bundle = <span class="type">Bundle</span>.main.object(forInfoDictionaryKey: <span class="string">"CFBundleVersion"</span>)</div></pre></td></tr></table></figure>
 <h2 id="设置快捷键和关闭退出应用"><a href="#设置快捷键和关闭退出应用" class="headerlink" title="设置快捷键和关闭退出应用"></a>设置快捷键和关闭退出应用</h2><h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><p>xib或storyboard设置快捷键很方便，直接在<code>Key Equivalend</code>输入快捷键即可。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-42-28.png" alt="设置快捷键"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-07-15-42-28.png" alt="设置快捷键"></p>
 <h3 id="退出应用"><a href="#退出应用" class="headerlink" title="退出应用"></a>退出应用</h3><p>从<code>action</code>拖线到<code>Application</code>，选择<code>stop:</code>方法即可：</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20171207-154727.png" alt="拖线到Application"></p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-12-07-15-48-21.png" alt="选择stop:方法"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-154727.png" alt="拖线到Application"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-07-15-48-21.png" alt="选择stop:方法"></p>
 <p>或者拖线到<code>First Responder</code>，选择<code>terminate:</code>方法</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/WX20171207-155548.png" alt="拖线到First Responder"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-155548.png" alt="拖线到First Responder"></p>
 <p>或者调用代码：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="type">NSApplication</span>.shared().terminate(<span class="keyword">self</span>)</div></pre></td></tr></table></figure>
 <h3 id="关闭应用"><a href="#关闭应用" class="headerlink" title="关闭应用"></a>关闭应用</h3><p>拖线到<code>First Responder</code>，选择<code>performClose:</code>方法</p>
@@ -451,14 +451,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -577,7 +577,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://oalg33nuc.bkt.clouddn.com/7787970.jpg"
+                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
                 alt="Mark" />
             
               <p class="site-author-name" itemprop="name">Mark</p>
@@ -591,7 +591,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -85,15 +85,15 @@
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="记录了在iOS开发中踩过的坑和一些问题解决
 本文不断更新中…">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/image/Untitleds.gif">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20160722-0.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/Untitleds.gif">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20160722-0.png">
 <meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160928-0.png?raw=true">
-<meta property="og:updated_time" content="2016-11-27T05:14:18.000Z">
+<meta property="og:updated_time" content="2018-12-24T07:58:56.085Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS开发笔记">
 <meta name="twitter:description" content="记录了在iOS开发中踩过的坑和一些问题解决
 本文不断更新中…">
-<meta name="twitter:image" content="http://oalg33nuc.bkt.clouddn.com/image/Untitleds.gif">
+<meta name="twitter:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/Untitleds.gif">
 
 
 
@@ -281,7 +281,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://oalg33nuc.bkt.clouddn.com/7787970.jpg">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -391,10 +391,10 @@
 <h2 id="微信的openid"><a href="#微信的openid" class="headerlink" title="微信的openid"></a>微信的openid</h2><p>微信的openid对于某个用户来说并不是唯一的，某个用户对某个公众号或者对某个微信开放平台下某个appid生成的是唯一的。appid改变，openid也会改变。公众号下和app下获得的openid不同，现阶段无法实现相同操作。使用unionid打通用户，微信开放平台上绑定了公众号，这时获取的unionid会一致。</p>
 <h2 id="Cell进入编辑状态，内容覆盖编辑按钮"><a href="#Cell进入编辑状态，内容覆盖编辑按钮" class="headerlink" title="Cell进入编辑状态，内容覆盖编辑按钮"></a>Cell进入编辑状态，内容覆盖编辑按钮</h2><p>删除一条cell时，最常用的方法就是侧滑删除。</p>
 <p>还有就是点击编辑按钮，cell进入编辑状态，点击红色减号button，出现删除按钮，点击删除完成删除操作。这时会出现问题，cell上的内容遮盖了删除按钮，如下图所示。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/image/Untitleds.gif" alt="如图"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/Untitleds.gif" alt="如图"></p>
 <p>解决这个问题，只需要在自定义cell里加如下代码</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)layoutSubviews</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">super</span> layoutSubviews];</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isEditing) &#123;</div><div class="line">        [<span class="keyword">self</span> sendSubviewToBack:<span class="keyword">self</span>.contentView];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20160722-0.png" alt="结果"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20160722-0.png" alt="结果"></p>
 <h2 id="View中部分内嵌UIWebView"><a href="#View中部分内嵌UIWebView" class="headerlink" title="View中部分内嵌UIWebView"></a>View中部分内嵌UIWebView</h2><p>在开发中，有的界面要求部分原生，部分根据服务器返回的URL地址显示网页。这就需要计算这部分网页的size。不然就会显示不全或者留白太多</p>
 <p>创建UIWebView 并加载页面</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIWebView</span> *webview = [[<span class="built_in">UIWebView</span> alloc] init]; <span class="comment">//创建webview</span></div><div class="line">webview.delegate = <span class="keyword">self</span>;  <span class="comment">//设置代理</span></div><div class="line">[webview loadHTMLString:url baseURL:<span class="literal">nil</span>]; <span class="comment">//加载网页</span></div><div class="line">[<span class="keyword">self</span>.view addSubview:webview]; <span class="comment">//添加到view上</span></div></pre></td></tr></table></figure>
@@ -501,14 +501,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -623,7 +623,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://oalg33nuc.bkt.clouddn.com/7787970.jpg"
+                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
                 alt="Mark" />
             
               <p class="site-author-name" itemprop="name">Mark</p>
@@ -637,7 +637,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

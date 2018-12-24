@@ -85,15 +85,15 @@
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="在工作中分发内测应用是经常遇见的，常见的方式有：TestFlight，用企业级开发者账号，搜集UDID打包等方式，每种方式都各有利弊。
 由于公司有企业级开发者账号，所以平常应用内测比较简单：直接拿企业级账号打包.ipa，将.ipa发布到内测平台（比如蒲公英，fir.im），测试人员直接下载安装就可，只是第一次需要信任一下企业级证书。">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-07-25-19-21-04.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/6111501034232_.pic.jpg">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/QQ20170726-104243.png">
-<meta property="og:updated_time" content="2017-07-26T03:11:02.000Z">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-07-25-19-21-04.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/6111501034232_.pic.jpg">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170726-104243.png">
+<meta property="og:updated_time" content="2018-12-24T07:59:23.222Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ipa重签名">
 <meta name="twitter:description" content="在工作中分发内测应用是经常遇见的，常见的方式有：TestFlight，用企业级开发者账号，搜集UDID打包等方式，每种方式都各有利弊。
 由于公司有企业级开发者账号，所以平常应用内测比较简单：直接拿企业级账号打包.ipa，将.ipa发布到内测平台（比如蒲公英，fir.im），测试人员直接下载安装就可，只是第一次需要信任一下企业级证书。">
-<meta name="twitter:image" content="http://oalg33nuc.bkt.clouddn.com/2017-07-25-19-21-04.png">
+<meta name="twitter:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-07-25-19-21-04.png">
 
 
 
@@ -281,7 +281,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://oalg33nuc.bkt.clouddn.com/7787970.jpg">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -392,7 +392,7 @@
 <p>在工作中，有时候我们需要分发某个app的.ipa包，并没有改app的源码，无法用自己的账号打包。这时就用到了重签名。</p>
 <p>其实ipa重签名的应用场景很多，比如App Store上的付费应用，可以使用自己的开发者账号，其.ipa包重新签名，就可以安装了。各大app助手平台就是这么做的。注意直接从App Store下载的应用是加壳的，无法直接重新签名，必须砸壳。<a href="http://iosre.com/" target="_blank" rel="external">iOSRE逆向</a></p>
 <h2 id="iReSign"><a href="#iReSign" class="headerlink" title="iReSign"></a>iReSign</h2><p><a href="https://github.com/maciekish/iReSign" target="_blank" rel="external">iReSign</a>是一个重签名工具</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-07-25-19-21-04.png" alt="iReSign"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-07-25-19-21-04.png" alt="iReSign"></p>
 <p>操作步骤：</p>
 <ol>
 <li>选择.ipa包的路径</li>
@@ -403,7 +403,7 @@
 <li>点击重新签名！</li>
 </ol>
 <p>结果是失败了。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/6111501034232_.pic.jpg" alt="iResign运行结果"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/6111501034232_.pic.jpg" alt="iResign运行结果"></p>
 <p>错误信息如下，可以查看该错误的<a href="https://github.com/maciekish/iReSign/issues/99" target="_blank" rel="external">IResign上的issues</a></p>
 <figure class="highlight gauss"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[General] <span class="built_in">Error</span> Domain=NSCocoaErrorDomain <span class="built_in">Code</span>=<span class="number">3840</span> <span class="string">"Unexpected character s at line 1"</span> UserInfo=&#123;NSDebugDescription=Unexpected character s at <span class="keyword">line</span> <span class="number">1</span>, kCFPropertyListOldStyleParsingError=<span class="built_in">Error</span> Domain=NSCocoaErrorDomain <span class="built_in">Code</span>=<span class="number">3840</span> <span class="string">"Unexpected ';' or '=' after key at line 1"</span> UserInfo=&#123;NSDebugDescription=Unexpected ';' <span class="keyword">or</span> '=' after <span class="built_in">key</span> at <span class="keyword">line</span> <span class="number">1</span>&#125;&#125;</div></pre></td></tr></table></figure>
 <p>另外还有一个重签名工具：<a href="https://github.com/DanTheMan827/ios-app-signer" target="_blank" rel="external">ios-app-signer</a></p>
@@ -433,7 +433,7 @@
 <li>在<code>Signing Identity:</code>上面会出现一串可用的<code>identity</code>，这里要输入这些<code>identity</code>的十六进制串。回车</li>
 <li>成功了：<code>Successfully signed 路径/xxx.ipa!</code>原来文件夹中的.ipa已经被重签名了。上传到蒲公英内测平台，完全可以下载使用。</li>
 </ol>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/QQ20170726-104243.png" alt="操作步骤"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170726-104243.png" alt="操作步骤"></p>
 <p>本文涉及到的知识点都是从网上Google的，感谢网友们分享的资料，还涉及的一些参考资料：</p>
 <p><a href="https://objccn.io/issue-17-2/" target="_blank" rel="external">代码签名探析</a></p>
 <p><a href="http://www.hudongdong.com/skill/363.html" target="_blank" rel="external">mac用终端对ipa包重新签名</a></p>
@@ -459,14 +459,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -587,7 +587,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://oalg33nuc.bkt.clouddn.com/7787970.jpg"
+                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
                 alt="Mark" />
             
               <p class="site-author-name" itemprop="name">Mark</p>
@@ -601,7 +601,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

@@ -83,13 +83,13 @@
 <meta property="og:url" content="http://markmiao.com/2017/11/13/apidoc/index.html">
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="作为移动端开发，接口文档看得多，写得少。最近对已开发完成的app进行接口文档整理，发现了apiDoc这款神器。见识到接口文档也可以写的这么高大上，之前用markdown写弱爆了，用word的自杀吧。">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-11-14-09-36-28.png">
-<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/2017-11-14-09-52-10.png">
-<meta property="og:updated_time" content="2017-11-14T02:53:42.000Z">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-36-28.png">
+<meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-52-10.png">
+<meta property="og:updated_time" content="2018-12-24T07:58:01.454Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用apiDoc写接口文档">
 <meta name="twitter:description" content="作为移动端开发，接口文档看得多，写得少。最近对已开发完成的app进行接口文档整理，发现了apiDoc这款神器。见识到接口文档也可以写的这么高大上，之前用markdown写弱爆了，用word的自杀吧。">
-<meta name="twitter:image" content="http://oalg33nuc.bkt.clouddn.com/2017-11-14-09-36-28.png">
+<meta name="twitter:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-36-28.png">
 
 
 
@@ -277,7 +277,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://oalg33nuc.bkt.clouddn.com/7787970.jpg">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -399,11 +399,11 @@
 </ul>
 <h2 id="创建接口源文档"><a href="#创建接口源文档" class="headerlink" title="创建接口源文档"></a>创建接口源文档</h2><p>我是以<code>js</code>文件写的接口文档，在配置文件<code>apidoc.json</code>统计目录下创建接口文件<code>接口.js</code>，文件名称自定义。</p>
 <p>apiDoc最大的亮点是可以版本比较，接口更改过，可以通过接口右侧的版本号选择进行变化比较。</p>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-11-14-09-36-28.png" alt="版本比较"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-36-28.png" alt="版本比较"></p>
 <p>这需要在源文档中保留每个历史版本，所以每个接口都可能对应N个历史版本，所以建议一个接口用一个文件。</p>
 <h3 id="内容示例"><a href="#内容示例" class="headerlink" title="内容示例"></a>内容示例</h3><p>创建一个<code>编辑资料.js</code>文件，并输入以下内容：</p>
 <figure class="highlight julia"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"><span class="meta">@api</span> &#123;POST&#125; users/userinfo.asp [编辑资料]</div><div class="line"><span class="meta">@apiVersion</span> <span class="number">0.1</span><span class="number">.0</span></div><div class="line"><span class="meta">@apiName</span> userinfo</div><div class="line"><span class="meta">@apiGroup</span> users</div><div class="line"><span class="meta">@apiSampleRequest</span> off</div><div class="line"><span class="meta">@apiDescription</span> 编辑用户资料</div><div class="line"></div><div class="line"><span class="meta">@apiParam</span> &#123;<span class="built_in">String</span>&#125; userid 用户id</div><div class="line"><span class="meta">@apiParam</span> &#123;<span class="built_in">String</span>&#125; username 用户名</div><div class="line"><span class="meta">@apiParam</span> &#123;<span class="built_in">String</span>&#125; usersex 性别</div><div class="line"><span class="meta">@apiParam</span> &#123;<span class="built_in">String</span>&#125; token token</div><div class="line"></div><div class="line"><span class="meta">@apiSuccess</span> &#123;Object&#125;   data  对象数据</div><div class="line"><span class="meta">@apiSuccess</span> &#123;<span class="built_in">String</span>&#125;   data.userheadimg     头像</div><div class="line"><span class="meta">@apiSuccess</span> &#123;<span class="built_in">String</span>&#125;   data.username     用户名</div><div class="line"><span class="meta">@apiSuccess</span> &#123;<span class="built_in">String</span>&#125;   data.userphone     手机号</div><div class="line"><span class="meta">@apiSuccess</span> &#123;<span class="built_in">String</span>&#125;   data.usersex     性别</div><div class="line"><span class="meta">@apiSuccess</span> &#123;<span class="built_in">String</span>&#125;   errorcode  错误码</div><div class="line"><span class="meta">@apiSuccess</span> &#123;<span class="built_in">String</span>&#125;   errormessage  信息</div><div class="line"></div><div class="line"><span class="meta">@apiExample</span> 返回示例</div><div class="line">HTTP/<span class="number">1.0</span> <span class="number">0</span> ok</div><div class="line">&#123;</div><div class="line">    data =     &#123;</div><div class="line">        userheadimg = <span class="string">"http://xxxxxxx/api/user/2017/11/13/5EC93450A72741FA92AB4E08D4A96710.jpg"</span>;</div><div class="line">        username = markmiao;</div><div class="line">        userphone = <span class="number">13000000000</span>;</div><div class="line">        usersex = <span class="string">"男"</span>;</div><div class="line">    &#125;;</div><div class="line">    errorcode = <span class="number">0</span>;</div><div class="line">    errormessage = <span class="string">"success"</span>;</div><div class="line">&#125;</div><div class="line">*/</div></pre></td></tr></table></figure>
-<p><img src="http://oalg33nuc.bkt.clouddn.com/2017-11-14-09-52-10.png" alt="部署完成后的显示样式"></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-52-10.png" alt="部署完成后的显示样式"></p>
 <h3 id="字段解释"><a href="#字段解释" class="headerlink" title="字段解释"></a>字段解释</h3><p>文档中所有内容是包含在<code>/**   */</code>注释中的，用apiDoc写接口文档就是写注释。</p>
 <p><code>@api {POST} users/userinfo.asp [编辑资料]</code> </p>
 <ul>
@@ -465,14 +465,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="http://oalg33nuc.bkt.clouddn.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
         <p>支付宝</p>
       </div>
     
@@ -591,7 +591,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
-                src="http://oalg33nuc.bkt.clouddn.com/7787970.jpg"
+                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
                 alt="Mark" />
             
               <p class="site-author-name" itemprop="name">Mark</p>
@@ -605,7 +605,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
