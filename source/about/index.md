@@ -4,9 +4,11 @@ date: 2016-11-09 17:15:12
 comments: false
 ---
 
-90后，坐标北京，iOS码农，目前就职于创业公司。
 
-E-mail: i#markmiao.com (#=>@)
+
+90后，坐标北京，码农，职于创业公司。
+
+E-mail: i#markmiao.com
 
 Github: [@Mark Miao](https://github.com/mxdios)
 
