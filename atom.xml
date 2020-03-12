@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2019-01-02T03:26:11.506Z</updated>
+  <updated>2020-03-12T02:04:41.004Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,141 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Flutter笔记2-第一个Flutter Demo</title>
+    <link href="http://markmiao.com/2020/03/12/flutter2/"/>
+    <id>http://markmiao.com/2020/03/12/flutter2/</id>
+    <published>2020-03-12T02:02:50.000Z</published>
+    <updated>2020-03-12T02:04:41.004Z</updated>
+    
+    <content type="html"><![CDATA[<p>第一个flutter demo—— 无限滚动的列表应用</p>
+<p>Material Design （质感设计），Google开发的设计语言，拓展于Google即时的卡片设计。</p>
+<p>flutter提供了丰富的质感设计风格的widgets，在flutter中，几乎所有都是widget，</p>
+<a id="more"></a>
+<h2 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h2><figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>; <span class="comment">//导入Material Design</span></div><div class="line"></div><div class="line"><span class="comment">//dart中的单行函数，main()是应用程序的主函数，执行结果是runApp(MyApp()), MyApp()就是下面自定义的函数。</span></div><div class="line"><span class="keyword">void</span> main() =&gt; runApp(MyApp()); </div><div class="line"></div><div class="line"><span class="comment">//MyApp继承自StatelessWidget</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="keyword">return</span> MaterialApp(</div><div class="line">      title: <span class="string">'Welcome to Flutter'</span>,</div><div class="line">      home: Scaffold(<span class="comment">//Scaffold是material提供的widget，具有默认导航栏，标题，主屏幕的body属性</span></div><div class="line">        appBar: AppBar(</div><div class="line">          title: Text(<span class="string">'Welcome to Flutter'</span>),</div><div class="line">        ),</div><div class="line">        body: Center(</div><div class="line">          child: Text(<span class="string">'Hello World'</span>),</div><div class="line">        ),</div><div class="line">      ),</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由此可知，一个App是由widget组成的。widget可以一层层嵌套，它的最终显示样式，由它嵌套的子widget决定</p>
+<p>示例中，body是一个widget，里面包含了Center widget，Center widget又包含了Text widget，Center widget决定了子widget以居中样式呈现，所以body的呈现样式是居中显示了文本 <code>Hello World</code></p>
+<h2 id="引入开源包"><a href="#引入开源包" class="headerlink" title="引入开源包"></a>引入开源包</h2><p>使用 <a href="https://pub.flutter-io.cn/packages/english_words" target="_blank" rel="external">english_words</a> 资源包，英文单词数据资源</p>
+<p>项目中 <code>pubspec.yaml</code> 是资源管理包，类似iOS开发中使用cocopads的 <code>Podfile</code>。</p>
+<p>在 <code>dependencies</code> 栏下添加资源包名：<code>english_words: ^3.1.5</code> （3.1.5 或更高版本）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attr">dependencies:</span></div><div class="line"><span class="attr">  flutter:</span></div><div class="line"><span class="attr">    sdk:</span> flutter</div><div class="line">    </div><div class="line"><span class="attr">  cupertino_icons:</span> ^<span class="number">0.1</span><span class="number">.2</span></div><div class="line"><span class="attr">  english_words:</span> ^<span class="number">3.1</span><span class="number">.5</span></div></pre></td></tr></table></figure>
+<p>添加之后，在VSCode右上角，有一个方块加向下箭头的图标 <code>Get Packages</code>，点击便可安装资源包，控制台会打印安装结果：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[first_demo] flutter packages get</div><div class="line">Running <span class="string">"flutter pub get"</span> <span class="keyword">in</span> first_demo...                          <span class="number">0.4</span>s</div><div class="line"><span class="keyword">exit</span> code <span class="number">0</span></div></pre></td></tr></table></figure>
+<p>同时会在 <code>pubspec.lock</code> 文件中增加了添加的包名和版本信息：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">english_words:</span></div><div class="line"><span class="symbol">    dependency:</span> <span class="string">"direct main"</span></div><div class="line"><span class="symbol">    description:</span></div><div class="line"><span class="symbol">      name:</span> english_words</div><div class="line"><span class="symbol">      url:</span> <span class="string">"https://pub.flutter-io.cn"</span></div><div class="line"><span class="symbol">    source:</span> hosted</div><div class="line"><span class="symbol">    version:</span> <span class="string">"3.1.5"</span></div></pre></td></tr></table></figure>
+<h2 id="使用资源包English-words"><a href="#使用资源包English-words" class="headerlink" title="使用资源包English words"></a>使用资源包English words</h2><p>示例代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> <span class="string">'package:english_words/english_words.dart'</span>; <span class="comment">//引入english_words，写类WordPair时，会自动引入</span></div><div class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</div><div class="line"></div><div class="line"><span class="keyword">void</span> main() =&gt; runApp(MyApp());</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="keyword">final</span> name = WordPair.random(); <span class="comment">//english_words中的随机词对，final是定义不变更的变量的关键字</span></div><div class="line">    <span class="keyword">return</span> MaterialApp(</div><div class="line">      home: Scaffold(</div><div class="line">        appBar: AppBar(</div><div class="line">          title: Text(<span class="string">'Welcome to Flutter'</span>),</div><div class="line">        ),</div><div class="line">        body: Center(</div><div class="line">          child: Text(name.asPascalCase), <span class="comment">//asPascalCase是大驼峰命名法，每个单次首字母大写，相应的还有asCamelCase等，可以尝试。</span></div><div class="line">        ),</div><div class="line">      ),</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>点击 <code>command + s</code> （也可点击VSCode上悬浮栏的闪电按钮）会热重载，APP中的文字会不断变化。</p>
+<h2 id="StatefulWidget"><a href="#StatefulWidget" class="headerlink" title="StatefulWidget"></a>StatefulWidget</h2><p>上述demo中，是用的StatelessWidget，这是不可变的widget，属性不能改变，都是final的。</p>
+<p>StatefulWidget是可变的widget，它本身不可变，但它有一个 <code>State</code> 状态类，这个在widget整个生命周期一直存在，是可变的。</p>
+<p>创建一个StatefulWidget，和创建StatelessWidget一样，示例代码：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RandomWorld</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  WorldState createState() =&gt; WorldState();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>方法中 <code>WorldState</code> 是StatefulWidget的 State 类，这个类通过createState()方法创建，后跟创建 State类的自定义方法 <code>WorldState()</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorldState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">RandomWorld</span>&gt; </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="keyword">final</span> name = WordPair.random();</div><div class="line">    <span class="keyword">return</span> Text(name.asPascalCase);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是创建State的实现方法，WorldState集成自State，<code>&lt;RandomWords&gt;</code> 代表着专门用于<code>RandomWorld</code> 的State泛型类。里面的build方法比较容易理解，就是创建widget的build方法，里面返回了一个动态的Text。这说明State也是一个widget。</p>
+<p><em>万物皆widget啊！</em></p>
+<p>剩下的就是使用StatefulWidget，在MyApp中使用StatefulWidget的自定义RandomWorld，动态name用不到了，直接使用<code>RandomWorld()</code></p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="comment">// final name = WordPair.random();</span></div><div class="line">    <span class="keyword">return</span> MaterialApp(</div><div class="line">      home: Scaffold(</div><div class="line">        appBar: AppBar(</div><div class="line">          title: Text(<span class="string">'Welcome to Flutter'</span>),</div><div class="line">        ),</div><div class="line">        body: Center(</div><div class="line">          child: RandomWorld()</div><div class="line">        ),</div><div class="line">      ),</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行程序，跟之前别无二致，还是APP中的英文词组在变化。但变化从由<code>StatelessWidget</code>里的一个widget控制，变为由<code>StatefulWidget</code> 的 <code>State</code>控制。</p>
+<h2 id="无限滚动列表"><a href="#无限滚动列表" class="headerlink" title="无限滚动列表"></a>无限滚动列表</h2><p>无限滚动是动态的，在上述demo中开发无限滚动列表，需要在State类 <code>WorldState</code> 中操作。</p>
+<p>无限滚动列表，需要有个无限的数组数据源，所以首先在 <code>WorldState</code> 创建一个数组，用于存放数据源：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorldState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">RandomWorld</span>&gt; </span>&#123;</div><div class="line">  <span class="keyword">final</span> _worldArray = &lt;WordPair&gt;[]; <span class="comment">//创建数组，存放内容是WordPair。在Dart中，使用_前缀，会强制使其变为私有</span></div><div class="line">  <span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有了数据源，开始创建一个ListView，这是列表widget：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Widget _listView() &#123;</div><div class="line">    <span class="keyword">return</span> ListView.builder( <span class="comment">//ListView类的builder方法</span></div><div class="line">      itemBuilder: (context, i) &#123; <span class="comment">//itemBuilder 是ListView的builder属性，是匿名回调函数，接收两个参数BuildContext和 i，i从0开始自增</span></div><div class="line">        <span class="keyword">if</span> (i.isOdd) &#123; <span class="comment">//在奇数行添加分割线</span></div><div class="line">          <span class="keyword">return</span> Divider();<span class="comment">//分割线</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">final</span> index = i ~/ <span class="number">2</span>; <span class="comment">// i/2向下取整，能得到偶数列按照0、1、2、3……的index</span></div><div class="line">        <span class="keyword">if</span> (index &gt;= _worldArray.length) &#123;</div><div class="line">          _worldArray.addAll(generateWordPairs().take(<span class="number">10</span>)); <span class="comment">//当index是数组长度时，数组最后一位了，再生成10个词组添加到数组中。generateWordPairs()是WordPairs的方法</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> _buildRow(_worldArray[index]); <span class="comment">//偶数行，向列表中添加文本</span></div><div class="line">      &#125;</div><div class="line">    );</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>向列表中添加文本也是个私有方法 <code>_buildRow</code> :</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Widget _buildRow(WordPair name) &#123; <span class="comment">//传参，数组中的元素WordPair</span></div><div class="line">    <span class="keyword">return</span> ListTile( <span class="comment">//返回列表的Tile，类似于iOS中的cell</span></div><div class="line">      title: Text(</div><div class="line">        name.asPascalCase,</div><div class="line">      ),</div><div class="line">    );</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>至此，无限列表已经创建完了。要将无限列表添加到 <code>WorldState</code> 中，替换原来赋值词组的方法 ：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@override</span></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="keyword">return</span> Scaffold( <span class="comment">//将整个Scaffold 都放到这里处理</span></div><div class="line">      appBar: AppBar (</div><div class="line">        title: Text(<span class="string">'Home'</span>),</div><div class="line">      ),</div><div class="line">      body: _listView(), <span class="comment">//body存放自定义的无限列表。</span></div><div class="line">    );</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>最后再更改MyApp的方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</div><div class="line">  <span class="meta">@override</span></div><div class="line">  Widget build(BuildContext context) &#123;</div><div class="line">    <span class="keyword">return</span> MaterialApp(</div><div class="line">      home: RandomWorld() <span class="comment">//home直接赋值自定义的动态widget即可。</span></div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行便呈现了无限滚动列表！</p>
+<p><strong>demo的完整代码见工程中的 <a href="https://github.com/mxdios/flutter-demo" target="_blank" rel="external">first_demo</a></strong></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;第一个flutter demo—— 无限滚动的列表应用&lt;/p&gt;
+&lt;p&gt;Material Design （质感设计），Google开发的设计语言，拓展于Google即时的卡片设计。&lt;/p&gt;
+&lt;p&gt;flutter提供了丰富的质感设计风格的widgets，在flutter中，几乎所有都是widget，&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Flutter" scheme="http://markmiao.com/categories/Flutter/"/>
+    
+    
+      <category term="Flutter" scheme="http://markmiao.com/tags/Flutter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Flutter笔记1-搭建开发环境</title>
+    <link href="http://markmiao.com/2020/03/12/flutter1/"/>
+    <id>http://markmiao.com/2020/03/12/flutter1/</id>
+    <published>2020-03-12T01:35:50.000Z</published>
+    <updated>2020-03-12T02:01:38.523Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="在macOS上搭建flutter开发环境"><a href="#在macOS上搭建flutter开发环境" class="headerlink" title="在macOS上搭建flutter开发环境"></a>在macOS上搭建flutter开发环境</h2><h3 id="获取flutter-sdk"><a href="#获取flutter-sdk" class="headerlink" title="获取flutter sdk"></a>获取flutter sdk</h3><p>官网地址：<a href="https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos" target="_blank" rel="external">https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos</a></p>
+<p>github：<a href="https://github.com/flutter/flutter/releases" target="_blank" rel="external">https://github.com/flutter/flutter/releases</a></p>
+<a id="more"></a>
+<p>查看flutter SDK版本号：解压后 flutter/version</p>
+<p>添加flutter到path中，’pwd’是解压后flutter的文件路径。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">export PATH=`pwd`/flutter/bin:$PATH</div></pre></td></tr></table></figure>
+<p>export命令文件所在：</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~/.bash_profile</div></pre></td></tr></table></figure>
+<p>至此，只能在当前路径下使用flutter命令</p>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><p>运行 <code>flutter doctor</code> 命令，查看是否需要安装其他依赖。根据提醒安装缺少的环境依赖。</p>
+<p>例如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">Doctor</span> <span class="selector-tag">summary</span> (<span class="selector-tag">to</span> <span class="selector-tag">see</span> <span class="selector-tag">all</span> <span class="selector-tag">details</span>, <span class="selector-tag">run</span> <span class="selector-tag">flutter</span> <span class="selector-tag">doctor</span> <span class="selector-tag">-v</span>):</div><div class="line"><span class="selector-attr">[✓]</span> <span class="selector-tag">Flutter</span> (<span class="selector-tag">Channel</span> <span class="selector-tag">stable</span>, <span class="selector-tag">v1</span><span class="selector-class">.12</span><span class="selector-class">.13</span>+<span class="selector-tag">hotfix</span><span class="selector-class">.8</span>, <span class="selector-tag">on</span> <span class="selector-tag">Mac</span> <span class="selector-tag">OS</span> <span class="selector-tag">X</span> 10<span class="selector-class">.15</span><span class="selector-class">.2</span> 19<span class="selector-tag">C57</span>, <span class="selector-tag">locale</span> <span class="selector-tag">zh-Hans-CN</span>)</div><div class="line"><span class="selector-attr">[✓]</span> <span class="selector-tag">Android</span> <span class="selector-tag">toolchain</span> <span class="selector-tag">-</span> <span class="selector-tag">develop</span> <span class="selector-tag">for</span> <span class="selector-tag">Android</span> <span class="selector-tag">devices</span> (<span class="selector-tag">Android</span> <span class="selector-tag">SDK</span> <span class="selector-tag">version</span> 28<span class="selector-class">.0</span><span class="selector-class">.3</span>)</div><div class="line"><span class="selector-attr">[✓]</span> <span class="selector-tag">Xcode</span> <span class="selector-tag">-</span> <span class="selector-tag">develop</span> <span class="selector-tag">for</span> <span class="selector-tag">iOS</span> <span class="selector-tag">and</span> <span class="selector-tag">macOS</span> (<span class="selector-tag">Xcode</span> 11<span class="selector-class">.3</span><span class="selector-class">.1</span>)</div><div class="line"><span class="selector-attr">[✓]</span> <span class="selector-tag">Android</span> <span class="selector-tag">Studio</span> (<span class="selector-tag">version</span> 3<span class="selector-class">.3</span>)</div><div class="line"><span class="selector-attr">[!]</span> <span class="selector-tag">IntelliJ</span> <span class="selector-tag">IDEA</span> <span class="selector-tag">Ultimate</span> <span class="selector-tag">Edition</span> (<span class="selector-tag">version</span> 2019<span class="selector-class">.2</span><span class="selector-class">.3</span>)</div><div class="line">    ✗ <span class="selector-tag">Flutter</span> <span class="selector-tag">plugin</span> <span class="selector-tag">not</span> <span class="selector-tag">installed</span>; <span class="selector-tag">this</span> <span class="selector-tag">adds</span> <span class="selector-tag">Flutter</span> <span class="selector-tag">specific</span> <span class="selector-tag">functionality</span>.</div><div class="line">    ✗ <span class="selector-tag">Dart</span> <span class="selector-tag">plugin</span> <span class="selector-tag">not</span> <span class="selector-tag">installed</span>; <span class="selector-tag">this</span> <span class="selector-tag">adds</span> <span class="selector-tag">Dart</span> <span class="selector-tag">specific</span> <span class="selector-tag">functionality</span>.</div><div class="line"><span class="selector-attr">[✓]</span> <span class="selector-tag">VS</span> <span class="selector-tag">Code</span> (<span class="selector-tag">version</span> 1<span class="selector-class">.42</span><span class="selector-class">.1</span>)</div><div class="line"><span class="selector-attr">[!]</span> <span class="selector-tag">Connected</span> <span class="selector-tag">device</span></div><div class="line">    ! <span class="selector-tag">No</span> <span class="selector-tag">devices</span> <span class="selector-tag">available</span></div></pre></td></tr></table></figure>
+<p>问题：</p>
+<p>执行 <code>flutter doctor</code> 命令时，提示“无法打开“idevice_id”，因为无法验证开发者”。</p>
+<p>去Mac的“系统偏好设置–&gt;安全隐私–&gt;通用–&gt;允许idevice_id”，重新运行 <code>flutter doctor</code> 命令，弹窗会出现打开按钮。</p>
+<h3 id="全局可用flutter命令"><a href="#全局可用flutter命令" class="headerlink" title="全局可用flutter命令"></a>全局可用flutter命令</h3><ol>
+<li><p>获取flutter SDK路径，用在第2步中添加的路径。</p>
+</li>
+<li><p>不同系统文件目录可能会不相同，以 <code>.bashrc</code> 为例。在 <code>.bashrc</code> 文件中添加路径。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> PATH=<span class="string">"<span class="variable">$PATH</span>:/Users/inspiry/Desktop/work/flutter/bin"</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>运行 <code>source $HOME/.bash_profile</code> 刷新命令行</p>
+</li>
+<li><p>使用 <code>echo $PATH</code> 命令查看SDK路径是否已添加</p>
+</li>
+<li><p>使用 <code>which flutter</code> 查找flutter，验证是否可用全局命令</p>
+</li>
+</ol>
+<p>至此，开发环境配置完成。</p>
+<h2 id="VS-Code"><a href="#VS-Code" class="headerlink" title="VS Code"></a>VS Code</h2><h3 id="VS-Code配置"><a href="#VS-Code配置" class="headerlink" title="VS Code配置"></a>VS Code配置</h3><ol>
+<li>安装flutter插件，在Extension中搜索flutter插件，安装，重启VSCode</li>
+<li>验证flutter，在命令面板 <code>command + shift + p</code> 中输入doctor，选择 <code>Flutter: Run Flutter Doctor</code> 运行。查看输出是否有问题。打印结果和命令行中doctor命令结果一致。</li>
+</ol>
+<h3 id="VS-Code新建项目"><a href="#VS-Code新建项目" class="headerlink" title="VS Code新建项目"></a>VS Code新建项目</h3><ol>
+<li>命令面板运行 <code>Flutter:New Project</code></li>
+<li>输入项目名称，回车，选择项目存放目录</li>
+</ol>
+<p>简单的两步便创建了一个flutter项目，项目所需代码在 <code>lib/main.dart</code> </p>
+<h3 id="运行项目"><a href="#运行项目" class="headerlink" title="运行项目"></a>运行项目</h3><p>在vscode最下面的状态栏中选择模拟器，点击 <code>运行 - 启动调试</code>，demo会运行到模拟器中</p>
+<p>flutter支持热重载，直接修改 <code>lib/main.dart</code> 中的代码，保存后即刻呈现在APP上。</p>
+<p>问题：</p>
+<ol>
+<li>找不到状态栏：<code>查看 - 外观 - 勾选显示状态栏</code></li>
+<li>提醒在flutter SDK中找不到Dart，要求在命令行中运行 <code>flutter doctor</code> 命令重试，运行命令则无反应。解决办法：在进程中找到 dart 关闭，重启vscode重试。</li>
+</ol>
+<p>至此，开发环境搭建完成。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;在macOS上搭建flutter开发环境&quot;&gt;&lt;a href=&quot;#在macOS上搭建flutter开发环境&quot; class=&quot;headerlink&quot; title=&quot;在macOS上搭建flutter开发环境&quot;&gt;&lt;/a&gt;在macOS上搭建flutter开发环境&lt;/h2&gt;&lt;h3 id=&quot;获取flutter-sdk&quot;&gt;&lt;a href=&quot;#获取flutter-sdk&quot; class=&quot;headerlink&quot; title=&quot;获取flutter sdk&quot;&gt;&lt;/a&gt;获取flutter sdk&lt;/h3&gt;&lt;p&gt;官网地址：&lt;a href=&quot;https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos&quot;&gt;https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;github：&lt;a href=&quot;https://github.com/flutter/flutter/releases&quot;&gt;https://github.com/flutter/flutter/releases&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Flutter" scheme="http://markmiao.com/categories/Flutter/"/>
+    
+    
+      <category term="Flutter" scheme="http://markmiao.com/tags/Flutter/"/>
+    
+  </entry>
   
   <entry>
     <title>隐私政策</title>
@@ -1051,92 +1186,6 @@
     <summary type="html">
     
       &lt;p&gt;widget是iOS8时推出的窗口小部件功能，窗口小部件在Android上早已大行其道。记得当年用过的第一部Android是深圳出产的国产机，当时滑过三四个屏幕的应用，还能继续再滑三四个屏幕的窗口小部件。用的最多的窗口小部件就是日历了，屏幕上一目了然。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="swift" scheme="http://markmiao.com/tags/swift/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>swift中contains的使用</title>
-    <link href="http://markmiao.com/2017/03/16/swift%E4%B8%ADcontains%E7%9A%84%E4%BD%BF%E7%94%A8/"/>
-    <id>http://markmiao.com/2017/03/16/swift中contains的使用/</id>
-    <published>2017-03-16T05:25:47.000Z</published>
-    <updated>2017-03-16T05:27:16.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>contains</code>是swift中的一个实例方法，返回一个Bool值，用于做“是否包含”的判断。简单的说就是：告诉你一堆玩意儿中是否有你要的玩意儿。</p>
-<a id="more"></a>
-<h2 id="方法contains"><a href="#方法contains" class="headerlink" title="方法contains()"></a>方法contains()</h2><p>用法1：判断字符串中是否包含某个字符或某段字符串</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> str = <span class="string">"abcdef"</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"a"</span>))<span class="comment">//true</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"bcd"</span>))<span class="comment">//true</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"g"</span>))<span class="comment">//false</span></div></pre></td></tr></table></figure>
-<p>用法2：判断数组中是否包含某个元素</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> name = [<span class="string">"Mark"</span>, <span class="string">"Kim"</span>, <span class="string">"Goudan"</span>]</div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"Mark"</span>))<span class="comment">//true</span></div><div class="line"><span class="built_in">print</span>(str.<span class="built_in">contains</span>(<span class="string">"MJ"</span>))<span class="comment">//false</span></div></pre></td></tr></table></figure>
-<h2 id="方法contains-where"><a href="#方法contains-where" class="headerlink" title="方法contains(where: )"></a>方法contains(where: )</h2><p>该方法接收一个闭包，以序列元素作为闭包的参数，返回一个Bool值，判断该序列中是否有元素符合闭包条件。</p>
-<p>用法1：判断Int数组中元素有没有大于100的</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> list = [<span class="number">11</span>,<span class="number">22</span>,<span class="number">44</span>,<span class="number">66</span>,<span class="number">88</span>,<span class="number">100</span>]</div><div class="line"><span class="keyword">let</span> zz = list.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; (value) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></div><div class="line">    <span class="keyword">return</span> value &gt; <span class="number">100</span></div><div class="line">&#125;)</div><div class="line"><span class="built_in">print</span>(zz)<span class="comment">//false</span></div></pre></td></tr></table></figure>
-<p>闭包的写法可以简化，闭包中只有一行表达式时，可以省略return，直接写表达式，隐式返回：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> zz = list.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; (value) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></div><div class="line">	 value &gt; <span class="number">100</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p>闭包的参数名可以简化为$0，表示第i个参数：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> zz = list.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123;$<span class="number">0</span> &gt; <span class="number">100</span>&#125;)</div></pre></td></tr></table></figure>
-<p>用法2：判断对象数组中对象元素的某个key所对应的value是存在某值</p>
-<p>例如：判断下面<code>dictList</code>数组中的字典元素里面是否有<code>&quot;name&quot;</code> == <code>&quot;Mark&quot;</code>的元素存在</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> dictList = [[<span class="string">"name"</span>: <span class="string">"Goudan"</span>, <span class="string">"age"</span>: <span class="string">"22"</span>], [<span class="string">"name"</span>: <span class="string">"Mark"</span>, <span class="string">"age"</span>: <span class="string">"18"</span>], [<span class="string">"name"</span>: <span class="string">"Maoya"</span>, <span class="string">"age"</span>: <span class="string">"19"</span>], [<span class="string">"name"</span>: <span class="string">"Tuzi"</span>, <span class="string">"age"</span>: <span class="string">"25"</span>], ]</div></pre></td></tr></table></figure>
-<p>当然可以通过<code>for</code>循环遍历<code>dictList</code>数组，挨个字典元素检测。这样做太麻烦，可以使用<code>contains(where: )</code>方法，传入一个闭包，完成检测</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> isMark = dictList.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123; (dict:[<span class="type">String</span> : <span class="type">String</span>]) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></div><div class="line">    dict[<span class="string">"name"</span>] == <span class="string">"Mark"</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p>可简写为：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> isMark = a.<span class="built_in">contains</span>(<span class="keyword">where</span>: &#123;$<span class="number">0</span>[<span class="string">"name"</span>] == <span class="string">"Mark"</span>&#125;)</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;contains&lt;/code&gt;是swift中的一个实例方法，返回一个Bool值，用于做“是否包含”的判断。简单的说就是：告诉你一堆玩意儿中是否有你要的玩意儿。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="swift" scheme="http://markmiao.com/tags/swift/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>swift中delegate的使用注意</title>
-    <link href="http://markmiao.com/2017/03/10/swift%E4%B8%ADdelegate%E7%9A%84%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F/"/>
-    <id>http://markmiao.com/2017/03/10/swift中delegate的使用注意/</id>
-    <published>2017-03-10T08:21:42.000Z</published>
-    <updated>2017-03-16T05:28:37.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>delegate是iOS开发中一种非常常用的设计模式，经常用作界面的反向传值。block可以做到同样的事情，曾有人言delegate是个臃肿的胖子，远不如block轻便，早该淘汰了。在ARC中，block中使用swift要用weak修饰，注意循环引用。delegate也需要使用weak指针，避免内存泄露。</p>
-<a id="more"></a>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@property (nonatomic, <span class="keyword">weak</span>)id&lt;<span class="type">XDViewControllerDelegate</span>&gt; delegate;</div></pre></td></tr></table></figure>
-<p>ARC环境下在oc中定义delegate使用weak修饰，在delegate对象释放掉后，delegate没有强指针引用也会被释放掉，避免了访问不存在delegate对象的delegate方法而崩溃。可以在<code>dealloc</code>方法中做防御性操作：置空delegate。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (void)dealloc &#123;</div><div class="line">    <span class="keyword">self</span>.delegate = <span class="literal">nil</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在最近的swift项目中用到delegate，由于没有使用weak修饰，控件循环引用无法释放，导致内存泄露。</p>
-<p>场景是这样的: 在控制器中添加了A控件，A控件中有个子控件B，B有个代理方法，A作为他的代理，并实现了代理方法。在完成功能后，使用<code>removeFromSuperview()</code>移除A控件时，发现A和B的反初始化方法<code>deinit</code>都没调用，说明这两个控件没被释放掉，内存泄露了。</p>
-<p>(这里有个小坑，<code>deinit { }</code>方法里面如果没有执行代码是不会调用的，使用<code>deinit</code>检测该控件是否被移除，记得在<code>deinit { }</code>里面写一行执行代码，比如<code>print(&quot;deinit&quot;)</code>)</p>
-<p>因为我在定义delegate的时候，是这样定义的：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorkSelectView</span>: <span class="title">UIView</span></span>&#123;</div><div class="line">    <span class="keyword">var</span> delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>由于delegate没有weak修饰，在移除A控件的时候，A中有B，B的代理又是A，A和B相互引用，导致谁也没能释放掉。</p>
-<p>将delegate使用weak修饰即可，直接在<code>var delegate</code>前面加<code>weak</code>，编译会报错。这是因为在swift中遵守protocol的类型有很多，其中有些类型不支持weak修饰，比如struct。这里需要限制protocol的类型遵守。比如下面指定这个protocol只能由class遵守：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span>: <span class="title">class</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorkSelectView</span>: <span class="title">UIView</span></span>&#123;</div><div class="line">    <span class="keyword">weak</span> <span class="keyword">var</span> delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>还有一种方式是定义oc类型的protocol，因为oc类型的protocol只有class实现。使用关键词<code>@objc</code>修饰protocol：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> <span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WorkSelectView</span>: <span class="title">UIView</span></span>&#123;</div><div class="line">    <span class="keyword">weak</span> <span class="keyword">var</span> delegate:workSelectViewDelegate?</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>相比第二种方法，第一种方法明显才是swift该有的样子，第二种太依赖oc了。</p>
-<p>说起依赖oc，想起来在delegate定义中的<code>optional</code>，在swift中定义delegate方法，如果没有可选修饰，遵守了代理而不实现代理方法，不是警告，而是直接报错。</p>
-<p>要想使用可选实现的修饰<code>optional</code>，必须使用<code>@objc</code>修饰</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> <span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">    <span class="meta">@objc</span> <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">addTimeTextString</span><span class="params">()</span></span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这样还有一个问题，如果代理有结构体作为返回值的话，会不支持而报错。</p>
-<p>需要另一种方法定义可选代理方法，协议拓展：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">workSelectViewDelegate</span>: <span class="title">class</span></span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addWorkBtnViewClick</span><span class="params">(workTitle: String, workColor: String)</span></span></div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addTimeTextString</span><span class="params">()</span></span></div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">workSelectViewDelegate</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">func</span> <span class="title">addTimeTextString</span><span class="params">()</span></span> &#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;delegate是iOS开发中一种非常常用的设计模式，经常用作界面的反向传值。block可以做到同样的事情，曾有人言delegate是个臃肿的胖子，远不如block轻便，早该淘汰了。在ARC中，block中使用swift要用weak修饰，注意循环引用。delegate也需要使用weak指针，避免内存泄露。&lt;/p&gt;
     
     </summary>
     
