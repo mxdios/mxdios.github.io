@@ -64,7 +64,7 @@
 
 
 
-  <meta name="keywords" content="iOS," />
+  <meta name="keywords" content="Flutter," />
 
 
 
@@ -77,16 +77,28 @@
 
 
 
-<meta name="description" content="NSInterger to NSDataNSInterger to NSData，数字转化为Data，打印出来以十六进制形式展示">
+<meta name="description" content="demo的功能如下：对词组列表加收藏功能，跳转到收藏夹页面，更改整个APP的主题。
+
+添加交互
+页面跳转
+更改主题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS开发笔记三">
-<meta property="og:url" content="http://markmiao.com/2018/03/02/ios3/index.html">
+<meta property="og:title" content="Flutter笔记3-收藏交互">
+<meta property="og:url" content="http://markmiao.com/2020/03/12/flutter3/index.html">
 <meta property="og:site_name" content="Mark Miao">
-<meta property="og:description" content="NSInterger to NSDataNSInterger to NSData，数字转化为Data，打印出来以十六进制形式展示">
-<meta property="og:updated_time" content="2018-03-02T06:34:00.000Z">
+<meta property="og:description" content="demo的功能如下：对词组列表加收藏功能，跳转到收藏夹页面，更改整个APP的主题。
+
+添加交互
+页面跳转
+更改主题">
+<meta property="og:updated_time" content="2020-03-12T08:10:58.948Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS开发笔记三">
-<meta name="twitter:description" content="NSInterger to NSDataNSInterger to NSData，数字转化为Data，打印出来以十六进制形式展示">
+<meta name="twitter:title" content="Flutter笔记3-收藏交互">
+<meta name="twitter:description" content="demo的功能如下：对词组列表加收藏功能，跳转到收藏夹页面，更改整个APP的主题。
+
+添加交互
+页面跳转
+更改主题">
 
 
 
@@ -116,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="http://markmiao.com/2018/03/02/ios3/"/>
+  <link rel="canonical" href="http://markmiao.com/2020/03/12/flutter3/"/>
 
 
 
 
 
-  <title>iOS开发笔记三 | Mark Miao</title>
+  <title>Flutter笔记3-收藏交互 | Mark Miao</title>
   
 
 
@@ -269,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2018/03/02/ios3/">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2020/03/12/flutter3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mark">
@@ -286,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">iOS开发笔记三</h1>
+          <h1 class="post-title" itemprop="name headline">Flutter笔记3-收藏交互</h1>
         
 
         <div class="post-meta">
@@ -298,8 +310,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T14:31:49+08:00">
-                2018-03-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-12T16:02:50+08:00">
+                2020-03-12
               </time>
             
 
@@ -321,8 +333,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS开发/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS开发</span>
+                  <a href="/categories/Flutter/" itemprop="url" rel="index">
+                    <span itemprop="name">Flutter</span>
                   </a>
                 </span>
 
@@ -339,8 +351,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/02/ios3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2018/03/02/ios3/" itemprop="commentsCount"></span>
+                <a href="/2020/03/12/flutter3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/2020/03/12/flutter3/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -348,7 +360,7 @@
 
           
           
-             <span id="/2018/03/02/ios3/" class="leancloud_visitors" data-flag-title="iOS开发笔记三">
+             <span id="/2020/03/12/flutter3/" class="leancloud_visitors" data-flag-title="Flutter笔记3-收藏交互">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -379,16 +391,47 @@
       
 
       
-        <h2 id="NSInterger-to-NSData"><a href="#NSInterger-to-NSData" class="headerlink" title="NSInterger to NSData"></a>NSInterger to NSData</h2><p>NSInterger to NSData，数字转化为Data，打印出来以十六进制形式展示</p>
+        <p>demo的功能如下：对词组列表加收藏功能，跳转到收藏夹页面，更改整个APP的主题。</p>
+<ul>
+<li>添加交互</li>
+<li>页面跳转</li>
+<li>更改主题</li>
+</ul>
 <a id="more"></a>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">- (NSData *)getDataWithInt:(NSInteger)interger &#123;</div><div class="line">    Byte b1=interger &amp; 0xff;</div><div class="line">    Byte b2=(interger&gt;&gt;8) &amp; 0xff;</div><div class="line">    Byte b3=(interger&gt;&gt;16) &amp; 0xff;</div><div class="line">    Byte b4=(interger&gt;&gt;24) &amp; 0xff;</div><div class="line">    if (interger &lt;= 255) &#123;</div><div class="line">        Byte byte[] = &#123;b1&#125;;</div><div class="line">        return [NSData dataWithBytes:byte length:sizeof(byte)];</div><div class="line">    &#125; else if (interger &lt;= 65535) &#123;</div><div class="line">        Byte byte[] = &#123;b2,b1&#125;;</div><div class="line">        return [NSData dataWithBytes:byte length:sizeof(byte)];</div><div class="line">    &#125; else if (interger &lt;= 16777215) &#123;</div><div class="line">        Byte byte[] = &#123;b3,b2,b1&#125;;</div><div class="line">        return [NSData dataWithBytes:byte length:sizeof(byte)];</div><div class="line">    &#125; else &#123;</div><div class="line">        Byte byte[] = &#123;b4,b3,b2,b1&#125;;</div><div class="line">        return [NSData dataWithBytes:byte length:sizeof(byte)];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="SHA1加密"><a href="#SHA1加密" class="headerlink" title="SHA1加密"></a>SHA1加密</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">- (NSString *)SHA1Encrypt:(NSString *)string&#123;</div><div class="line">    const char *cstr = [string UTF8String];</div><div class="line">    NSData *data = [NSData dataWithBytes:cstr length:string.length];</div><div class="line">    uint8_t digest[CC_SHA1_DIGEST_LENGTH];</div><div class="line">    CC_SHA1(data.bytes, (CC_LONG)data.length, digest);</div><div class="line">    NSMutableString *output = [NSMutableString stringWithCapacity:CC_SHA1_DIGEST_LENGTH *2];</div><div class="line">    for (int i = 0; i&lt;CC_SHA1_DIGEST_LENGTH; i++) &#123;</div><div class="line">        [output appendFormat:@&quot;%02x&quot;,digest[i]];</div><div class="line">    &#125;</div><div class="line">    return output;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="iPhone屏幕单位"><a href="#iPhone屏幕单位" class="headerlink" title="iPhone屏幕单位"></a>iPhone屏幕单位</h2><p>ios开发中设置的size为pt，pt是绝对长度，等于1/72英寸，等于1/72*25.4毫米。</p>
-<p>px是像素，像素点的密度代表着屏幕清晰度。这就是开发中@1x、@2x、@3x的区别。</p>
-<p>iPhone 3GS是@1x像素级，分辨率为480px <em> 320px，iPhone4是@2x像素级，分辨率为960px </em> 640px。这两者尺寸是一样的，所以pt是一样的，在同样大的范围内，iPhone 4的像素点比iPhone 3GS的多一倍。</p>
-<h2 id="QR码的一些知识点"><a href="#QR码的一些知识点" class="headerlink" title="QR码的一些知识点"></a>QR码的一些知识点</h2><p>QR码有40个版本，版本1是21 x 21个小方块组成，版本2是25 x 25个小方块，每增加1版本，二维码长宽各增加4个方块。所以最高版本40，方块数为177 <em> 177。计算公式是：(V-1) </em> 4 + 21</p>
-<p>使用CIFilter生成QR码</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//生码Objective-C</span></div><div class="line">- (<span class="built_in">UIImage</span> *)markCode:(<span class="built_in">NSString</span> *)code &#123;</div><div class="line">    <span class="built_in">CIFilter</span> *filter = [<span class="built_in">CIFilter</span> filterWithName:<span class="string">@"CIQRCodeGenerator"</span>];</div><div class="line">    [filter setDefaults];</div><div class="line">    <span class="built_in">NSData</span> *data = [code dataUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>];</div><div class="line">    [filter setValue:data forKey:<span class="string">@"inputMessage"</span>];</div><div class="line">    [filter setValue:<span class="string">@"L"</span> forKey:<span class="string">@"inputCorrectionLevel"</span>]; <span class="comment">//二维码的纠错级别 L &lt; H &lt; Q &lt; M</span></div><div class="line">    </div><div class="line">    <span class="built_in">CIColor</span> *color1 = [<span class="built_in">CIColor</span> colorWithCGColor:[<span class="built_in">UIColor</span> blackColor].CGColor];<span class="comment">//二维码颜色</span></div><div class="line">    <span class="built_in">CIColor</span> *color2 = [<span class="built_in">CIColor</span> colorWithCGColor:[<span class="built_in">UIColor</span> whiteColor].CGColor];<span class="comment">//背景色</span></div><div class="line">    <span class="built_in">NSDictionary</span> *parameters = [<span class="built_in">NSDictionary</span> dictionaryWithObjectsAndKeys: filter.outputImage ,<span class="string">@"inputImage"</span>, color1,<span class="string">@"inputColor0"</span>, color2,<span class="string">@"inputColor1"</span>,<span class="literal">nil</span>];</div><div class="line">    <span class="built_in">CIFilter</span> *newFilter = [<span class="built_in">CIFilter</span> filterWithName:<span class="string">@"CIFalseColor"</span> withInputParameters:parameters];</div><div class="line">    <span class="built_in">CIImage</span> *outPutImage = [newFilter outputImage];</div><div class="line">    <span class="keyword">int</span> version = (<span class="keyword">int</span>)((outPutImage.extent.size.width - <span class="number">21</span>) / <span class="number">4.0</span> + <span class="number">1</span>); <span class="comment">//获取该二维码的版本号</span></div><div class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> createNonInterpolatedUIImageFormCIImage:outPutImage withSize:<span class="number">600</span>];</div><div class="line">&#125;</div><div class="line"><span class="comment">//让二维码变的清楚</span></div><div class="line">- (<span class="built_in">UIImage</span> *)createNonInterpolatedUIImageFormCIImage:(<span class="built_in">CIImage</span> *)image withSize:(<span class="built_in">CGFloat</span>) size &#123;</div><div class="line">    <span class="built_in">CGRect</span> extent = <span class="built_in">CGRectIntegral</span>(image.extent);</div><div class="line">    <span class="built_in">CGFloat</span> scale = MIN(size/<span class="built_in">CGRectGetWidth</span>(extent), size/<span class="built_in">CGRectGetHeight</span>(extent));</div><div class="line">    size_t width = <span class="built_in">CGRectGetWidth</span>(extent) * scale;</div><div class="line">    size_t height = <span class="built_in">CGRectGetHeight</span>(extent) * scale;</div><div class="line">    <span class="built_in">CGColorSpaceRef</span> cs = <span class="built_in">CGColorSpaceCreateDeviceRGB</span>();</div><div class="line">    <span class="built_in">CGContextRef</span> bitmapRef = <span class="built_in">CGBitmapContextCreate</span>(<span class="literal">nil</span>, width, height, <span class="number">8</span>, <span class="number">0</span>, cs, (<span class="built_in">CGBitmapInfo</span>)kCGImageAlphaPremultipliedLast);</div><div class="line">    <span class="built_in">CIContext</span> *context = [<span class="built_in">CIContext</span> contextWithOptions:<span class="literal">nil</span>];</div><div class="line">    <span class="built_in">CGImageRef</span> bitmapImage = [context createCGImage:image fromRect:extent];</div><div class="line">    </div><div class="line">    <span class="built_in">CGContextSetInterpolationQuality</span>(bitmapRef, kCGInterpolationNone);</div><div class="line">    <span class="built_in">CGContextScaleCTM</span>(bitmapRef, scale, scale);</div><div class="line">    <span class="built_in">CGContextDrawImage</span>(bitmapRef, extent, bitmapImage);</div><div class="line">    </div><div class="line">    <span class="built_in">CGImageRef</span> scaledImage = <span class="built_in">CGBitmapContextCreateImage</span>(bitmapRef);</div><div class="line">    <span class="built_in">CGContextRelease</span>(bitmapRef); <span class="built_in">CGImageRelease</span>(bitmapImage);</div><div class="line">    </div><div class="line">    <span class="built_in">UIImage</span> *outputImage = [<span class="built_in">UIImage</span> imageWithCGImage:scaledImage];</div><div class="line">    <span class="keyword">return</span> outputImage;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="添加收藏图标"><a href="#添加收藏图标" class="headerlink" title="添加收藏图标"></a>添加收藏图标</h2><p>所有动态功能的实现还是在 <code>State</code> 中去做，找到 <code>ListTile</code>在后面增加收藏图标，类似iOS中UITableViewCell中的accessoryView，但添加方法不一样。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Widget _cellView(WordPair name) &#123;</div><div class="line">  <span class="keyword">return</span> ListTile(</div><div class="line">    title: Text(</div><div class="line">      name.asPascalCase</div><div class="line">    ),</div><div class="line">    trailing: Icon( <span class="comment">//在trailing上添加Icon，Icons的图标很多，favorite是个心形</span></div><div class="line">      Icons.favorite,</div><div class="line">    ),</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样便为每一个Tile增加了收藏图标，收藏图标有两种状态——已收藏、未收藏。需要有个bool值去控制，要得到这个bool值就要对每个Tile的title判断，判断这个title是否被收藏。</p>
+<p>这时需要有个数组专门存放已收藏的词组：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="built_in">Set</span>&lt;WordPair&gt;_likeNameArray = <span class="built_in">Set</span>&lt;WordPair&gt;();</div></pre></td></tr></table></figure>
+<p>这是存放收藏词组的数组，存放的类型是 `WordPair，用Set而不用List的原因是：Set中不允许有重复元素。更适合收藏操作。</p>
+<p><code>_likeNameArray</code> 中存放了收藏词组，在创建<code>ListTile</code>的方法中将每个<code>WordPair</code>值跟这个数组比对即可得到bool值。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="built_in">bool</span> isLike = _likeNameArray.contains(name);</div></pre></td></tr></table></figure>
+<p>有了bool值便可修改收藏图标的状态：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">trailing: Icon(</div><div class="line">    isLike ? Icons.favorite : Icons.favorite_border, <span class="comment">//支持三目元算符，赋值不同收藏图标</span></div><div class="line">		color: isLike ? Colors.red : <span class="keyword">null</span>, <span class="comment">//为已收藏的心形设置红色，未收藏的不设置颜色</span></div><div class="line">),</div></pre></td></tr></table></figure>
+<h2 id="点击事件"><a href="#点击事件" class="headerlink" title="点击事件"></a>点击事件</h2><p>有了收藏图标，需要增加收藏的点击交互。也是在创建<code>ListTile</code>的方法中为其添加点击事件<code>onTap</code>，在点击事件中操作收藏数据：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">onTap: () &#123;<span class="comment">//点击事件</span></div><div class="line">  setState(() &#123;<span class="comment">//setState()方法</span></div><div class="line">    <span class="keyword">if</span> (isLike) &#123;</div><div class="line">      _likeNameArray.remove(name);<span class="comment">//移除收藏</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      _likeNameArray.add(name);<span class="comment">//收藏</span></div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>flutter是响应式框架，<code>setState()</code>方法会为State对象触发<code>build()</code>方法，会让UI更新。点击的时候还有水波特效，是Material Design自带的。</p>
+<p>至此，便能完成点击收藏和取消收藏的操作了。</p>
+<h2 id="导航栏按钮"><a href="#导航栏按钮" class="headerlink" title="导航栏按钮"></a>导航栏按钮</h2><p>在导航栏添加一个收藏夹按钮，点击收藏夹按钮跳转收藏夹页面。</p>
+<p>在 <code>appBar</code> 中添加收藏夹按钮：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Widget build(BuildContext context) &#123;</div><div class="line">  <span class="keyword">return</span> Scaffold(</div><div class="line">    appBar: AppBar(</div><div class="line">      title: Text(<span class="string">'home'</span>),</div><div class="line">      actions: &lt;Widget&gt;[<span class="comment">//actions需要一个Widget组</span></div><div class="line">        <span class="keyword">new</span> IconButton(icon: Icon(Icons.list), onPressed: _pushVc),</div><div class="line">      ],</div><div class="line">    ),</div><div class="line">    body: _listView(),</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有些widget需要单个widget属性，<code>actions</code>需要一个widget组，可以添加多个IconButton，会把title挤到一边。类似iOS中的<code>rightBarButtonItems</code>。</p>
+<p>数组中是<code>IconButton</code>，设置了Icon，和点击事件<code>_pushVc</code>，这个方法中完成页面跳转操作。</p>
+<h2 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h2><p>页面跳转在iOS中是控制器跳转，常用push，页面称为控制器。在flutter中页面称为路由<code>route</code>，从主路由切换到新路由，就是页面跳转。</p>
+<p>flutter中也是push和pop控制路由跳转，将路由push到导航器的栈中就是跳转新页面，将路由pop出导航器，就会返回上一个路由。</p>
+<p>在<code>_pushVc</code>方法中创建路由，并将其push到导航器的栈中。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> _pushVc() &#123;</div><div class="line">    Navigator.push(context, route);<span class="comment">//路由入栈的push方法，route处创建一个新路由</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="创建路由"><a href="#创建路由" class="headerlink" title="创建路由"></a>创建路由</h2><p>在 <code>MaterialPageRoute</code> 中创建要显示的收藏夹列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Navigator.push(context, </div><div class="line">  <span class="keyword">new</span> MaterialPageRoute(</div><div class="line">    builder: (contex) &#123;<span class="comment">//1.在builder方法中构建路由，builder方法是匿名函数</span></div><div class="line">      <span class="keyword">final</span> <span class="built_in">Iterable</span>&lt;ListTile&gt; tiles = _likeNameArray.map(</div><div class="line">        (WordPair name) &#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> ListTile (<span class="comment">//2. 创建ListTile：tiles</span></div><div class="line">            title: Text(</div><div class="line">              name.asPascalCase</div><div class="line">            ),</div><div class="line">          );</div><div class="line">        &#125;,</div><div class="line">      );</div><div class="line">      <span class="keyword">final</span> <span class="built_in">List</span>&lt;Widget&gt; divided = ListTile <span class="comment">//6. divided最后含有分割线的列表</span></div><div class="line">      .divideTiles(<span class="comment">//3. ListTile的divideTiles()方法在每个tile之间添加1像素分割线，不用像之前判断奇偶添加Divider()</span></div><div class="line">        context: context,</div><div class="line">        tiles: tiles,<span class="comment">//4. 这是上面根据收藏数组创建的ListTile</span></div><div class="line">      )</div><div class="line">      .toList();<span class="comment">//5. 转换成列表显示</span></div><div class="line">    &#125;</div><div class="line">  )</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>上述方法创建了收藏夹，还未结束，<code>builder</code>返回一个<code>Scaffold</code>，在这里将上面创建的列表添加到body，形成整个要push的路由</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> _pushVc() &#123;</div><div class="line">  Navigator.push(context, </div><div class="line">    <span class="keyword">new</span> MaterialPageRoute(</div><div class="line">      builder: (contex) &#123;</div><div class="line">        <span class="keyword">final</span> <span class="built_in">Iterable</span>&lt;ListTile&gt; tiles = _likeNameArray.map(</div><div class="line">          (WordPair name) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ListTile (</div><div class="line">              title: Text(</div><div class="line">                name.asPascalCase</div><div class="line">              ),</div><div class="line">            );</div><div class="line">          &#125;,</div><div class="line">        );</div><div class="line">        <span class="keyword">final</span> <span class="built_in">List</span>&lt;Widget&gt; divided = ListTile</div><div class="line">        .divideTiles(</div><div class="line">          context: context,</div><div class="line">          tiles: tiles,</div><div class="line">        )</div><div class="line">        .toList();<span class="comment">//创建收藏夹列表</span></div><div class="line">        <span class="keyword">return</span> Scaffold(</div><div class="line">          appBar: AppBar(</div><div class="line">            title: Text(<span class="string">'like'</span>),<span class="comment">//路由标题</span></div><div class="line">          ),</div><div class="line">          body: ListView(children: divided), <span class="comment">//路由内容</span></div><div class="line">        );</div><div class="line">      &#125;</div><div class="line">    )</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至此，完成路由跳转的工作。跳转之后在新路由页面自动添加返回按钮，点击会返回，不用额外添加pop。这点和iOS很像，而且也支持手势右滑返回页面。</p>
+<h2 id="更改主题"><a href="#更改主题" class="headerlink" title="更改主题"></a>更改主题</h2><p>在flutter中，使用theme控制APP主题，可更改颜色修改主题：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">theme: <span class="keyword">new</span> ThemeData(</div><div class="line">  primaryColor: Colors.white,<span class="comment">//白色主题</span></div><div class="line">),</div></pre></td></tr></table></figure>
+<p>这里有个小坑，VSCode新建项目时，这个字段默认是<code>primarySwatch</code>，在设置白色时会报错。因为white和black是<code>Color</code>类型，不是<code>MaterialColor</code>。像yellow、blue等颜色属于<code>MaterialColor</code>。</p>
+<p>或者直接使用<code>dark()</code>，设置暗黑主题：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: <span class="keyword">new</span> ThemeData.dark(),</div></pre></td></tr></table></figure>
+<p><strong>demo的完整代码见工程中的 <a href="https://github.com/mxdios/flutter-demo" target="_blank" rel="external">flutter_listview</a></strong></p>
 
       
     </div>
@@ -435,7 +478,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/iOS/" rel="tag"># iOS</a>
+            <a href="/tags/Flutter/" rel="tag"># Flutter</a>
           
         </div>
       
@@ -448,8 +491,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/29/sum2017/" rel="next" title="2017我的年终总结">
-                <i class="fa fa-chevron-left"></i> 2017我的年终总结
+              <a href="/2020/03/12/flutter2/" rel="next" title="Flutter笔记2-第一个Flutter Demo">
+                <i class="fa fa-chevron-left"></i> Flutter笔记2-第一个Flutter Demo
               </a>
             
           </div>
@@ -457,10 +500,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/16/runtime1/" rel="prev" title="Runtime(1)：消息传递">
-                Runtime(1)：消息传递 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -641,7 +680,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NSInterger-to-NSData"><span class="nav-number">1.</span> <span class="nav-text">NSInterger to NSData</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SHA1加密"><span class="nav-number">2.</span> <span class="nav-text">SHA1加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iPhone屏幕单位"><span class="nav-number">3.</span> <span class="nav-text">iPhone屏幕单位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QR码的一些知识点"><span class="nav-number">4.</span> <span class="nav-text">QR码的一些知识点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加收藏图标"><span class="nav-number">1.</span> <span class="nav-text">添加收藏图标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点击事件"><span class="nav-number">2.</span> <span class="nav-text">点击事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导航栏按钮"><span class="nav-number">3.</span> <span class="nav-text">导航栏按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#页面跳转"><span class="nav-number">4.</span> <span class="nav-text">页面跳转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建路由"><span class="nav-number">5.</span> <span class="nav-text">创建路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改主题"><span class="nav-number">6.</span> <span class="nav-text">更改主题</span></a></li></ol></div>
             
 
           </div>

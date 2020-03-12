@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2020-03-12T02:04:41.004Z</updated>
+  <updated>2020-03-12T08:10:58.948Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -14,6 +14,74 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Flutter笔记3-收藏交互</title>
+    <link href="http://markmiao.com/2020/03/12/flutter3/"/>
+    <id>http://markmiao.com/2020/03/12/flutter3/</id>
+    <published>2020-03-12T08:02:50.000Z</published>
+    <updated>2020-03-12T08:10:58.948Z</updated>
+    
+    <content type="html"><![CDATA[<p>demo的功能如下：对词组列表加收藏功能，跳转到收藏夹页面，更改整个APP的主题。</p>
+<ul>
+<li>添加交互</li>
+<li>页面跳转</li>
+<li>更改主题</li>
+</ul>
+<a id="more"></a>
+<h2 id="添加收藏图标"><a href="#添加收藏图标" class="headerlink" title="添加收藏图标"></a>添加收藏图标</h2><p>所有动态功能的实现还是在 <code>State</code> 中去做，找到 <code>ListTile</code>在后面增加收藏图标，类似iOS中UITableViewCell中的accessoryView，但添加方法不一样。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Widget _cellView(WordPair name) &#123;</div><div class="line">  <span class="keyword">return</span> ListTile(</div><div class="line">    title: Text(</div><div class="line">      name.asPascalCase</div><div class="line">    ),</div><div class="line">    trailing: Icon( <span class="comment">//在trailing上添加Icon，Icons的图标很多，favorite是个心形</span></div><div class="line">      Icons.favorite,</div><div class="line">    ),</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样便为每一个Tile增加了收藏图标，收藏图标有两种状态——已收藏、未收藏。需要有个bool值去控制，要得到这个bool值就要对每个Tile的title判断，判断这个title是否被收藏。</p>
+<p>这时需要有个数组专门存放已收藏的词组：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="built_in">Set</span>&lt;WordPair&gt;_likeNameArray = <span class="built_in">Set</span>&lt;WordPair&gt;();</div></pre></td></tr></table></figure>
+<p>这是存放收藏词组的数组，存放的类型是 `WordPair，用Set而不用List的原因是：Set中不允许有重复元素。更适合收藏操作。</p>
+<p><code>_likeNameArray</code> 中存放了收藏词组，在创建<code>ListTile</code>的方法中将每个<code>WordPair</code>值跟这个数组比对即可得到bool值。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">final</span> <span class="built_in">bool</span> isLike = _likeNameArray.contains(name);</div></pre></td></tr></table></figure>
+<p>有了bool值便可修改收藏图标的状态：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">trailing: Icon(</div><div class="line">    isLike ? Icons.favorite : Icons.favorite_border, <span class="comment">//支持三目元算符，赋值不同收藏图标</span></div><div class="line">		color: isLike ? Colors.red : <span class="keyword">null</span>, <span class="comment">//为已收藏的心形设置红色，未收藏的不设置颜色</span></div><div class="line">),</div></pre></td></tr></table></figure>
+<h2 id="点击事件"><a href="#点击事件" class="headerlink" title="点击事件"></a>点击事件</h2><p>有了收藏图标，需要增加收藏的点击交互。也是在创建<code>ListTile</code>的方法中为其添加点击事件<code>onTap</code>，在点击事件中操作收藏数据：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">onTap: () &#123;<span class="comment">//点击事件</span></div><div class="line">  setState(() &#123;<span class="comment">//setState()方法</span></div><div class="line">    <span class="keyword">if</span> (isLike) &#123;</div><div class="line">      _likeNameArray.remove(name);<span class="comment">//移除收藏</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      _likeNameArray.add(name);<span class="comment">//收藏</span></div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;,</div></pre></td></tr></table></figure>
+<p>flutter是响应式框架，<code>setState()</code>方法会为State对象触发<code>build()</code>方法，会让UI更新。点击的时候还有水波特效，是Material Design自带的。</p>
+<p>至此，便能完成点击收藏和取消收藏的操作了。</p>
+<h2 id="导航栏按钮"><a href="#导航栏按钮" class="headerlink" title="导航栏按钮"></a>导航栏按钮</h2><p>在导航栏添加一个收藏夹按钮，点击收藏夹按钮跳转收藏夹页面。</p>
+<p>在 <code>appBar</code> 中添加收藏夹按钮：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Widget build(BuildContext context) &#123;</div><div class="line">  <span class="keyword">return</span> Scaffold(</div><div class="line">    appBar: AppBar(</div><div class="line">      title: Text(<span class="string">'home'</span>),</div><div class="line">      actions: &lt;Widget&gt;[<span class="comment">//actions需要一个Widget组</span></div><div class="line">        <span class="keyword">new</span> IconButton(icon: Icon(Icons.list), onPressed: _pushVc),</div><div class="line">      ],</div><div class="line">    ),</div><div class="line">    body: _listView(),</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有些widget需要单个widget属性，<code>actions</code>需要一个widget组，可以添加多个IconButton，会把title挤到一边。类似iOS中的<code>rightBarButtonItems</code>。</p>
+<p>数组中是<code>IconButton</code>，设置了Icon，和点击事件<code>_pushVc</code>，这个方法中完成页面跳转操作。</p>
+<h2 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h2><p>页面跳转在iOS中是控制器跳转，常用push，页面称为控制器。在flutter中页面称为路由<code>route</code>，从主路由切换到新路由，就是页面跳转。</p>
+<p>flutter中也是push和pop控制路由跳转，将路由push到导航器的栈中就是跳转新页面，将路由pop出导航器，就会返回上一个路由。</p>
+<p>在<code>_pushVc</code>方法中创建路由，并将其push到导航器的栈中。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> _pushVc() &#123;</div><div class="line">    Navigator.push(context, route);<span class="comment">//路由入栈的push方法，route处创建一个新路由</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="创建路由"><a href="#创建路由" class="headerlink" title="创建路由"></a>创建路由</h2><p>在 <code>MaterialPageRoute</code> 中创建要显示的收藏夹列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Navigator.push(context, </div><div class="line">  <span class="keyword">new</span> MaterialPageRoute(</div><div class="line">    builder: (contex) &#123;<span class="comment">//1.在builder方法中构建路由，builder方法是匿名函数</span></div><div class="line">      <span class="keyword">final</span> <span class="built_in">Iterable</span>&lt;ListTile&gt; tiles = _likeNameArray.map(</div><div class="line">        (WordPair name) &#123;</div><div class="line">          <span class="keyword">return</span> <span class="keyword">new</span> ListTile (<span class="comment">//2. 创建ListTile：tiles</span></div><div class="line">            title: Text(</div><div class="line">              name.asPascalCase</div><div class="line">            ),</div><div class="line">          );</div><div class="line">        &#125;,</div><div class="line">      );</div><div class="line">      <span class="keyword">final</span> <span class="built_in">List</span>&lt;Widget&gt; divided = ListTile <span class="comment">//6. divided最后含有分割线的列表</span></div><div class="line">      .divideTiles(<span class="comment">//3. ListTile的divideTiles()方法在每个tile之间添加1像素分割线，不用像之前判断奇偶添加Divider()</span></div><div class="line">        context: context,</div><div class="line">        tiles: tiles,<span class="comment">//4. 这是上面根据收藏数组创建的ListTile</span></div><div class="line">      )</div><div class="line">      .toList();<span class="comment">//5. 转换成列表显示</span></div><div class="line">    &#125;</div><div class="line">  )</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>上述方法创建了收藏夹，还未结束，<code>builder</code>返回一个<code>Scaffold</code>，在这里将上面创建的列表添加到body，形成整个要push的路由</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> _pushVc() &#123;</div><div class="line">  Navigator.push(context, </div><div class="line">    <span class="keyword">new</span> MaterialPageRoute(</div><div class="line">      builder: (contex) &#123;</div><div class="line">        <span class="keyword">final</span> <span class="built_in">Iterable</span>&lt;ListTile&gt; tiles = _likeNameArray.map(</div><div class="line">          (WordPair name) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">new</span> ListTile (</div><div class="line">              title: Text(</div><div class="line">                name.asPascalCase</div><div class="line">              ),</div><div class="line">            );</div><div class="line">          &#125;,</div><div class="line">        );</div><div class="line">        <span class="keyword">final</span> <span class="built_in">List</span>&lt;Widget&gt; divided = ListTile</div><div class="line">        .divideTiles(</div><div class="line">          context: context,</div><div class="line">          tiles: tiles,</div><div class="line">        )</div><div class="line">        .toList();<span class="comment">//创建收藏夹列表</span></div><div class="line">        <span class="keyword">return</span> Scaffold(</div><div class="line">          appBar: AppBar(</div><div class="line">            title: Text(<span class="string">'like'</span>),<span class="comment">//路由标题</span></div><div class="line">          ),</div><div class="line">          body: ListView(children: divided), <span class="comment">//路由内容</span></div><div class="line">        );</div><div class="line">      &#125;</div><div class="line">    )</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至此，完成路由跳转的工作。跳转之后在新路由页面自动添加返回按钮，点击会返回，不用额外添加pop。这点和iOS很像，而且也支持手势右滑返回页面。</p>
+<h2 id="更改主题"><a href="#更改主题" class="headerlink" title="更改主题"></a>更改主题</h2><p>在flutter中，使用theme控制APP主题，可更改颜色修改主题：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">theme: <span class="keyword">new</span> ThemeData(</div><div class="line">  primaryColor: Colors.white,<span class="comment">//白色主题</span></div><div class="line">),</div></pre></td></tr></table></figure>
+<p>这里有个小坑，VSCode新建项目时，这个字段默认是<code>primarySwatch</code>，在设置白色时会报错。因为white和black是<code>Color</code>类型，不是<code>MaterialColor</code>。像yellow、blue等颜色属于<code>MaterialColor</code>。</p>
+<p>或者直接使用<code>dark()</code>，设置暗黑主题：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: <span class="keyword">new</span> ThemeData.dark(),</div></pre></td></tr></table></figure>
+<p><strong>demo的完整代码见工程中的 <a href="https://github.com/mxdios/flutter-demo" target="_blank" rel="external">flutter_listview</a></strong></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;demo的功能如下：对词组列表加收藏功能，跳转到收藏夹页面，更改整个APP的主题。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;添加交互&lt;/li&gt;
+&lt;li&gt;页面跳转&lt;/li&gt;
+&lt;li&gt;更改主题&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Flutter" scheme="http://markmiao.com/categories/Flutter/"/>
+    
+    
+      <category term="Flutter" scheme="http://markmiao.com/tags/Flutter/"/>
+    
+  </entry>
   
   <entry>
     <title>Flutter笔记2-第一个Flutter Demo</title>
@@ -1102,97 +1170,6 @@
     
     
       <category term="应用" scheme="http://markmiao.com/tags/%E5%BA%94%E7%94%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Widget开发</title>
-    <link href="http://markmiao.com/2017/04/02/Widget%E5%BC%80%E5%8F%91/"/>
-    <id>http://markmiao.com/2017/04/02/Widget开发/</id>
-    <published>2017-04-02T12:09:00.000Z</published>
-    <updated>2018-12-24T08:02:00.498Z</updated>
-    
-    <content type="html"><![CDATA[<p>widget是iOS8时推出的窗口小部件功能，窗口小部件在Android上早已大行其道。记得当年用过的第一部Android是深圳出产的国产机，当时滑过三四个屏幕的应用，还能继续再滑三四个屏幕的窗口小部件。用的最多的窗口小部件就是日历了，屏幕上一目了然。</p>
-<a id="more"></a>
-<p>Apple直到iOS8才加入窗口小部件，而且可自定义程度远远没有Android开放。</p>
-<p>本文记录了开发widget的步骤，以及遇到的一些问题。</p>
-<p>开发环境：Xcode8.2.1，swift3.0</p>
-<h2 id="创建widget"><a href="#创建widget" class="headerlink" title="创建widget"></a>创建widget</h2><p>widget可以理解为一个独立的项目，虽然形式上看来像是附属于app的一部分功能，其实并不是，widget想获取app的数据，还需要做数据共享。</p>
-<p><code>File</code> -&gt; <code>New</code> -&gt; <code>Target</code></p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016-10-094.36.08.png?raw=true" alt="创建Today Extension"></p>
-<p>选择iOS里的<code>Today Extension</code></p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/2016-10-094.40.27.png?raw=true" alt="创建Today Extension"></p>
-<p>习惯使用纯代码布局，喜欢用storyboard的不需要下面的info.plist修改。在新创建的widget项目文件夹中删除<code>MainInterface.storyboard</code>，修改info.plist里的<code>NSExtension</code>字段：</p>
-<ol>
-<li>删除<code>NSExtensionMainStoryboard</code>字段</li>
-<li>添加<code>NSExtensionPrincipalClass</code>字段，Value 为<code>TodayViewController</code>（<code>TodayViewController</code>是自定义控制器，）</li>
-</ol>
-<p>修改info.plist的结果如下</p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-0.png?raw=true" alt="img"></p>
-<h3 id="问题1-widget崩溃"><a href="#问题1-widget崩溃" class="headerlink" title="问题1.widget崩溃"></a>问题1.widget崩溃</h3><p>经过上述修改，用纯代码布局widget，用OC开发是没有问题的，swift3.0中widget会崩溃，并打印下面的错误。</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">*** Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: '*** setObjectForKey: object cannot be nil (<span class="built_in">key</span>: 56A34ADC-7A43-<span class="number">43B0</span>-A924-171F803DD305)'</div><div class="line">libc++abi.dylib: terminating with uncaught exception of type NSException</div></pre></td></tr></table></figure>
-<p>StackOverflow有人遇到同样的问题：<a href="http://stackoverflow.com/questions/28153273/today-extension-crashes-before-launching-on-ios-8-1-2" target="_blank" rel="external">Today Extension Crashes before launching on iOS 8.1.2</a>，但解答好像并没有效果。</p>
-<p>在一篇博客中我找到了解决办法，<a href="http://blog.xebia.com/ios-today-widget-written-in-swift/" target="_blank" rel="external">博客地址</a></p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Since (<span class="keyword">at</span> <span class="keyword">the</span> <span class="built_in">time</span> <span class="keyword">of</span> this writing) Xcode cannot find Swift classes <span class="keyword">as</span> extension principal classes, we also would have <span class="built_in">to</span> <span class="built_in">add</span> <span class="keyword">the</span> following <span class="built_in">line</span> <span class="built_in">to</span> our TodayViewController:</div><div class="line"></div><div class="line">@objc (TodayViewController)</div><div class="line"></div><div class="line">Update: Make sure <span class="built_in">to</span> <span class="built_in">set</span> <span class="keyword">the</span> <span class="string">"Embedded Content Contains Swift Code"</span> build setting <span class="keyword">of</span> <span class="keyword">the</span> main app target <span class="built_in">to</span> YES. Otherwise your widget written <span class="keyword">in</span> Swift will crash.</div></pre></td></tr></table></figure>
-<p>文中说目前为止Xcode找不到swift类作为拓展主题类（其实到我写这篇文章的时候，还是找不到），这可能是一个bug。解决办法是需要在widget控制器<code>TodayViewController</code>中添加：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@objc</span> (<span class="type">TodayViewController</span>)</div></pre></td></tr></table></figure>
-<p>博文更新中说，可以更改<code>Embedded Content Contains Swift Code</code>这个设置为yes，但是在Xcode8.2.1中，这个设置已经没有了，取而代之的是<code>Always Embed Swift Standard Libraries</code>，亲测主项目的<code>targets</code>和widget的<code>targets</code>中修改这个设置的Bool值，都还是会崩溃。</p>
-<h2 id="widget折叠"><a href="#widget折叠" class="headerlink" title="widget折叠"></a>widget折叠</h2><p>iOS10之后才有的widget折叠。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> #available(iOSApplicationExtension <span class="number">10.0</span>, *) &#123;</div><div class="line">    <span class="keyword">self</span>.extensionContext?.widgetLargestAvailableDisplayMode = .expanded</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// Fallback on earlier versions</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>实现下面方法。</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@available</span>(iOSApplicationExtension <span class="number">10.0</span>, *)</div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">widgetActiveDisplayModeDidChange</span><span class="params">(<span class="number">_</span> activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize)</span></span> &#123;</div><div class="line">	<span class="keyword">if</span> activeDisplayMode == .expanded &#123;</div><div class="line">        <span class="keyword">self</span>.preferredContentSize = <span class="type">CGSize</span>(width: <span class="number">0</span>, height: <span class="number">200</span>)</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">self</span>.preferredContentSize = maxSize</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="代码共享"><a href="#代码共享" class="headerlink" title="代码共享"></a>代码共享</h2><p>虽然widget附属于主应用，但其实是独立的。在widget中无法调用主应用中的代码，这样一来就蛋疼了。有些公共方法或者控件，在主应用中写完了，在widget却无法使用。当然把主应用中的代码拷贝一份到widget中也是可以的，这种做法太low。</p>
-<p>可以使用framework做代码共享。创建一个framework</p>
-<p><code>File</code> -&gt; <code>New</code> -&gt; <code>Target</code></p>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-150955.png" alt="创建framework"></p>
-<p>在<code>framework</code>的<code>Build Phases</code> -&gt; <code>Compile Sources</code>里面添加要共享的代码文件。</p>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152310.png" alt="添加共享的代码文件"></p>
-<p>在<code>TARGETS</code>里面，分别在主项目和widget下面的<code>Linked Frameworks and Libraries</code>里面添加新建的<code>framework</code></p>
-<p>并在widget中用到共享代码的地方引入<code>framework</code></p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> ShareToday</div></pre></td></tr></table></figure>
-<h3 id="问题1-引入framework报错和报警告"><a href="#问题1-引入framework报错和报警告" class="headerlink" title="问题1.引入framework报错和报警告"></a>问题1.引入framework报错和报警告</h3><p>引入的时候会如下错误：<br><figure class="highlight vhdl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TodayViewController.swift:<span class="number">11</span>:<span class="number">8</span>: Module <span class="keyword">file</span><span class="symbol">'s</span> minimum deployment target <span class="keyword">is</span> ios10.<span class="number">0</span> v10.<span class="number">0</span>:</div></pre></td></tr></table></figure></p>
-<p>是因为framework的<code>Deployment Target</code>的版本号和widget的版本号不相符，改为一样的即可。</p>
-<p>报如下警告：</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ld: warning: linking <span class="keyword">against</span> a dylib which <span class="keyword">is</span> <span class="keyword">not</span> safe <span class="keyword">for</span> use <span class="keyword">in</span> <span class="built_in">application</span> extensions:</div></pre></td></tr></table></figure>
-<p>是因为application extensions限制了一些API的使用，而在新建的framework里面，可能包含了这些API，所以才会出现这个警告。</p>
-<p>解决办法：勾选framework里面的<code>Allow app extension API only</code></p>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170330-152418.png" alt="注意"></p>
-<h3 id="问题2-方法调用不到"><a href="#问题2-方法调用不到" class="headerlink" title="问题2.方法调用不到"></a>问题2.方法调用不到</h3><p>swift中，加入到framework的一些方法，在引入头文件后的widget调用不到。</p>
-<p>解决办法：需要把方法设置为公用的，用<code>public</code>修饰方法，例如</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">getString</span><span class="params">(a: Int)</span></span> -&gt; <span class="type">String</span> &#123;</div><div class="line">	  <span class="keyword">return</span> <span class="string">"<span class="subst">\(a)</span>"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果有共用的oc代码，需要将.m文件引入到<code>Compile Sources</code>，将.h文件拖入<code>Headers</code>的<code>Public</code>里面，然后在framework的.h头文件中<code>#import</code>共用oc代码的.h头文件</p>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-04-02-14-17-36.png" alt="引入oc共享代码"></p>
-<h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><h3 id="配置证书："><a href="#配置证书：" class="headerlink" title="配置证书："></a>配置证书：</h3><ol>
-<li>在<code>Certificates, Identifiers &amp; Profiles</code>里的<code>Identifiers</code>下面添加<code>App IDs</code>时，要勾选<code>App Groups</code>。</li>
-<li>在<code>App Group</code>添加一个<code>App Group</code>，在写<code>Identifier</code>，会在前面自动添加<code>group.</code></li>
-<li>添加<code>App Group</code>之后，在<code>App IDs</code>点开第1步创建的id，点击edit，把<code>App Group</code>添加上，<code>App Group</code>的黄点会变成绿点。</li>
-</ol>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113444@2x.png" alt="创建的App Group"></p>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113344@2x.png" alt="配置完成的Identifier"></p>
-<h3 id="添加证书"><a href="#添加证书" class="headerlink" title="添加证书"></a>添加证书</h3><p>在Xcode的<code>TARGEST</code>下面，主程序和widget的<code>Capabilities</code>里面，都要打开<code>App Groups</code>。下面的Steps不能有红色叹号的错误。</p>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-113739@2x.png" alt="正确显示"></p>
-<p>在证书配置正确的前提下，还出现了红色叹号的错误警告，有可能是因为主项目或者widget的<code>General</code>里面没有选择好正确的签名Team。</p>
-<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20170402-112029@2x.png" alt="配置正确的签名"></p>
-<h3 id="用NSUserDefaults共享数据，"><a href="#用NSUserDefaults共享数据，" class="headerlink" title="用NSUserDefaults共享数据，"></a>用NSUserDefaults共享数据，</h3><p>存储数据</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shareDefaults = <span class="type">UserDefaults</span>(suiteName: <span class="string">"group.xxx.xxx.xx"</span>)<span class="comment">//App Groups ID</span></div><div class="line">shareDefaults?.<span class="keyword">set</span>(worksArray, forKey: <span class="string">"worksArray"</span>)</div><div class="line">shareDefaults?.synchronize()</div></pre></td></tr></table></figure>
-<p>读取数据</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> shareDefaults = <span class="type">UserDefaults</span>(suiteName: <span class="string">"group.xxx.xxx.xx"</span>)<span class="comment">//App Groups ID</span></div><div class="line"><span class="keyword">let</span> worksArray = shareDefaults?.array(forKey: <span class="string">"worksArray"</span>)</div></pre></td></tr></table></figure>
-<h3 id="点击widget开启app"><a href="#点击widget开启app" class="headerlink" title="点击widget开启app"></a>点击widget开启app</h3><p>在widget中，点击图标可以开启主应用，不用添加任何方法。如果想点击其他地方开启app，需要在app的<code>TARGEST</code>里的<code>info</code>下<code>URL Types</code>添加<code>URL Schemes</code></p>
-<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161009-1.png?raw=true" alt="img"></p>
-<p>添加点击事件，调用方法，开启app</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">openApp</span><span class="params">()</span></span> &#123;</div><div class="line">	<span class="keyword">self</span>.extensionContext?.open(<span class="type">URL</span>(string: <span class="string">"paibanapp://"</span>)!, completionHandler: &#123; (<span class="type">Bool</span>) <span class="keyword">in</span></div><div class="line">		<span class="built_in">print</span>(<span class="string">"success"</span>)</div><div class="line">	&#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;widget是iOS8时推出的窗口小部件功能，窗口小部件在Android上早已大行其道。记得当年用过的第一部Android是深圳出产的国产机，当时滑过三四个屏幕的应用，还能继续再滑三四个屏幕的窗口小部件。用的最多的窗口小部件就是日历了，屏幕上一目了然。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="swift" scheme="http://markmiao.com/tags/swift/"/>
     
   </entry>
   
