@@ -1,0 +1,244 @@
+---
+title: Flutter笔记2-第一个Flutter Demo
+date: 2020-03-12 10:02:50
+tags: [Flutter]
+categories: [Flutter]
+toc: true
+
+---
+
+第一个flutter demo—— 无限滚动的列表应用
+
+Material Design （质感设计），Google开发的设计语言，拓展于Google即时的卡片设计。
+
+flutter提供了丰富的质感设计风格的widgets，在flutter中，几乎所有都是widget，
+
+<!--more-->
+
+## hello world
+
+```dart
+import 'package:flutter/material.dart'; //导入Material Design
+
+//dart中的单行函数，main()是应用程序的主函数，执行结果是runApp(MyApp()), MyApp()就是下面自定义的函数。
+void main() => runApp(MyApp()); 
+
+//MyApp继承自StatelessWidget
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: Scaffold(//Scaffold是material提供的widget，具有默认导航栏，标题，主屏幕的body属性
+        appBar: AppBar(
+          title: Text('Welcome to Flutter'),
+        ),
+        body: Center(
+          child: Text('Hello World'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+由此可知，一个App是由widget组成的。widget可以一层层嵌套，它的最终显示样式，由它嵌套的子widget决定
+
+示例中，body是一个widget，里面包含了Center widget，Center widget又包含了Text widget，Center widget决定了子widget以居中样式呈现，所以body的呈现样式是居中显示了文本 `Hello World`
+
+## 引入开源包
+
+使用 [english_words](https://pub.flutter-io.cn/packages/english_words) 资源包，英文单词数据资源
+
+项目中 `pubspec.yaml` 是资源管理包，类似iOS开发中使用cocopads的 `Podfile`。
+
+在 `dependencies` 栏下添加资源包名：`english_words: ^3.1.5` （3.1.5 或更高版本）
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+    
+  cupertino_icons: ^0.1.2
+  english_words: ^3.1.5
+```
+
+添加之后，在VSCode右上角，有一个方块加向下箭头的图标 `Get Packages`，点击便可安装资源包，控制台会打印安装结果：
+
+```
+[first_demo] flutter packages get
+Running "flutter pub get" in first_demo...                          0.4s
+exit code 0
+```
+
+同时会在 `pubspec.lock` 文件中增加了添加的包名和版本信息：
+
+```
+english_words:
+    dependency: "direct main"
+    description:
+      name: english_words
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.5"
+```
+
+## 使用资源包English words 
+
+示例代码：
+
+```dart
+import 'package:english_words/english_words.dart'; //引入english_words，写类WordPair时，会自动引入
+import 'package:flutter/material.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final name = WordPair.random(); //english_words中的随机词对，final是定义不变更的变量的关键字
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Welcome to Flutter'),
+        ),
+        body: Center(
+          child: Text(name.asPascalCase), //asPascalCase是大驼峰命名法，每个单次首字母大写，相应的还有asCamelCase等，可以尝试。
+        ),
+      ),
+    );
+  }
+}
+```
+
+点击 `command + s` （也可点击VSCode上悬浮栏的闪电按钮）会热重载，APP中的文字会不断变化。
+
+## StatefulWidget
+
+上述demo中，是用的StatelessWidget，这是不可变的widget，属性不能改变，都是final的。
+
+StatefulWidget是可变的widget，它本身不可变，但它有一个 `State` 状态类，这个在widget整个生命周期一直存在，是可变的。
+
+创建一个StatefulWidget，和创建StatelessWidget一样，示例代码：
+
+```dart
+class RandomWorld extends StatefulWidget {
+  @override
+  WorldState createState() => WorldState();
+}
+```
+
+方法中 `WorldState` 是StatefulWidget的 State 类，这个类通过createState()方法创建，后跟创建 State类的自定义方法 `WorldState()`
+
+```dart
+class WorldState extends State<RandomWorld> {
+  @override
+  Widget build(BuildContext context) {
+    final name = WordPair.random();
+    return Text(name.asPascalCase);
+  }
+}
+```
+
+这是创建State的实现方法，WorldState集成自State，`<RandomWords>` 代表着专门用于`RandomWorld` 的State泛型类。里面的build方法比较容易理解，就是创建widget的build方法，里面返回了一个动态的Text。这说明State也是一个widget。
+
+*万物皆widget啊！*
+
+剩下的就是使用StatefulWidget，在MyApp中使用StatefulWidget的自定义RandomWorld，动态name用不到了，直接使用`RandomWorld()`
+
+```dart
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // final name = WordPair.random();
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Welcome to Flutter'),
+        ),
+        body: Center(
+          child: RandomWorld()
+        ),
+      ),
+    );
+  }
+}
+```
+
+运行程序，跟之前别无二致，还是APP中的英文词组在变化。但变化从由`StatelessWidget`里的一个widget控制，变为由`StatefulWidget` 的 `State`控制。
+
+## 无限滚动列表
+
+无限滚动是动态的，在上述demo中开发无限滚动列表，需要在State类 `WorldState` 中操作。
+
+无限滚动列表，需要有个无限的数组数据源，所以首先在 `WorldState` 创建一个数组，用于存放数据源：
+
+```dart
+class WorldState extends State<RandomWorld> {
+  final _worldArray = <WordPair>[]; //创建数组，存放内容是WordPair。在Dart中，使用_前缀，会强制使其变为私有
+  //...
+}
+```
+
+有了数据源，开始创建一个ListView，这是列表widget：
+
+```dart
+Widget _listView() {
+    return ListView.builder( //ListView类的builder方法
+      itemBuilder: (context, i) { //itemBuilder 是ListView的builder属性，是匿名回调函数，接收两个参数BuildContext和 i，i从0开始自增
+        if (i.isOdd) { //在奇数行添加分割线
+          return Divider();//分割线
+        }
+        final index = i ~/ 2; // i/2向下取整，能得到偶数列按照0、1、2、3……的index
+        if (index >= _worldArray.length) {
+          _worldArray.addAll(generateWordPairs().take(10)); //当index是数组长度时，数组最后一位了，再生成10个词组添加到数组中。generateWordPairs()是WordPairs的方法
+        }
+        return _buildRow(_worldArray[index]); //偶数行，向列表中添加文本
+      }
+    );
+  }
+```
+
+向列表中添加文本也是个私有方法 `_buildRow` :
+
+```dart
+Widget _buildRow(WordPair name) { //传参，数组中的元素WordPair
+    return ListTile( //返回列表的Tile，类似于iOS中的cell
+      title: Text(
+        name.asPascalCase,
+      ),
+    );
+  }
+```
+
+至此，无限列表已经创建完了。要将无限列表添加到 `WorldState` 中，替换原来赋值词组的方法 ：
+
+```dart
+@override
+  Widget build(BuildContext context) {
+    return Scaffold( //将整个Scaffold 都放到这里处理
+      appBar: AppBar (
+        title: Text('Home'),
+      ),
+      body: _listView(), //body存放自定义的无限列表。
+    );
+  }
+```
+
+最后再更改MyApp的方法：
+
+```dart
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: RandomWorld() //home直接赋值自定义的动态widget即可。
+    );
+  }
+}
+```
+
+运行便呈现了无限滚动列表！
+
+**demo的完整代码见工程中的 [first_demo](https://github.com/mxdios/flutter-demo)**
+
