@@ -85,7 +85,7 @@
 <meta property="og:description" content="作为移动端开发，接口文档看得多，写得少。最近对已开发完成的app进行接口文档整理，发现了apiDoc这款神器。见识到接口文档也可以写的这么高大上，之前用markdown写弱爆了，用word的自杀吧。">
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-36-28.png">
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-11-14-09-52-10.png">
-<meta property="og:updated_time" content="2018-12-24T07:58:01.454Z">
+<meta property="og:updated_time" content="2018-12-24T07:58:01.455Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用apiDoc写接口文档">
 <meta name="twitter:description" content="作为移动端开发，接口文档看得多，写得少。最近对已开发完成的app进行接口文档整理，发现了apiDoc这款神器。见识到接口文档也可以写的这么高大上，之前用markdown写弱爆了，用word的自杀吧。">
@@ -605,7 +605,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -627,7 +627,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -667,6 +667,20 @@
 
           
           
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://chenxiao.wang/" title="喵汪之家" target="_blank">喵汪之家</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
 
           
 
@@ -703,7 +717,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -917,6 +931,28 @@
 
 
 
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+        appKey: 'CFqU7nywNAD5QcP8kUqfHKNB',
+        placeholder: '欢迎吐槽~~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 

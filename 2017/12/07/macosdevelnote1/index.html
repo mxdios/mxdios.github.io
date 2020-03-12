@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-154727.png">
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-12-07-15-48-21.png">
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20171207-155548.png">
-<meta property="og:updated_time" content="2018-12-24T07:59:56.614Z">
+<meta property="og:updated_time" content="2018-12-24T07:59:56.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="macOS开发笔记(1)">
 <meta name="twitter:description" content="旧坑不填，喜开新坑。这两天又计划开发一款macOS应用，之前开发的速记完全是练手，反正现在是不想填坑了，索性再开一个。实际做一个项目，是学习的最佳途径。本文记录了我在开发中遇到的各种问题，以及找到的解决办法，权当以后查阅的笔记。如果能给某位朋友带来帮助，是我的荣幸。如果发现问题，敬请评论吐槽。">
@@ -591,7 +591,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -613,7 +613,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -653,6 +653,20 @@
 
           
           
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://chenxiao.wang/" title="喵汪之家" target="_blank">喵汪之家</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
 
           
 
@@ -689,7 +703,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -903,6 +917,28 @@
 
 
 
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+        appKey: 'CFqU7nywNAD5QcP8kUqfHKNB',
+        placeholder: '欢迎吐槽~~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 

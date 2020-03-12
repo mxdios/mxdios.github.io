@@ -84,7 +84,7 @@
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="[速记] 是一款可以在工具栏快速记录一段文字的应用。也支持在应用窗口添加、删除、编辑记录的文本。我们支持的是迅速、便捷、一触即达，比便签更迅速，比日记更简约。">
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170726-161903.png">
-<meta property="og:updated_time" content="2018-12-24T08:01:03.886Z">
+<meta property="og:updated_time" content="2018-12-24T08:01:03.887Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="速记 - 快速记录每一段文字">
 <meta name="twitter:description" content="[速记] 是一款可以在工具栏快速记录一段文字的应用。也支持在应用窗口添加、删除、编辑记录的文本。我们支持的是迅速、便捷、一触即达，比便签更迅速，比日记更简约。">
@@ -554,7 +554,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -576,7 +576,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -616,6 +616,20 @@
 
           
           
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友链
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://chenxiao.wang/" title="喵汪之家" target="_blank">喵汪之家</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
 
           
 
@@ -652,7 +666,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -866,6 +880,28 @@
 
 
 
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+        appKey: 'CFqU7nywNAD5QcP8kUqfHKNB',
+        placeholder: '欢迎吐槽~~',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
 
 
 
