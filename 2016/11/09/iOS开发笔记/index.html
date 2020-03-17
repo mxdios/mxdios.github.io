@@ -1,142 +1,58 @@
 <!DOCTYPE html>
-
-
-
-
-<html class="theme-next pisces" lang="zh-Hans">
+<html lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"markmiao.com","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
-
-
-
-
-
-
-  <meta name="keywords" content="iOS," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Mark Miao" type="application/atom+xml" />
-
-
-
-
-
-
-<meta name="description" content="记录了在iOS开发中踩过的坑和一些问题解决
-本文不断更新中…">
+  <meta name="description" content="记录了在iOS开发中踩过的坑和一些问题解决 本文不断更新中…">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS开发笔记">
-<meta property="og:url" content="http://markmiao.com/2016/11/09/iOS开发笔记/index.html">
+<meta property="og:url" content="http://markmiao.com/2016/11/09/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Mark Miao">
-<meta property="og:description" content="记录了在iOS开发中踩过的坑和一些问题解决
-本文不断更新中…">
+<meta property="og:description" content="记录了在iOS开发中踩过的坑和一些问题解决 本文不断更新中…">
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/Untitleds.gif">
 <meta property="og:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20160722-0.png">
 <meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160928-0.png?raw=true">
-<meta property="og:updated_time" content="2018-12-24T07:58:56.085Z">
+<meta property="article:published_time" content="2016-11-09T09:24:20.000Z">
+<meta property="article:modified_time" content="2018-12-24T07:58:56.085Z">
+<meta property="article:author" content="Mark">
+<meta property="article:tag" content="iOS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS开发笔记">
-<meta name="twitter:description" content="记录了在iOS开发中踩过的坑和一些问题解决
-本文不断更新中…">
 <meta name="twitter:image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/Untitleds.gif">
 
+<link rel="canonical" href="http://markmiao.com/2016/11/09/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
   };
 </script>
-
-
-
-  <link rel="canonical" href="http://markmiao.com/2016/11/09/iOS开发笔记/"/>
-
-
-
-
 
   <title>iOS开发笔记 | Mark Miao</title>
   
 
 
-
-
-
-  <script type="text/javascript">
+  <script>
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
@@ -149,233 +65,231 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mark Miao" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Mark Miao</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">Mark’s blog</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-about">
-          <a href="/about/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
 
-  
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
 </nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
 
+  </div>
+</div>
 
-
- </div>
+  </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2016/11/09/iOS开发笔记/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2016/11/09/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mark">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+      <meta itemprop="name" content="Mark">
+      <meta itemprop="description" content="Hello world, Coding life;">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Mark Miao">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">iOS开发笔记</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          iOS开发笔记
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-09T17:24:20+08:00">
-                2016-11-09
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2016-11-09 17:24:20" itemprop="dateCreated datePublished" datetime="2016-11-09T17:24:20+08:00">2016-11-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-12-24 15:58:56" itemprop="dateModified" datetime="2018-12-24T15:58:56+08:00">2018-12-24</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/iOS开发/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS开发</span>
-                  </a>
+                  <a href="/categories/iOS%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">iOS开发</span></a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/11/09/iOS开发笔记/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count gitment-comments-count" data-xid="/2016/11/09/iOS开发笔记/" itemprop="commentsCount"></span>
-                </a>
+            <span id="/2016/11/09/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" class="post-meta-item leancloud_visitors" data-flag-title="iOS开发笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
               </span>
-            
-          
-
-          
-          
-             <span id="/2016/11/09/iOS开发笔记/" class="leancloud_visitors" data-flag-title="iOS开发笔记">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/09/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/09/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span></span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>NaN:aN</span>
+            </span>
 
         </div>
       </header>
-    
 
     
     
@@ -383,59 +297,72 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p><strong>记录了在iOS开发中踩过的坑和一些问题解决</strong></p>
-<p>本文不断更新中…<br><a id="more"></a></p>
+<p>本文不断更新中…</p>
+<a id="more"></a>
+
+
 <h2 id="微信的openid"><a href="#微信的openid" class="headerlink" title="微信的openid"></a>微信的openid</h2><p>微信的openid对于某个用户来说并不是唯一的，某个用户对某个公众号或者对某个微信开放平台下某个appid生成的是唯一的。appid改变，openid也会改变。公众号下和app下获得的openid不同，现阶段无法实现相同操作。使用unionid打通用户，微信开放平台上绑定了公众号，这时获取的unionid会一致。</p>
 <h2 id="Cell进入编辑状态，内容覆盖编辑按钮"><a href="#Cell进入编辑状态，内容覆盖编辑按钮" class="headerlink" title="Cell进入编辑状态，内容覆盖编辑按钮"></a>Cell进入编辑状态，内容覆盖编辑按钮</h2><p>删除一条cell时，最常用的方法就是侧滑删除。</p>
 <p>还有就是点击编辑按钮，cell进入编辑状态，点击红色减号button，出现删除按钮，点击删除完成删除操作。这时会出现问题，cell上的内容遮盖了删除按钮，如下图所示。</p>
 <p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image/Untitleds.gif" alt="如图"></p>
 <p>解决这个问题，只需要在自定义cell里加如下代码</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)layoutSubviews</div><div class="line">&#123;</div><div class="line">    [<span class="keyword">super</span> layoutSubviews];</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isEditing) &#123;</div><div class="line">        [<span class="keyword">self</span> sendSubviewToBack:<span class="keyword">self</span>.contentView];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)layoutSubviews</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> layoutSubviews];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.isEditing) &#123;</span><br><span class="line">        [<span class="keyword">self</span> sendSubviewToBack:<span class="keyword">self</span>.contentView];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20160722-0.png" alt="结果"></p>
 <h2 id="View中部分内嵌UIWebView"><a href="#View中部分内嵌UIWebView" class="headerlink" title="View中部分内嵌UIWebView"></a>View中部分内嵌UIWebView</h2><p>在开发中，有的界面要求部分原生，部分根据服务器返回的URL地址显示网页。这就需要计算这部分网页的size。不然就会显示不全或者留白太多</p>
 <p>创建UIWebView 并加载页面</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UIWebView</span> *webview = [[<span class="built_in">UIWebView</span> alloc] init]; <span class="comment">//创建webview</span></div><div class="line">webview.delegate = <span class="keyword">self</span>;  <span class="comment">//设置代理</span></div><div class="line">[webview loadHTMLString:url baseURL:<span class="literal">nil</span>]; <span class="comment">//加载网页</span></div><div class="line">[<span class="keyword">self</span>.view addSubview:webview]; <span class="comment">//添加到view上</span></div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIWebView</span> *webview = [[<span class="built_in">UIWebView</span> alloc] init]; <span class="comment">//创建webview</span></span><br><span class="line">webview.delegate = <span class="keyword">self</span>;  <span class="comment">//设置代理</span></span><br><span class="line">[webview loadHTMLString:url baseURL:<span class="literal">nil</span>]; <span class="comment">//加载网页</span></span><br><span class="line">[<span class="keyword">self</span>.view addSubview:webview]; <span class="comment">//添加到view上</span></span><br></pre></td></tr></table></figure>
+
 <p>在webView的代理方法中获取网页实际size</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)webViewDidFinishLoad:(<span class="built_in">UIWebView</span> *)webView</div><div class="line">&#123;</div><div class="line">    webView.width = <span class="keyword">self</span>.view.width; <span class="comment">//实际宽度</span></div><div class="line">    webView.height = [webView stringByEvaluatingJavaScriptFromString:<span class="string">@"document.body.scrollHeight"</span>].floatValue; <span class="comment">//实际高度</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="设置UITextField的placeholder字体的颜色和字号"><a href="#设置UITextField的placeholder字体的颜色和字号" class="headerlink" title="设置UITextField的placeholder字体的颜色和字号"></a>设置UITextField的placeholder字体的颜色和字号</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">textField.placeholder = <span class="string">@"请输入用户名"</span>;  </div><div class="line">[textField setValue:[<span class="built_in">UIColor</span> redColor] forKeyPath:<span class="string">@"_placeholderLabel.textColor"</span>];  </div><div class="line">[textField setValue:[<span class="built_in">UIFont</span> boldSystemFontOfSize:<span class="number">16</span>] forKeyPath:<span class="string">@"_placeholderLabel.font"</span>];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)webViewDidFinishLoad:(<span class="built_in">UIWebView</span> *)webView</span><br><span class="line">&#123;</span><br><span class="line">    webView.width = <span class="keyword">self</span>.view.width; <span class="comment">//实际宽度</span></span><br><span class="line">    webView.height = [webView stringByEvaluatingJavaScriptFromString:<span class="string">@"document.body.scrollHeight"</span>].floatValue; <span class="comment">//实际高度</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置UITextField的placeholder字体的颜色和字号"><a href="#设置UITextField的placeholder字体的颜色和字号" class="headerlink" title="设置UITextField的placeholder字体的颜色和字号"></a>设置UITextField的placeholder字体的颜色和字号</h2><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">textField.placeholder = <span class="string">@"请输入用户名"</span>;  </span><br><span class="line">[textField setValue:[<span class="built_in">UIColor</span> redColor] forKeyPath:<span class="string">@"_placeholderLabel.textColor"</span>];  </span><br><span class="line">[textField setValue:[<span class="built_in">UIFont</span> boldSystemFontOfSize:<span class="number">16</span>] forKeyPath:<span class="string">@"_placeholderLabel.font"</span>];</span><br></pre></td></tr></table></figure>
+
 <h2 id="按钮的拖动效果和点击事件并存"><a href="#按钮的拖动效果和点击事件并存" class="headerlink" title="按钮的拖动效果和点击事件并存"></a>按钮的拖动效果和点击事件并存</h2><p>需求是一个按钮可以在屏幕中随意拖动，不能拖出屏幕外。距离屏幕最边缘有10像素的距离。拖动结束后，根据距离左右两侧哪侧近，靠到近的一侧。</p>
 <p>定义<code>Bool</code>类型的全部变量，控制是否执行点击事件</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">BOOL</span> _isClick;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">BOOL</span> _isClick;</span><br></pre></td></tr></table></figure>
+
 <p>创建按钮添加拖动和点击事件</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//添加点击事件</span></div><div class="line">[btn addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(btnClick:) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</div><div class="line"><span class="comment">//添加拖动事件</span></div><div class="line">[btn addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(dragMoving:withEvent:)forControlEvents: <span class="built_in">UIControlEventTouchDragInside</span>];</div><div class="line"><span class="comment">//添加拖动结束时的事件</span></div><div class="line">[btn addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(dragEnded:withEvent:)forControlEvents: <span class="built_in">UIControlEventTouchUpInside</span>];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//添加点击事件</span></span><br><span class="line">[btn addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(btnClick:) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line"><span class="comment">//添加拖动事件</span></span><br><span class="line">[btn addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(dragMoving:withEvent:)forControlEvents: <span class="built_in">UIControlEventTouchDragInside</span>];</span><br><span class="line"><span class="comment">//添加拖动结束时的事件</span></span><br><span class="line">[btn addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(dragEnded:withEvent:)forControlEvents: <span class="built_in">UIControlEventTouchUpInside</span>];</span><br></pre></td></tr></table></figure>
+
 <p>实现事件方法</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//拖动过程中</span></div><div class="line">- (<span class="keyword">void</span>)dragMoving:(<span class="built_in">UIControl</span> *)c withEvent:ev</div><div class="line">&#123;</div><div class="line">    <span class="built_in">CGPoint</span> point = [[[ev allTouches] anyObject] locationInView:<span class="keyword">self</span>.view];   </div><div class="line">    point.x = MIN(MAX(point.x, btn.width * <span class="number">0.5</span> + <span class="number">10</span>) , <span class="keyword">self</span>.view.width - btn.width * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></div><div class="line">    point.y = MIN(MAX(point.y, <span class="number">100</span>), <span class="keyword">self</span>.view.height - btn.height * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></div><div class="line">    c.center = point;</div><div class="line">    _isClick = <span class="literal">NO</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//拖动结束</span></div><div class="line">- (<span class="keyword">void</span>)dragEnded:(<span class="built_in">UIControl</span> *)c withEvent:ev</div><div class="line">&#123;</div><div class="line">    XDLog(<span class="string">@"dragEnded...."</span>);   </div><div class="line">    <span class="built_in">CGPoint</span> point = [[[ev allTouches] anyObject] locationInView:<span class="keyword">self</span>.view];</div><div class="line">    point.x = MIN(MAX(point.x, btn.width * <span class="number">0.5</span> + <span class="number">10</span>), <span class="keyword">self</span>.view.width - btn.width * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></div><div class="line">    point.y = MIN(MAX(point.y, <span class="number">100</span>) , <span class="keyword">self</span>.view.height - btn.height * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></div><div class="line">    c.center = point;</div><div class="line">    [<span class="built_in">UIView</span> animateWithDuration:<span class="number">0.2</span> animations:^&#123;</div><div class="line">        c.centerX = c.centerX &lt; <span class="keyword">self</span>.view.width - c.centerX ? <span class="number">30</span> : <span class="keyword">self</span>.view.width - <span class="number">30</span>;</div><div class="line">    &#125;];</div><div class="line">    _isClick = <span class="literal">YES</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">//点击事件</span></div><div class="line">- (<span class="keyword">void</span>)btnClick:(<span class="built_in">UIButton</span> *)btn</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_isClick) &#123;</div><div class="line">    	<span class="comment">//点击方法</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//拖动过程中</span></span><br><span class="line">- (<span class="keyword">void</span>)dragMoving:(<span class="built_in">UIControl</span> *)c withEvent:ev</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">CGPoint</span> point = [[[ev allTouches] anyObject] locationInView:<span class="keyword">self</span>.view];   </span><br><span class="line">    point.x = MIN(MAX(point.x, btn.width * <span class="number">0.5</span> + <span class="number">10</span>) , <span class="keyword">self</span>.view.width - btn.width * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></span><br><span class="line">    point.y = MIN(MAX(point.y, <span class="number">100</span>), <span class="keyword">self</span>.view.height - btn.height * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></span><br><span class="line">    c.center = point;</span><br><span class="line">    _isClick = <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//拖动结束</span></span><br><span class="line">- (<span class="keyword">void</span>)dragEnded:(<span class="built_in">UIControl</span> *)c withEvent:ev</span><br><span class="line">&#123;</span><br><span class="line">    XDLog(<span class="string">@"dragEnded...."</span>);   </span><br><span class="line">    <span class="built_in">CGPoint</span> point = [[[ev allTouches] anyObject] locationInView:<span class="keyword">self</span>.view];</span><br><span class="line">    point.x = MIN(MAX(point.x, btn.width * <span class="number">0.5</span> + <span class="number">10</span>), <span class="keyword">self</span>.view.width - btn.width * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></span><br><span class="line">    point.y = MIN(MAX(point.y, <span class="number">100</span>) , <span class="keyword">self</span>.view.height - btn.height * <span class="number">0.5</span> - <span class="number">10</span>);<span class="comment">//范围</span></span><br><span class="line">    c.center = point;</span><br><span class="line">    [<span class="built_in">UIView</span> animateWithDuration:<span class="number">0.2</span> animations:^&#123;</span><br><span class="line">        c.centerX = c.centerX &lt; <span class="keyword">self</span>.view.width - c.centerX ? <span class="number">30</span> : <span class="keyword">self</span>.view.width - <span class="number">30</span>;</span><br><span class="line">    &#125;];</span><br><span class="line">    _isClick = <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//点击事件</span></span><br><span class="line">- (<span class="keyword">void</span>)btnClick:(<span class="built_in">UIButton</span> *)btn</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (_isClick) &#123;</span><br><span class="line">    	<span class="comment">//点击方法</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="UITableViewCell左滑编辑字体颜色设置"><a href="#UITableViewCell左滑编辑字体颜色设置" class="headerlink" title="UITableViewCell左滑编辑字体颜色设置"></a>UITableViewCell左滑编辑字体颜色设置</h2><p>设置按钮，iOS8之后API，用下面代码设置多个按钮</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSArray</span>&lt;<span class="built_in">UITableViewRowAction</span> *&gt; *)tableView:(<span class="built_in">UITableView</span> *)tableView editActionsForRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath</div><div class="line">&#123;</div><div class="line">	<span class="keyword">void</span>(^rowActionHandler)(<span class="built_in">UITableViewRowAction</span> *, <span class="built_in">NSIndexPath</span> *) = ^(<span class="built_in">UITableViewRowAction</span> * _Nonnull action, <span class="built_in">NSIndexPath</span> * _Nonnull indexPath) &#123;</div><div class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@  index = %ld"</span>, action.title, indexPath.row);</div><div class="line">        [tableView setEditing:<span class="literal">NO</span> animated:<span class="literal">YES</span>];</div><div class="line">    &#125;;</div><div class="line">    <span class="built_in">UITableViewRowAction</span> *action1 = [<span class="built_in">UITableViewRowAction</span> rowActionWithStyle:<span class="built_in">UITableViewRowActionStyleNormal</span> title:<span class="string">@"编辑"</span> handler:rowActionHandler];</div><div class="line">    <span class="built_in">UITableViewRowAction</span> *action2 = [<span class="built_in">UITableViewRowAction</span> rowActionWithStyle:<span class="built_in">UITableViewRowActionStyleNormal</span> title:<span class="string">@"删除"</span> handler:rowActionHandler];</div><div class="line">    <span class="built_in">UITableViewRowAction</span> *action3 = [<span class="built_in">UITableViewRowAction</span> rowActionWithStyle:<span class="built_in">UITableViewRowActionStyleNormal</span> title:<span class="string">@"喜欢"</span> handler:rowActionHandler];</div><div class="line">    action1.backgroundColor = [<span class="built_in">UIColor</span> lightGrayColor];</div><div class="line">    action2.backgroundColor = [<span class="built_in">UIColor</span> blackColor];</div><div class="line">    action3.backgroundColor = [<span class="built_in">UIColor</span> redColor];</div><div class="line">    <span class="keyword">return</span> @[action3,action1,action2];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSArray</span>&lt;<span class="built_in">UITableViewRowAction</span> *&gt; *)tableView:(<span class="built_in">UITableView</span> *)tableView editActionsForRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">void</span>(^rowActionHandler)(<span class="built_in">UITableViewRowAction</span> *, <span class="built_in">NSIndexPath</span> *) = ^(<span class="built_in">UITableViewRowAction</span> * _Nonnull action, <span class="built_in">NSIndexPath</span> * _Nonnull indexPath) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@  index = %ld"</span>, action.title, indexPath.row);</span><br><span class="line">        [tableView setEditing:<span class="literal">NO</span> animated:<span class="literal">YES</span>];</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">UITableViewRowAction</span> *action1 = [<span class="built_in">UITableViewRowAction</span> rowActionWithStyle:<span class="built_in">UITableViewRowActionStyleNormal</span> title:<span class="string">@"编辑"</span> handler:rowActionHandler];</span><br><span class="line">    <span class="built_in">UITableViewRowAction</span> *action2 = [<span class="built_in">UITableViewRowAction</span> rowActionWithStyle:<span class="built_in">UITableViewRowActionStyleNormal</span> title:<span class="string">@"删除"</span> handler:rowActionHandler];</span><br><span class="line">    <span class="built_in">UITableViewRowAction</span> *action3 = [<span class="built_in">UITableViewRowAction</span> rowActionWithStyle:<span class="built_in">UITableViewRowActionStyleNormal</span> title:<span class="string">@"喜欢"</span> handler:rowActionHandler];</span><br><span class="line">    action1.backgroundColor = [<span class="built_in">UIColor</span> lightGrayColor];</span><br><span class="line">    action2.backgroundColor = [<span class="built_in">UIColor</span> blackColor];</span><br><span class="line">    action3.backgroundColor = [<span class="built_in">UIColor</span> redColor];</span><br><span class="line">    <span class="keyword">return</span> @[action3,action1,action2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这种方式显示的样式是系统自带的，系统指定字体和文字颜色。</p>
 <p>按钮可以修改文字颜色，添加标题图片，背景图片等。<code>UITableViewRowAction</code>的显示为<code>UIButton</code>，修改<code>UIButton</code>的显示样式，cell的多个编辑按钮都会变化</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[<span class="built_in">UIButton</span> appearance] setTitleColor:[<span class="built_in">UIColor</span> blackColor] forState:<span class="built_in">UIControlStateNormal</span>];</div><div class="line">[[<span class="built_in">UIButton</span> appearance] setImage:[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"searchtool"</span>] forState:<span class="built_in">UIControlStateNormal</span>];</div><div class="line">[[<span class="built_in">UIButton</span> appearance] setBackgroundImage:[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"searchtool"</span>] forState:<span class="built_in">UIControlStateNormal</span>];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="built_in">UIButton</span> appearance] setTitleColor:[<span class="built_in">UIColor</span> blackColor] forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">[[<span class="built_in">UIButton</span> appearance] setImage:[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"searchtool"</span>] forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">[[<span class="built_in">UIButton</span> appearance] setBackgroundImage:[<span class="built_in">UIImage</span> imageNamed:<span class="string">@"searchtool"</span>] forState:<span class="built_in">UIControlStateNormal</span>];</span><br></pre></td></tr></table></figure>
+
 <p>值得注意的是下面这种方式设置字号无效</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[<span class="built_in">UIButton</span> appearance].titleLabel.font = XDFont(<span class="number">10</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">UIButton</span> appearance].titleLabel.font = XDFont(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
 <p>只有一个按钮的话可以使用<code>NSAttributedString</code>设置显示文字的字体、字号、颜色等</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSDictionary</span> *attributes = @&#123;<span class="built_in">NSFontAttributeName</span>:[<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">10</span>], <span class="built_in">NSForegroundColorAttributeName</span>:[<span class="built_in">UIColor</span> redColor]&#125;;</div><div class="line"><span class="built_in">NSAttributedString</span> *attributedTitle = [[<span class="built_in">NSAttributedString</span> alloc] initWithString:<span class="string">@"编辑"</span> attributes: attributes];</div><div class="line">[[<span class="built_in">UIButton</span> appearance] setAttributedTitle:attributedTitle forState:<span class="built_in">UIControlStateNormal</span>];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSDictionary</span> *attributes = @&#123;<span class="built_in">NSFontAttributeName</span>:[<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">10</span>], <span class="built_in">NSForegroundColorAttributeName</span>:[<span class="built_in">UIColor</span> redColor]&#125;;</span><br><span class="line"><span class="built_in">NSAttributedString</span> *attributedTitle = [[<span class="built_in">NSAttributedString</span> alloc] initWithString:<span class="string">@"编辑"</span> attributes: attributes];</span><br><span class="line">[[<span class="built_in">UIButton</span> appearance] setAttributedTitle:attributedTitle forState:<span class="built_in">UIControlStateNormal</span>];</span><br></pre></td></tr></table></figure>
+
 <p><em>这种实现方式并不好有诸多问题，当有多个按钮分别设置不同的字体字号颜色时，这种方式无法实现，当找到有效方法再添加….此条权当问题记录</em></p>
 <h2 id="用Application-Loader交付应用程序时，一直正在通过AppStore进行鉴定"><a href="#用Application-Loader交付应用程序时，一直正在通过AppStore进行鉴定" class="headerlink" title="用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定"></a>用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定</h2><p>需要修改Application Loader里的一个文件内容。</p>
 <p>路径为</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></div></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></span><br></pre></td></tr></table></figure>
 <p>或者路径为</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/MacOS/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></div></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Xcode.app显示包内容 -&gt; Contents/Applications/Application Loader.app显示包内容 -&gt; Contents/MacOS/itms/java/<span class="class"><span class="keyword">lib</span>/<span class="title">net</span>.<span class="title">properties</span></span></span><br></pre></td></tr></table></figure>
 <p>打开这个文件，把第34行的http.proxyPort=443 改为https.proxyPort=80  再提交应用就ok了</p>
 <h2 id="pdf的展示"><a href="#pdf的展示" class="headerlink" title="pdf的展示"></a>pdf的展示</h2><p>项目里要求读取从服务器下载下来的pdf，pdf文件是一个发票文件，下载到本地Documents目录下，展示出来。问题来了，发票上的印章不见了。</p>
 <p>我将这个pdf文件放到了各种应用中打开，结果是：微信、qq、印象笔记、掌阅iReader、Safari、iBooks、WPS Office、mac上的预览，除了WPS Office、mac上的预览能显示出印章，其他的全部显示不出印章，甚至微信、掌阅iReader连发票上的分割线都显示不出来。</p>
 <p>而且，用WPS Office打开，可以点击印章删除，可以点击分割线删除。这时我感觉印章和分割线是在pdf上的标注，就像以前使用Adobe的工具给pdf加标注文字，选中文字高亮显示。</p>
 <p><strong>最开始使用了最简单的展示pdf文件的方法：UIWebView</strong></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSArray</span> *paths = <span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>);</div><div class="line"><span class="built_in">NSString</span> *documentsDirectory = [paths objectAtIndex:<span class="number">0</span>];</div><div class="line"><span class="built_in">NSString</span> *filePDF = [documentsDirectory  stringByAppendingPathComponent:<span class="string">@"file.pdf"</span>]</div><div class="line"></div><div class="line"><span class="comment">//第一种webview加载方式</span></div><div class="line"><span class="built_in">NSURL</span> *url = [<span class="built_in">NSURL</span> fileURLWithPath:_filePath];</div><div class="line"><span class="built_in">NSURLRequest</span> *request = [<span class="built_in">NSURLRequest</span> requestWithURL:url];</div><div class="line">[_webView loadRequest:request];</div><div class="line"></div><div class="line"><span class="comment">//第二种webview加载方式</span></div><div class="line"><span class="built_in">NSURL</span> *url = [<span class="built_in">NSURL</span> fileURLWithPath:_filePath];</div><div class="line"><span class="built_in">NSData</span> *data = [<span class="built_in">NSData</span> dataWithContentsOfFile:_filePath];</div><div class="line">[_webView loadData:data MIMEType:<span class="string">@"application/pdf"</span> textEncodingName:<span class="string">@"UTF-8"</span> baseURL:url];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSArray</span> *paths = <span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>);</span><br><span class="line"><span class="built_in">NSString</span> *documentsDirectory = [paths objectAtIndex:<span class="number">0</span>];</span><br><span class="line"><span class="built_in">NSString</span> *filePDF = [documentsDirectory  stringByAppendingPathComponent:<span class="string">@"file.pdf"</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">//第一种webview加载方式</span></span><br><span class="line"><span class="built_in">NSURL</span> *url = [<span class="built_in">NSURL</span> fileURLWithPath:_filePath];</span><br><span class="line"><span class="built_in">NSURLRequest</span> *request = [<span class="built_in">NSURLRequest</span> requestWithURL:url];</span><br><span class="line">[_webView loadRequest:request];</span><br><span class="line"></span><br><span class="line"><span class="comment">//第二种webview加载方式</span></span><br><span class="line"><span class="built_in">NSURL</span> *url = [<span class="built_in">NSURL</span> fileURLWithPath:_filePath];</span><br><span class="line"><span class="built_in">NSData</span> *data = [<span class="built_in">NSData</span> dataWithContentsOfFile:_filePath];</span><br><span class="line">[_webView loadData:data MIMEType:<span class="string">@"application/pdf"</span> textEncodingName:<span class="string">@"UTF-8"</span> baseURL:url];</span><br></pre></td></tr></table></figure>
+
 <p>失败！</p>
 <p><strong>转而使用<code>Quartz 2D</code>绘制pdf</strong></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect</div><div class="line">&#123;</div><div class="line">	<span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();</div><div class="line">    <span class="comment">//旋转坐标系</span></div><div class="line">    <span class="built_in">CGContextTranslateCTM</span>(context, <span class="number">0</span>, <span class="keyword">self</span>.frame.size.height<span class="number">-60</span>);</div><div class="line">    <span class="built_in">CGContextScaleCTM</span>(context, <span class="number">1</span>, <span class="number">-1</span>);</div><div class="line">    <span class="built_in">CGPDFPageRef</span> pdfPage = <span class="built_in">CGPDFDocumentGetPage</span>(_pdfDoc, <span class="number">1</span>);</div><div class="line">    <span class="built_in">CGContextSaveGState</span>(context);</div><div class="line">    <span class="built_in">CGAffineTransform</span> pdfTransform = <span class="built_in">CGPDFPageGetDrawingTransform</span>(pdfPage, kCGPDFCropBox, <span class="keyword">self</span>.bounds, <span class="number">0</span>, <span class="literal">true</span>);</div><div class="line">    <span class="built_in">CGContextConcatCTM</span>(context, pdfTransform);</div><div class="line">    <span class="built_in">CGContextDrawPDFPage</span>(context, pdfPage);</div><div class="line">    <span class="built_in">CGContextRestoreGState</span>(context);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line">    <span class="comment">//旋转坐标系</span></span><br><span class="line">    <span class="built_in">CGContextTranslateCTM</span>(context, <span class="number">0</span>, <span class="keyword">self</span>.frame.size.height<span class="number">-60</span>);</span><br><span class="line">    <span class="built_in">CGContextScaleCTM</span>(context, <span class="number">1</span>, <span class="number">-1</span>);</span><br><span class="line">    <span class="built_in">CGPDFPageRef</span> pdfPage = <span class="built_in">CGPDFDocumentGetPage</span>(_pdfDoc, <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">CGContextSaveGState</span>(context);</span><br><span class="line">    <span class="built_in">CGAffineTransform</span> pdfTransform = <span class="built_in">CGPDFPageGetDrawingTransform</span>(pdfPage, kCGPDFCropBox, <span class="keyword">self</span>.bounds, <span class="number">0</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="built_in">CGContextConcatCTM</span>(context, pdfTransform);</span><br><span class="line">    <span class="built_in">CGContextDrawPDFPage</span>(context, pdfPage);</span><br><span class="line">    <span class="built_in">CGContextRestoreGState</span>(context);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>失败！甚至分割线都没了</p>
 <p>这是最常用的两种读取pdf文件的方式，然而还是显示不出来发票上面的印章</p>
 <p><strong>使用QLPreviewController预览</strong></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//导入QuickLook库</span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;QuickLook/QuickLook.h&gt;</span></span></div><div class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</div><div class="line">	QLPreviewController *previ = [[QLPreviewController alloc] init];</div><div class="line">	previ.view.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">self</span>.view.width, <span class="keyword">self</span>.view.height - <span class="number">200</span>);</div><div class="line">	previ.delegate = <span class="keyword">self</span>;</div><div class="line">	previ.dataSource = <span class="keyword">self</span>;</div><div class="line">	[<span class="keyword">self</span>.view addSubview:previ.view];</div><div class="line">&#125;</div><div class="line"><span class="comment">//实现代理方法</span></div><div class="line"><span class="meta">#pragma mark - 在此代理处加载需要显示的文件</span></div><div class="line">- (<span class="built_in">NSURL</span> *)previewController:(QLPreviewController *)previewController previewItemAtIndex:(<span class="built_in">NSInteger</span>)idx</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> [<span class="built_in">NSURL</span> fileURLWithPath:filePath];</div><div class="line">&#125;</div><div class="line"><span class="meta">#pragma mark - 返回文件的个数</span></div><div class="line">-(<span class="built_in">NSInteger</span>)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller &#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"><span class="meta">#pragma mark - 即将要退出浏览文件时执行此方法</span></div><div class="line">-(<span class="keyword">void</span>)previewControllerWillDismiss:(QLPreviewController *)controller &#123;</div><div class="line">    XDLog(<span class="string">@"退出"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//导入QuickLook库</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;QuickLook/QuickLook.h&gt;</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">	QLPreviewController *previ = [[QLPreviewController alloc] init];</span><br><span class="line">	previ.view.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="keyword">self</span>.view.width, <span class="keyword">self</span>.view.height - <span class="number">200</span>);</span><br><span class="line">	previ.delegate = <span class="keyword">self</span>;</span><br><span class="line">	previ.dataSource = <span class="keyword">self</span>;</span><br><span class="line">	[<span class="keyword">self</span>.view addSubview:previ.view];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//实现代理方法</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark - 在此代理处加载需要显示的文件</span></span><br><span class="line">- (<span class="built_in">NSURL</span> *)previewController:(QLPreviewController *)previewController previewItemAtIndex:(<span class="built_in">NSInteger</span>)idx</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSURL</span> fileURLWithPath:filePath];</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark - 返回文件的个数</span></span><br><span class="line">-(<span class="built_in">NSInteger</span>)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> mark - 即将要退出浏览文件时执行此方法</span></span><br><span class="line">-(<span class="keyword">void</span>)previewControllerWillDismiss:(QLPreviewController *)controller &#123;</span><br><span class="line">    XDLog(<span class="string">@"退出"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>还是失败的没显示出来印章。</p>
 <p><strong>在github上找读取pdf的项目</strong></p>
 <ul>
@@ -450,29 +377,34 @@
 <blockquote><p>公司的项目要读取服务器发来的PDF文件，用网上的方法读取后虽然能读出来，但是发现个问题，PDF文件有的签章不见了。这个可是大问题，试了好多iOS框架库，例如 Reader,FastPdfKit都读不出来。</p>
 <p>在知乎上找到一个大神的发言，解释了PDF有的内容读不出来的原因。iOS 对矢量图片的支持如何？ 直接引用其中的一段话:”iOS 的 Core Graphics 框架底层和 OS X 一样，都是基于 PDF 的。所以 iOS 用 PDF 很方便，比如 iOS 的 Quick Look 框架就可以直接看 PDF。如果要是只看文档那样简单的 PDF 的话，一般是没有什么问题的。不过，如果要是想看用 AI 制作的，带有多重描边、填充、网格渐变、阴影、多图层等东西的复杂 PDF 图形的话，有很大机率会出现问题。比如，在 iOS 和 OS X 上常出现的一个问题是，PDF 文稿里隐藏的图层、图形被显示出来。如果查看复杂一些的 PDF，很可能在 Adobe Illustrator、OS X、iOS、Adobe Reader 下查看的效果都不一样。所以说，PDF 虽然一般被认为是跨平台的「安全格式」，不过也并不是 100% 保险。 Adobe Reader 的 iOS 版很可能没有使用 iOS 系统自带的 PDF 和矢量绘图 API，而是自己实现了一个，因此通常 Adobe Reader 显示复杂一些的 PDF 比使用 iOS 原生 API 解析 PDF 的 App 更准确一些。还有， 无论是使用 iOS 原生的 Quick Look 还是用 Adobe Reader 查看，渲染复杂的 PDF 有可能特别慢”。公司PDF的签章好像就是多图层，在文字的底下。</p>
 </blockquote>
+
 <p><strong>找了好久，终于找到了一个能读取多图层的PDF文件的框架 - MuPDF</strong></p>
 <p>得出一个结论，使用Mupdf</p>
-<p><a href="https://github.com/muennich/mupdf" target="_blank" rel="external">Mupdf github地址</a></p>
-<p><a href="http://www.jianshu.com/p/5fd00530d4bb" target="_blank" rel="external">使用方法</a></p>
+<p><a href="https://github.com/muennich/mupdf" target="_blank" rel="noopener">Mupdf github地址</a></p>
+<p><a href="http://www.jianshu.com/p/5fd00530d4bb" target="_blank" rel="noopener">使用方法</a></p>
 <h2 id="处理git库不允许上传大于100M的文件"><a href="#处理git库不允许上传大于100M的文件" class="headerlink" title="处理git库不允许上传大于100M的文件"></a>处理git库不允许上传大于100M的文件</h2><p>git库在上传大于50M的文件时会有警告，文件大于100M时直接拒绝push。要将这个文件从本地库和远程库中移除掉，再进行push操作。比如百度地图的导航静态库<code>libbaiduNaviSDK.a</code>就有100多M，做push操作时，直接报错了。</p>
 <blockquote><p>remote: warning: Large files detected.<br>remote: error: File gasstation/gasstation/Classes/Main/Lib/BaiduNaviSDK/libbaiduNaviSDK.a is 108.63 MB; this exceeds Git@OSC’s file size limit of 100 MB<br>remote: error: hook declined to update refs/heads/master</p>
 </blockquote>
+
 <p>如果这个文件是最近一次commit的，并没有进行push操作，换句话说进行push操作的时候报错了。那么需要删除掉本地库中这个文件的commit记录再进行push</p>
 <p>在终端中cd进项目目录，就是项目的<code>.git</code>文件的目录下</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /Users/XXX(<span class="built_in">cd</span>后面路径换成自己项目的路径)</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /Users/XXX(<span class="built_in">cd</span>后面路径换成自己项目的路径)</span><br></pre></td></tr></table></figure>
+
 <p>输入如下命令</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git rm <span class="comment">--cached /Users/XXX/XXX/libbaiduNaviSDK.a (大文件的路径)</span></div><div class="line">git <span class="keyword">commit</span> <span class="comment">--amend -CHEAD</span></div></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git rm <span class="comment">--cached /Users/XXX/XXX/libbaiduNaviSDK.a (大文件的路径)</span></span><br><span class="line">git <span class="keyword">commit</span> <span class="comment">--amend -CHEAD</span></span><br></pre></td></tr></table></figure>
+
 <p>到这一步这个大文件从commit记录中移除了，以后的commit也不会再commit它了。此时进行push即可</p>
 <p>还有一种情况是你无数次commit了，也不知道哪次把这个大文件commit上了，在进行push的时候报错了。</p>
 <p>这时需要将本地代码库回滚，回滚到某个commit之前</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git <span class="keyword">reset</span> <span class="comment">--hard commit-id :回滚到commit-id，讲commit-id之后提交的commit都去除</span></div><div class="line"></div><div class="line">git <span class="keyword">reset</span> <span class="comment">--hard HEAD~3：将最近3次的提交回滚</span></div></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="keyword">reset</span> <span class="comment">--hard commit-id :回滚到commit-id，讲commit-id之后提交的commit都去除</span></span><br><span class="line"></span><br><span class="line">git <span class="keyword">reset</span> <span class="comment">--hard HEAD~3：将最近3次的提交回滚</span></span><br></pre></td></tr></table></figure>
+
 <h2 id="删除苹果开发者平台Developer里的App-ID"><a href="#删除苹果开发者平台Developer里的App-ID" class="headerlink" title="删除苹果开发者平台Developer里的App ID"></a>删除苹果开发者平台Developer里的App ID</h2><p>删除苹果开发者平台Developer里的某个AppID本来是很容易的事情，点击Edit -&gt; Delete -&gt; 警示框中红色Delete即可。但是真实情况却坑的一逼……</p>
 <p>Developer中的AppID对应项目中的Bundle id，是一个app的唯一标识，包括在App Store中，在各大第三方开放平台中。一般为了保证唯一性，采用公司域名反写＋app项目名的方式命名。</p>
 <p>我经历过替换开发者账号的事。事情是这样的：开发某款app在上线AppStore当天，甲方觉得提供商名字不好(因为是个人开发者账号，显示的是人名拼音)要求下架，重新提供开发者账号提交。甲方是上帝，您高兴就好，反正$99不用我掏腰包。就这样上架第一天我亲手点了下架按钮，</p>
 <p>问题就来了，Bundle id被旧的开发者帐号占用了，新的没法用了，我不想为了换个开发者帐号把Bundle id改了，毕竟牵扯好几个第三方平台呢。那就删除原来账号的Bundle id，删除的时候有如下提醒：</p>
 <p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160928-0.png?raw=true" alt="img"></p>
 <p>在App Store上使用了，不能删除。我只好去iTunes Connect里删除了app（<strong>注意：此为大坑</strong>），问题依旧，只能求助苹果开发者平台的客服人员。</p>
-<p>打苹果开发者客服电话: 4006 701 855 <a href="https://developer.apple.com/contact/phone/cn/" target="_blank" rel="external">全球电话支持</a>。坑爹的是，苹果客服人员告诉我删除不了，开发者平台中的Bundle id在app构建版本之后，不能修改或删除的。即便是你用该Bundle id发布的应用下架删除了，该Bundle id也会随着该应用永沉大海。不能删！不能改！</p>
+<p>打苹果开发者客服电话: 4006 701 855 <a href="https://developer.apple.com/contact/phone/cn/" target="_blank" rel="noopener">全球电话支持</a>。坑爹的是，苹果客服人员告诉我删除不了，开发者平台中的Bundle id在app构建版本之后，不能修改或删除的。即便是你用该Bundle id发布的应用下架删除了，该Bundle id也会随着该应用永沉大海。不能删！不能改！</p>
 <p>客服告诉我最佳的解决办法是迁移应用。将原账号的应用迁移到新账号上，应用所用到的Bundle id也会随之迁移过去。但是我把iTunes Connect里的应用删除了，那就没办法迁移了。摆在我面前的有两条路，第一：重新用旧账号打包提交审核通过，迁移应用到新账号，第二：改Bundle id。苹果客服人员对我如是说，客服诚不欺我啊！</p>
 <h2 id="NSUserDefaults存储数组或字典报错"><a href="#NSUserDefaults存储数组或字典报错" class="headerlink" title="NSUserDefaults存储数组或字典报错"></a>NSUserDefaults存储数组或字典报错</h2><p>用NSUserDefaults存储数组或字典的时候报错，程序崩溃了，报错内容如下：</p>
 <blockquote>
@@ -480,297 +412,227 @@
 </blockquote>
 <p>是因为要存的数组或字典对象里存在类似<code>&quot;name&quot; = &quot;&lt;null&gt;&quot;</code>这样的字段，这样的字段不能被解析，所以会报错。</p>
 <p>解决办法是将<code>&quot;name&quot; = &quot;&lt;null&gt;&quot;</code>换成<code>&quot;name&quot; = &quot;&quot;</code>，这种替换最好是服务端来做，如果服务端没做的话，移动端处理也可以，处理方式如下：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSMutableDictionary</span> *dict = [<span class="built_in">NSMutableDictionary</span> dictionaryWithDictionary:oldDict];</div><div class="line"><span class="keyword">for</span> (<span class="built_in">NSString</span> *keyStr <span class="keyword">in</span> dict.allKeys) &#123;</div><div class="line">   <span class="keyword">if</span> ([[dict objectForKey:keyStr] isEqual:[<span class="built_in">NSNull</span> null]]) &#123;</div><div class="line">       [dict setObject:<span class="string">@""</span> forKey:keyStr];</div><div class="line">   &#125; <span class="keyword">else</span> &#123;</div><div class="line">       [dict setObject:[dict objectForKey:keyStr] forKey:keyStr];</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">"newDict = %@"</span>, dict);</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSMutableDictionary</span> *dict = [<span class="built_in">NSMutableDictionary</span> dictionaryWithDictionary:oldDict];</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">NSString</span> *keyStr <span class="keyword">in</span> dict.allKeys) &#123;</span><br><span class="line">   <span class="keyword">if</span> ([[dict objectForKey:keyStr] isEqual:[<span class="built_in">NSNull</span> null]]) &#123;</span><br><span class="line">       [dict setObject:<span class="string">@""</span> forKey:keyStr];</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">       [dict setObject:[dict objectForKey:keyStr] forKey:keyStr];</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">"newDict = %@"</span>, dict);</span><br></pre></td></tr></table></figure>
 
-      
+
+
     </div>
-    
-    
-    
 
     
-
     
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    
+        <div class="reward-container">
   <div>打赏作者一杯咖啡</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
   </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付"/>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付">
         <p>微信支付</p>
       </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝"/>
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝">
         <p>支付宝</p>
       </div>
-    
-
-    
 
   </div>
 </div>
 
-      </div>
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/" rel="tag"># iOS</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/11/10/提交应用到AppStore准备工作/" rel="prev" title="提交应用到AppStore的准备工作">
-                提交应用到AppStore的准备工作 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-  
-    <div class="comments" id="comments">
-      
-        <div onclick="showGitment()" id="gitment-display-button">显示 Gitment 评论</div>
-        <div id="gitment-container" style="display:none"></div>
-      
-    </div>
-
-  
-
-
-
-        </div>
         
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mark
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://markmiao.com/2016/11/09/iOS%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/" title="iOS开发笔记">http://markmiao.com/2016/11/09/iOS开发笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2016/11/10/%E6%8F%90%E4%BA%A4%E5%BA%94%E7%94%A8%E5%88%B0AppStore%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/" rel="next" title="提交应用到AppStore的准备工作">
+      提交应用到AppStore的准备工作 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg"
-                alt="Mark" />
-            
-              <p class="site-author-name" itemprop="name">Mark</p>
-              <p class="site-description motion-element" itemprop="description">Hello world, Coding life;</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">37</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-            <div class="feed-link motion-element">
-              <a href="/atom.xml" rel="alternate">
-                <i class="fa fa-rss"></i>
-                RSS
-              </a>
-            </div>
-          
-
-          <div class="links-of-author motion-element">
-            
-              
-                <span class="links-of-author-item">
-                  <a href="https://github.com/mxdios" target="_blank" title="GitHub">
-                    
-                      <i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  <a href="mailto:i@markmiao.com" target="_blank" title="E-Mail">
-                    
-                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-            
-          </div>
-
-          
-          
-
-          
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                友链
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://chenxiao.wang/" title="喵汪之家" target="_blank">喵汪之家</a>
-                  </li>
-                
-              </ul>
-            </div>
-          
-
-          
-
-        </div>
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微信的openid"><span class="nav-number">1.</span> <span class="nav-text">微信的openid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cell进入编辑状态，内容覆盖编辑按钮"><span class="nav-number">2.</span> <span class="nav-text">Cell进入编辑状态，内容覆盖编辑按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View中部分内嵌UIWebView"><span class="nav-number">3.</span> <span class="nav-text">View中部分内嵌UIWebView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置UITextField的placeholder字体的颜色和字号"><span class="nav-number">4.</span> <span class="nav-text">设置UITextField的placeholder字体的颜色和字号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按钮的拖动效果和点击事件并存"><span class="nav-number">5.</span> <span class="nav-text">按钮的拖动效果和点击事件并存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UITableViewCell左滑编辑字体颜色设置"><span class="nav-number">6.</span> <span class="nav-text">UITableViewCell左滑编辑字体颜色设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用Application-Loader交付应用程序时，一直正在通过AppStore进行鉴定"><span class="nav-number">7.</span> <span class="nav-text">用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pdf的展示"><span class="nav-number">8.</span> <span class="nav-text">pdf的展示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理git库不允许上传大于100M的文件"><span class="nav-number">9.</span> <span class="nav-text">处理git库不允许上传大于100M的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除苹果开发者平台Developer里的App-ID"><span class="nav-number">10.</span> <span class="nav-text">删除苹果开发者平台Developer里的App ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSUserDefaults存储数组或字典报错"><span class="nav-number">11.</span> <span class="nav-text">NSUserDefaults存储数组或字典报错</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微信的openid"><span class="nav-number">1.</span> <span class="nav-text">微信的openid</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cell进入编辑状态，内容覆盖编辑按钮"><span class="nav-number">2.</span> <span class="nav-text">Cell进入编辑状态，内容覆盖编辑按钮</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#View中部分内嵌UIWebView"><span class="nav-number">3.</span> <span class="nav-text">View中部分内嵌UIWebView</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置UITextField的placeholder字体的颜色和字号"><span class="nav-number">4.</span> <span class="nav-text">设置UITextField的placeholder字体的颜色和字号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按钮的拖动效果和点击事件并存"><span class="nav-number">5.</span> <span class="nav-text">按钮的拖动效果和点击事件并存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UITableViewCell左滑编辑字体颜色设置"><span class="nav-number">6.</span> <span class="nav-text">UITableViewCell左滑编辑字体颜色设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用Application-Loader交付应用程序时，一直正在通过AppStore进行鉴定"><span class="nav-number">7.</span> <span class="nav-text">用Application Loader交付应用程序时，一直正在通过AppStore进行鉴定</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pdf的展示"><span class="nav-number">8.</span> <span class="nav-text">pdf的展示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理git库不允许上传大于100M的文件"><span class="nav-number">9.</span> <span class="nav-text">处理git库不允许上传大于100M的文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除苹果开发者平台Developer里的App-ID"><span class="nav-number">10.</span> <span class="nav-text">删除苹果开发者平台Developer里的App ID</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NSUserDefaults存储数组或字典报错"><span class="nav-number">11.</span> <span class="nav-text">NSUserDefaults存储数组或字典报错</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mark"
+      src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+  <p class="site-author-name" itemprop="name">Mark</p>
+  <div class="site-description" itemprop="description">Hello world, Coding life;</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mxdios" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mxdios" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@markmiao.com" title="E-Mail → mailto:i@markmiao.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友链
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://chenxiao.wang/" title="https:&#x2F;&#x2F;chenxiao.wang&#x2F;" rel="noopener" target="_blank">喵汪之家</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2020</span>
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Mark</span>
-
-  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">NaNm</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">NaN:aN</span>
 </div>
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-
-
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
   <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
-
-
-
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.2
+  </div>
 
         
 
@@ -780,28 +642,40 @@
 
 
 
-        
+
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
   </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
 
 
 
@@ -813,308 +687,36 @@
 
   
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
   
 
 
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-<!-- LOCAL: You can save these files to your site and update links -->
-    
-        
-        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
-        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
-    
-<!-- END LOCAL -->
-
-    
-      <style>
-        a.gitment-editor-footer-tip { display: none; }
-        .gitment-container.gitment-footer-container { display: none; }
-      </style>
-    
-
-    
-      <script type="text/javascript">
-      function renderGitment(){
-        var gitment = new Gitmint({
-            id: window.location.pathname, 
-            owner: 'mxdios',
-            repo: 'mxdios.github.io',
-            
-            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
-            
-            oauth: {
-            
-            
-                client_secret: '71bd955dd00ac270c0e6650d75649be3c73f2e43',
-            
-                client_id: 'b4e74471f07e457c102a'
-            }});
-        gitment.render('gitment-container');
-      }
-
-      
-      function showGitment(){
-        document.getElementById("gitment-display-button").style.display = "none";
-        document.getElementById("gitment-container").style.display = "block";
-        renderGitment();
-      }
-      
-      </script>
-    
-
-
-
-
-
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-  
-  <script type="text/javascript">
-    var GUEST = ['nick','mail','link'];
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
     var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item=>{
-      return GUEST.indexOf(item)>-1;
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
     });
     new Valine({
-        el: '#comments' ,
-        verify: false,
-        notify: false,
-        appId: '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
-        appKey: 'CFqU7nywNAD5QcP8kUqfHKNB',
-        placeholder: '欢迎吐槽~~',
-        avatar:'mm',
-        guest_info:guest,
-        pageSize:'10' || 10,
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+      appKey     : 'CFqU7nywNAD5QcP8kUqfHKNB',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
     });
-  </script>
-
-
-
-  
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
-  <script>AV.initialize("1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz", "CFqU7nywNAD5QcP8kUqfHKNB");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
