@@ -91,4 +91,3 @@ deploy:
   repository:
     github: git@github.com:mxdios/mxdios.github.io.git,master
     gitcafe: git@git.coding.net:markmiao/markmiao.git,master
-    
