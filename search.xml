@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Flutter笔记4-UI框架</title>
+    <url>/2020/03/18/flutter4/</url>
+    <content><![CDATA[<p>flutter是跨平台的UI框架，非UI层面的任务，通过插件机制与iOS或Android通讯。</p>
+<a id="more"></a>
+
+<h2 id="UIView-与-Widget"><a href="#UIView-与-Widget" class="headerlink" title="UIView 与 Widget"></a>UIView 与 Widget</h2><p>UIView是iOS中最常用的视图控件，Widget并不完全等同于UIView，它可以被称为“声明和构造 UI 的方法”。UIView是可变的，直接对UIView修改并不会导致重新创建实例。Widget不可变，只能通过修改Widget的state来使其改变。</p>
+<p>两种Widget：有状态的 <code>StatefulWidget</code> 和无状态的<code>StatelessWidget</code>， <code>StatefulWidget</code>有一个<code>State</code>对象，用来存储状态。</p>
+<p>示例：Text，Text继承自无状态Widget：<code>class Text extends StatelessWidget</code>，只能渲染初始化时的内容。想变更Text内容，需要放到<code>StatefulWidget</code>中：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChangedText</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;<span class="comment">//有状态的StatefulWidget</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _ChangedTextState createState() =&gt; _ChangedTextState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_ChangedTextState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChangedText</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> titleText = <span class="string">'hello world'</span>;<span class="comment">//初始化</span></span><br><span class="line">  <span class="keyword">void</span> _textBtnClik() &#123;  </span><br><span class="line">    setState(() &#123;</span><br><span class="line">      titleText = <span class="string">'hello flutter'</span>;<span class="comment">//修改变量</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  Widget _changedTextView() &#123;</span><br><span class="line">    <span class="keyword">return</span> Center(</span><br><span class="line">      child: Column (</span><br><span class="line">        mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          Text(titleText),<span class="comment">//Text赋值变量</span></span><br><span class="line">          FloatingActionButton(</span><br><span class="line">            onPressed: _textBtnClik, <span class="comment">//点击按钮修改变量</span></span><br><span class="line">            child: Icon(Icons.add_circle),</span><br><span class="line">          )</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    ); </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">'home'</span>),</span><br><span class="line">      ),</span><br><span class="line">      body: _changedTextView()</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改变量要在<code>setState()</code>方法中修改，会为State对象触发<code>build()</code>方法，会让UI更新。如果不在该方法中，直接更改变量值，可更改变量，UI不会更新。</p>
+<p><em>VS Code支持代码块，输入state时能快速创建自定义StatefulWidget</em></p>
+<h2 id="布局约束"><a href="#布局约束" class="headerlink" title="布局约束"></a>布局约束</h2><p>iOS中有storybody和xib布局，直接对视图设置约束，或者用代码设置约束，来适配屏幕。在flutter中也可以通过代码设置约束。</p>
+<p>比如自定义按钮可以添加padding：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">FlatButton(</span><br><span class="line">  color: Colors.blue,</span><br><span class="line">  padding: EdgeInsets.only(top:<span class="number">10</span>,bottom: <span class="number">10</span>, left: <span class="number">60</span>, right: <span class="number">60</span>),</span><br><span class="line">  child: Text(<span class="string">'Btn'</span>),</span><br><span class="line">  onPressed: _textBtnClik, </span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加移除组件"><a href="#添加移除组件" class="headerlink" title="添加移除组件"></a>添加移除组件</h2><p>在iOS原生开发中，可以使用 <code>addSubview()</code>和<code>removeFromSuperview()</code> 添加移除控件，flutter中没有这类方法。flutter的视图添加移除可以动态解决，在Widget中动态添加视图，未添加上的便是移除了。Widget不可变，更改State后会重绘一个Widget代替原来的Widget，所以动态添加便完成了添加移除组件操作。</p>
+<p>示例代码：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_ChangedTextState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChangedText</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> index = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">String</span> text = <span class="string">'hello wrold'</span>;</span><br><span class="line">  <span class="built_in">bool</span> textBool = <span class="keyword">true</span>;</span><br><span class="line">  _textBtnClik() &#123;  </span><br><span class="line">    setState(() &#123;</span><br><span class="line">      index ++;</span><br><span class="line">      textBool = !textBool;<span class="comment">//bool值控制添加组件</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  _viewShow() &#123;<span class="comment">//返回不同的组件</span></span><br><span class="line">    <span class="keyword">if</span> (textBool) &#123;</span><br><span class="line">      <span class="keyword">return</span> Text(text);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> Text(<span class="string">'<span class="subst">$index</span>'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  Widget _changedTextView() &#123;</span><br><span class="line">    <span class="keyword">return</span> Center(</span><br><span class="line">      child: </span><br><span class="line">      Column (</span><br><span class="line">        mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          _viewShow(),<span class="comment">//添加组件</span></span><br><span class="line">          FlatButton(</span><br><span class="line">            color: Colors.blue,</span><br><span class="line">            padding: EdgeInsets.only(top:<span class="number">10</span>,bottom: <span class="number">10</span>, left: <span class="number">60</span>, right: <span class="number">60</span>),</span><br><span class="line">            child: Text(<span class="string">'Btn'</span>),</span><br><span class="line">            onPressed: _textBtnClik, <span class="comment">//按钮控制bool值</span></span><br><span class="line">          ),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    ); </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="声明式UI"><a href="#声明式UI" class="headerlink" title="声明式UI"></a>声明式UI</h2><p>通过上面的组件添加移除可以看出flutter的UI操作和原生iOS的区别，原生iOS对UI操作，是对UI组件直接进行命令操作，比如：执行<code>addSubview()</code>和<code>removeFromSuperview()</code> 添加移除UI。</p>
+<p>在flutter中Widget是不可变的，只有调用<code>setState()</code>方法触发Widget重建，这时是构造了一个新的Widget实例。</p>
+<blockquote>
+<p>框架使用 RenderObjects 管理传统 UI 对象的职责（比如维护布局的状态）。 RenderObjects 在帧之间保持不变， Flutter 的轻量级 widget 通知框架在状态之间修改 RenderObjects， Flutter 框架则处理其余部分。</p>
+</blockquote>
+<p>这就是flutter中的声明式UI</p>
+<p><strong>demo的完整代码见工程中的 <a href="https://github.com/mxdios/flutter-demo" target="_blank" rel="noopener">flutter_ios</a></strong></p>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Flutter笔记3-收藏交互</title>
     <url>/2020/03/12/flutter3/</url>
     <content><![CDATA[<p>demo的功能如下：对词组列表加收藏功能，跳转到收藏夹页面，更改整个APP的主题。</p>
