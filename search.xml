@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Flutter笔记5-初探Widget布局</title>
+    <url>/2020/03/19/flutter5/</url>
+    <content><![CDATA[<p>Flutter核心思想：用Widget构建UI界面、万物皆Widget。</p>
+<p>Flutter渲染思想：Widget描述UI，当Widget的状态改变，会重新构建UI。flutter会比对前后两者的差异，确定底层渲染树的最小更改。</p>
+<a id="more"></a>
+
+<h2 id="初探Widget布局"><a href="#初探Widget布局" class="headerlink" title="初探Widget布局"></a>初探Widget布局</h2><ul>
+<li>Text：带样式的文本</li>
+<li>Row和Column：水平/垂直布局</li>
+<li>Container：矩形控件</li>
+</ul>
+<p>使用这些常用的Widget自定义一个导航栏样式：</p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/flutterdemo20200319100137.png" alt="示例"></p>
+<h2 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h2><p>对整个页面进行分解，分为导航栏和展示内容两部分，这两者垂直排布，所以使用<code>Column</code>，导航栏内控件水平排布，所以用<code>Row</code>。</p>
+<p>先自定义导航栏，导航栏分四部分：矩形背景、标题、两个icon。矩形背景可以用<code>Container</code>，标题用<code>Text</code>, 标题与icon的布局用<code>Row</code>实现。自定义导航栏，标题和icon要求外部传值。</p>
+<p>因为内容不变，导航栏使用<code>StatelessWidget</code>，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyAppBar</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  MyAppBar(&#123;<span class="keyword">this</span>.titleStr, <span class="keyword">this</span>.leftIcon, <span class="keyword">this</span>.rightIcon&#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> titleStr;<span class="comment">//标题</span></span><br><span class="line">  <span class="keyword">final</span> IconData leftIcon;<span class="comment">//左边的icon</span></span><br><span class="line">  <span class="keyword">final</span> IconData rightIcon;<span class="comment">//右边的icon</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Container(<span class="comment">//导航栏矩形背景</span></span><br><span class="line">      height: <span class="number">100</span>,</span><br><span class="line">      padding: EdgeInsets.only(top:<span class="number">30</span>),</span><br><span class="line">      color: Colors.red,</span><br><span class="line">      child: Row(<span class="comment">//采用横向的Row布局</span></span><br><span class="line">        children: &lt;Widget&gt; [</span><br><span class="line">          IconButton(</span><br><span class="line">            icon: Icon(leftIcon, color: Colors.white,),</span><br><span class="line">            onPressed: <span class="keyword">null</span>,<span class="comment">//点击事件</span></span><br><span class="line">          ),</span><br><span class="line">          Expanded(<span class="comment">//标题填充展示</span></span><br><span class="line">            child: Text(</span><br><span class="line">              titleStr,</span><br><span class="line">              style: Theme.of(context).primaryTextTheme.title,<span class="comment">//标题的style</span></span><br><span class="line">              textAlign: TextAlign.center,</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">          IconButton(</span><br><span class="line">            icon: Icon(rightIcon, color: Colors.white,),</span><br><span class="line">            onPressed: <span class="keyword">null</span>,</span><br><span class="line">          ),</span><br><span class="line">        ]</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>展示内容部分比较简单，文本填充，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyContent</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  MyContent(&#123;<span class="keyword">this</span>.contentStr&#125;);</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> contentStr;<span class="comment">//显示内容外部传参</span></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Expanded(<span class="comment">//填充显示</span></span><br><span class="line">      child: Center(</span><br><span class="line">        child: Text(</span><br><span class="line">          contentStr,</span><br><span class="line">          style: TextStyle(</span><br><span class="line">            color: Colors.red,</span><br><span class="line">            fontSize: <span class="number">50</span>,</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这两部分组合在一个Widget中，使用<code>Column</code>布局，代码如下：</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyStateless</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Material(</span><br><span class="line">      child: Column(</span><br><span class="line">        children: &lt;Widget&gt;[</span><br><span class="line">          MyAppBar(titleStr: <span class="string">'Hello World'</span>, leftIcon: Icons.menu, rightIcon: Icons.track_changes),<span class="comment">//导航栏，传递参数</span></span><br><span class="line">          MyContent(contentStr: <span class="string">'Hello Flutter'</span>),<span class="comment">//显示内容部分，传递参数</span></span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>demo的完整代码见工程中的 <a href="https://github.com/mxdios/flutter-demo" target="_blank" rel="noopener">flutter_widgets</a></strong></p>
+]]></content>
+      <categories>
+        <category>Flutter</category>
+      </categories>
+      <tags>
+        <tag>Flutter</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Flutter笔记4-UI框架</title>
     <url>/2020/03/18/flutter4/</url>
     <content><![CDATA[<p>flutter是跨平台的UI框架，非UI层面的任务，通过插件机制与iOS或Android通讯。</p>
