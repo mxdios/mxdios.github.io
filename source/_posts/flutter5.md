@@ -1,0 +1,114 @@
+---
+title: Flutter笔记5-初探Widget布局
+date: 2020-03-19 14:30:50
+tags: [Flutter]
+categories: [Flutter]
+toc: true
+
+---
+
+Flutter核心思想：用Widget构建UI界面、万物皆Widget。
+
+Flutter渲染思想：Widget描述UI，当Widget的状态改变，会重新构建UI。flutter会比对前后两者的差异，确定底层渲染树的最小更改。
+
+<!--more-->
+
+## 初探Widget布局
+
+- Text：带样式的文本
+- Row和Column：水平/垂直布局
+- Container：矩形控件
+
+使用这些常用的Widget自定义一个导航栏样式：
+
+![示例](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/flutterdemo20200319100137.png)
+
+## 源码解析
+
+对整个页面进行分解，分为导航栏和展示内容两部分，这两者垂直排布，所以使用`Column`，导航栏内控件水平排布，所以用`Row`。
+
+先自定义导航栏，导航栏分四部分：矩形背景、标题、两个icon。矩形背景可以用`Container`，标题用`Text`, 标题与icon的布局用`Row`实现。自定义导航栏，标题和icon要求外部传值。
+
+因为内容不变，导航栏使用`StatelessWidget`，代码如下：
+
+```dart
+class MyAppBar extends StatelessWidget {
+  MyAppBar({this.titleStr, this.leftIcon, this.rightIcon});
+  
+  final String titleStr;//标题
+  final IconData leftIcon;//左边的icon
+  final IconData rightIcon;//右边的icon
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(//导航栏矩形背景
+      height: 100,
+      padding: EdgeInsets.only(top:30),
+      color: Colors.red,
+      child: Row(//采用横向的Row布局
+        children: <Widget> [
+          IconButton(
+            icon: Icon(leftIcon, color: Colors.white,),
+            onPressed: null,//点击事件
+          ),
+          Expanded(//标题填充展示
+            child: Text(
+              titleStr,
+              style: Theme.of(context).primaryTextTheme.title,//标题的style
+              textAlign: TextAlign.center,
+            ),
+          ),
+          IconButton(
+            icon: Icon(rightIcon, color: Colors.white,),
+            onPressed: null,
+          ),
+        ]
+      ),
+    );
+  }
+}
+```
+
+展示内容部分比较简单，文本填充，代码如下：
+
+```dart
+class MyContent extends StatelessWidget {
+  MyContent({this.contentStr});
+  final String contentStr;//显示内容外部传参
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(//填充显示
+      child: Center(
+        child: Text(
+          contentStr,
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: 50,
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+这两部分组合在一个Widget中，使用`Column`布局，代码如下：
+
+```dart
+class MyStateless extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: Column(
+        children: <Widget>[
+          MyAppBar(titleStr: 'Hello World', leftIcon: Icons.menu, rightIcon: Icons.track_changes),//导航栏，传递参数
+          MyContent(contentStr: 'Hello Flutter'),//显示内容部分，传递参数
+        ],
+      ),
+    );
+  }
+}
+```
+
+**demo的完整代码见工程中的 [flutter_widgets](https://github.com/mxdios/flutter-demo)**
+
