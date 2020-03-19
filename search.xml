@@ -2141,6 +2141,39 @@
       </tags>
   </entry>
   <entry>
+    <title>iOS9的适配特性</title>
+    <url>/2016/11/27/ios9adaptation/</url>
+    <content><![CDATA[<p><a href="https://github.com/ChenYilong/iOS9AdaptationTips#certificate-transparency" target="_blank" rel="noopener">参考文章内容</a></p>
+<h2 id="安全的https请求"><a href="#安全的https请求" class="headerlink" title="安全的https请求"></a>安全的https请求</h2><p>iOS9默认把http请求，改为https请求。afn底层应用NSURLConnection受到影响。这一做法称为ATS, App Transport Security 应用程序的安全传输</p>
+<a id="more"></a>
+
+<p><strong>TLS1.0 == SSL3.1</strong></p>
+<p>HTTP+SSL/TLS+TCP = HTTPS</p>
+<h3 id="为了访问http，在info-plist加入以下字段，退回到不安全的网络请求。"><a href="#为了访问http，在info-plist加入以下字段，退回到不安全的网络请求。" class="headerlink" title="为了访问http，在info.plist加入以下字段，退回到不安全的网络请求。"></a>为了访问http，在info.plist加入以下字段，退回到不安全的网络请求。</h3><p>App Transport Security Settings</p>
+<p>Allow Arbitrary Loads</p>
+<p>NSAppTransportSecurity</p>
+<p>NSAllowArbitraryLoads</p>
+<h3 id="新特性的解释"><a href="#新特性的解释" class="headerlink" title="新特性的解释"></a>新特性的解释</h3><p>xcode7在编辑app的时候，iOS9下不能进行网络访问。如果从AppStore上下载app，还能正常进行网络访问。</p>
+<p>因为ATS是在iOS9.X-SDK下的新特性，AppStore上的应用是基于iOS8.x-SDK或者iOS7.X-SDK的，所以不受iOS9新特性约束。 只有在xcode7 + iOS9才会产生ATS特性。</p>
+<h2 id="后台定位问题"><a href="#后台定位问题" class="headerlink" title="后台定位问题"></a>后台定位问题</h2><p>iOS9的后台定位，如果不适配iOS9，则不能偷偷的在后台定位，后台定位的时候，会有蓝条显示。</p>
+<p>请求后台定位权限</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 1. 实例化定位管理器</span><br><span class="line">_locationManager &#x3D; [[CLLocationManager alloc] init];</span><br><span class="line">&#x2F;&#x2F; 2. 设置代理</span><br><span class="line">_locationManager.delegate &#x3D; self;</span><br><span class="line">&#x2F;&#x2F; 3. 定位精度</span><br><span class="line">[_locationManager setDesiredAccuracy:kCLLocationAccuracyBest];</span><br><span class="line">&#x2F;&#x2F; 4.请求用户权限：分为：⓵只在前台开启定位⓶在后台也可定位，</span><br><span class="line">&#x2F;&#x2F;注意：建议只请求⓵和⓶中的一个，如果两个权限都需要，只请求⓶即可，</span><br><span class="line">&#x2F;&#x2F;⓵⓶这样的顺序，将导致bug：第一次启动程序后，系统将只请求⓵的权限，⓶的权限系统不会请求，只会在下一次启动应用时请求⓶</span><br><span class="line">if ([[[UIDevice currentDevice] systemVersion] floatValue] &gt;&#x3D; 8) &#123;</span><br><span class="line">	&#x2F;&#x2F;[_locationManager requestWhenInUseAuthorization];&#x2F;&#x2F;⓵只在前台开启定位</span><br><span class="line">	[_locationManager requestAlwaysAuthorization];&#x2F;&#x2F;⓶在后台也可定位</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 5.iOS9新特性：将允许出现这种场景：同一app中多个location manager：一些只能在前台定位，另一些可在后台定位（并可随时禁止其后台定位）。</span><br><span class="line">if ([[[UIDevice currentDevice] systemVersion] floatValue] &gt;&#x3D; 9) &#123;</span><br><span class="line">	_locationManager.allowsBackgroundLocationUpdates &#x3D; YES;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 6. 更新用户位置</span><br><span class="line">[_locationManager startUpdatingLocation];</span><br></pre></td></tr></table></figure>
+
+<p>还需要添加info.plist配置</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>NSLocationAlwaysUsageDescription<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">string</span>&gt;</span>应用请求后台定位权限<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	</span><br><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>UIBackgroundModes<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>location<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="企业级应用分发问题"><a href="#企业级应用分发问题" class="headerlink" title="企业级应用分发问题"></a>企业级应用分发问题</h2><p>iOS9取消了企业级证书信任按钮。<br>需要去设置-通用-设备管理 里面手动信任打包应用的证书。</p>
+<h2 id="Bitcode"><a href="#Bitcode" class="headerlink" title="Bitcode"></a>Bitcode</h2><p>watch 必须包含bitcode iOS不强制支持bitcode  mac os 不支持</p>
+<p>通俗解释 在线版安卓ART模式， ART模式 Android runtime 是安卓的系统优化的一种模式，在应用安装的时候，或进行一次预编译，将代码转化为机器语言存储在本地。在每次运行时就不需要进行一次编译了，提升了执行效率。同时也会有预编译后的容量问题，以及应用是否兼容该模式等问题。</p>
+]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>iOS9</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>制作.a和.framework静态库</title>
     <url>/2016/11/14/%E5%88%B6%E4%BD%9C-a%E5%92%8C-framework%E9%9D%99%E6%80%81%E5%BA%93/</url>
     <content><![CDATA[<p>iOS库一般有开源库，静态库和动态库。</p>
@@ -2288,25 +2321,6 @@
       </categories>
       <tags>
         <tag>iOS10</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>记个人博客时代的开始</title>
-    <url>/2016/11/10/%E8%AE%B0%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BC%80%E5%A7%8B/</url>
-    <content><![CDATA[<p>接触编程有六年了，以敲代码为职业混饭吃也有三年了。既不是名牌大学毕业，也没就职过牛逼闪闪的金牌企业。作为一个默默无闻的码农，耕种着自己的一亩三分地，偶尔在CSDN或者简书上写篇博客，也不是什么高深技术，只是自己工作中遇到的一些问题。即便如此，也没积累下来，博客单薄的像是篇目录。</p>
-<a id="more"></a>
-
-<p>用了两天时间使用 Hexo + github 搭建了自己的博客，终于开启了个人博客时代，虽然有点晚，但比起明天还是早。搭建过程中也踩了不少坑，网络上有各种各样的解决办法，搭建博客的流程也烂大街般的多，我也不逞能再写一篇更烂的了。</p>
-<p>一直以来想学的太多，关注的太杂，总是不能聚焦一点深入下去，行动的步伐跟不上大脑的冲动。还有之前敲代码时遇到的问题也没有记录完全，想钻研的技术一搁下就抛到脑后了。希望有自己的博客后，能专注一些，不贪多，不烂尾。</p>
-<p>现在码代码，之前喜欢写文字。要不是我写的太烂，现在就不是码农而是作家了(说的好像代码写的不烂似的)。不管怎么说，还是很有兴趣写博客的，只是之前没坚持下来。</p>
-<p>这个博客不会是纯技术，会掺杂其他的文，但还会以技术为主。目前也别期望出现高质量有深度的技术文，我也写不出来。算是我的个人学习博客，慢慢写，慢慢积累…</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>短文</tag>
-        <tag>碎碎念</tag>
       </tags>
   </entry>
   <entry>
@@ -2530,6 +2544,1127 @@
       </categories>
       <tags>
         <tag>iOS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Charles安装与使用</title>
+    <url>/2016/11/04/charles/</url>
+    <content><![CDATA[<p>Charles是常用的抓包工具，仿写app获取网络数据最有效的途径。</p>
+<a id="more"></a>
+
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-0.png?raw=true" alt="img"></p>
+<p>Charles是付费软件，免费使用30天。超过30天还可以使用，只是每次启动会有10s的延迟，4.0.1版本每隔一段时间会弹出Charles介绍页5s，消失后可继续使用，超过30分钟会弹出警告闪退，重启后即可使用。还是给不付费用户留了条坎坷的活路。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-10.png?raw=true" alt="img"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>本文使用的是4.0.1版本，<a href="https://www.charlesproxy.com/download/" target="_blank" rel="noopener">Charles官网下载地址</a>，Charles支持Windows、Mac、Linux，找到对应系统下载安装即可。</p>
+<h2 id="设置系统代理"><a href="#设置系统代理" class="headerlink" title="设置系统代理"></a>设置系统代理</h2><p>将Charles设置为系统代理服务器后才能完成抓包操作。安装完成后第一次启动，Charles会请求设置系统代理权限，输入系统登录密码授权。也可以勾选<code>菜单 -&gt; Proxy -&gt; macOS Proxy</code>设置为系统代理。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-1.png?raw=true" alt="img"></p>
+<p>设置完成之后，点击网页，会有网络请求出现在Charles界面。这就是截取本地的网络访问，也可以截取其他设备上的网络访问，比如iPhone上的app数据抓包，需要进行下面的设置。</p>
+<h2 id="钥匙串里信任根证书"><a href="#钥匙串里信任根证书" class="headerlink" title="钥匙串里信任根证书"></a>钥匙串里信任根证书</h2><p>点击<code>菜单 -&gt; Help -&gt; SSL Proxying -&gt; Install Charles Root Certificate</code>，弹出钥匙串，也可以直接手动找到钥匙串打开。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-2.png?raw=true" alt="img"></p>
+<p>发现钥匙串里Charles证书是不受信任的，选中证书，右键 -&gt; “显示简介”，点信任前的三角号，展开信任（默认收起来的），选择<code>始终信任</code>。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-3.png?raw=true" alt="img"></p>
+<p>设置完成之后，Charles根证书成为受此账户信任。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-4.png?raw=true" alt="img"></p>
+<h2 id="设置Charles配置"><a href="#设置Charles配置" class="headerlink" title="设置Charles配置"></a>设置Charles配置</h2><p>需要打开Charles的代理功能，点击<code>菜单 -&gt; Proxy -&gt; Proxy Settings</code>，写入代理端口<code>8888</code>，勾选<code>Enable transparent HTTP proxying</code>，点击OK，如下图所示。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-5.png?raw=true" alt="img"></p>
+<h2 id="查看电脑ip，并在iPhone上设置http代理"><a href="#查看电脑ip，并在iPhone上设置http代理" class="headerlink" title="查看电脑ip，并在iPhone上设置http代理"></a>查看电脑ip，并在iPhone上设置http代理</h2><p>点击<code>菜单 -&gt; Help -&gt; Local IP Address</code>，可以显示当前电脑运行的ip地址。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-6.png?raw=true" alt="img"></p>
+<p>在iPhone中<code>设置 -&gt; 无线局域网 -&gt; 连接无线网的详情键(ⓘ)</code>，将HTTP代理选择为<code>手动</code>，服务器输入刚才查看的电脑ip，端口输入刚才设置的<code>8888</code>。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-7.png?raw=true" alt="img"></p>
+<p>打开iPhone上的app，Charles会出现连接请求，点击<code>Allow</code>完成连接即可。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-8.png?raw=true" alt="img"></p>
+<p>这时浏览app便能截取app内http请求的数据，下图是访问猫眼app截取到的首页数据。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-9.png?raw=true" alt="img"></p>
+<p>要截取手机上的https请求的数据，还需要在手机上安装证书。</p>
+<h2 id="iPhone上安装证书，截取https数据"><a href="#iPhone上安装证书，截取https数据" class="headerlink" title="iPhone上安装证书，截取https数据"></a>iPhone上安装证书，截取https数据</h2><p>完成上文设置，iPhone中用Safari访问<a href="http://charlesproxy.com/getssl" target="_blank" rel="noopener">http://charlesproxy.com/getssl</a>，会自动跳转到证书安装页，点击右上角安装 -&gt; 输入手机密码 -&gt; 点击右上角安装，即可安装完成。</p>
+<p>| <img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-11.png?raw=true" alt="img">| <img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-12.png?raw=true" alt="img">|</p>
+<p>如果弹不出证书安装界面，可以Safari访问<a href="https://www.charlesproxy.com/documentation/additional/legacy-ssl-proxying/" target="_blank" rel="noopener">https://www.charlesproxy.com/documentation/additional/legacy-ssl-proxying/</a>，点击()前面的<code>here</code>即可。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-13.png?raw=true" alt="img"></p>
+<p>安装完成之后即可对https请求做数据抓包。</p>
+<h2 id="查看接口地址以及提交的参数"><a href="#查看接口地址以及提交的参数" class="headerlink" title="查看接口地址以及提交的参数"></a>查看接口地址以及提交的参数</h2><p>点击Charles工具栏上<code>笔</code>的按钮，会出现该条数据的接口地址和请求参数，下图是访问猫眼app的首页数据提交的接口地址和请求参数。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20161104-14.png?raw=true" alt="img"></p>
+<h2 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h2><p>用Charles抓包app数据完毕，关闭Charles后，记得将手机的无线局域网上的http代理关闭，不然手机就连不上网了。</p>
+]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>Charles</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>开发iMessage App</title>
+    <url>/2016/09/23/imessageapp/</url>
+    <content><![CDATA[<p>iOS10、Xcode8.0发布之后，AppStore上出现了一类新的app —— iMessage App</p>
+<p>一些椭圆形的app图标在AppStore上格外另类，这些app都显示<code>仅用于iMessage</code>，还有一些传统的app显示<code>提供iMessage app</code>。</p>
+<a id="more"></a>
+
+<p>Apple为自己的软件帝国又开辟了一条新的道路。在社交软件如洪水泛滥的今天，不少人已经几乎忘记了短信这种功能的存在，短信功能的用途恐怕只剩下收验证码、收账单信息了。</p>
+<p>Apple此举不知能不能重振短信息的昔日雄风。</p>
+<h2 id="iMessage-AppStore"><a href="#iMessage-AppStore" class="headerlink" title="iMessage AppStore"></a>iMessage AppStore</h2><p>iMessage App存在于iOS的AppStore中，但是iMessage app有一个独立完整的AppStore，这个AppStore完全独立于iOS的AppStore，可以在Message（信息）中访问，只显示iMessage App。</p>
+<h2 id="普通表情包"><a href="#普通表情包" class="headerlink" title="普通表情包"></a>普通表情包</h2><p>Xcode提供了<code>Sticker Pack Application</code>，这是一个创建表情包的模板，没有任何代码。</p>
+<p>在Xcode中创建一个新的工程，选择iOS -&gt; Application -&gt; Sticker Pack Application</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-1.png?raw=true" alt="img"></p>
+<p>创建完项目之后，发现只有一个Stickers.xcstickers，这里面有一个iMessage App Icon（app图标） 和 Sticker Pack（表情包）</p>
+<p>找一些图片，直接拖动到Sticker Pack里面，我直接拖动的发过来的qq表情。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-2.png?raw=true" alt="img"></p>
+<p>在Xcode的右边，Sticker Pack设置尺寸的地方，这里的三个尺寸是表情的默认大小，在程序运行的时候，表情分别以不同的方式排布。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-7.png?raw=true" alt="img"></p>
+<p>拖完想要的表情，设置完尺寸之后，command + R运行程序。</p>
+<table>
+<thead>
+<tr>
+<th align="center">Small</th>
+<th align="center">Medium</th>
+<th align="center">Large</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-3.png?raw=true" alt="img"></td>
+<td align="center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-4.png?raw=true" alt="img"></td>
+<td align="center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-6.png?raw=true" alt="img"></td>
+</tr>
+</tbody></table>
+<p>表情的三个尺寸<code>Small</code>、<code>Medium</code>、<code>Large</code>。apple对这三种尺寸并没有严格限制，只有一些建议的大小：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> Small: <span class="number">100</span> x <span class="number">100</span> pt @<span class="number">3</span>x scale (<span class="number">300</span> x <span class="number">300</span> pixel image)</span><br><span class="line"><span class="number">2.</span> Medium: <span class="number">136</span> x <span class="number">136</span> pt @<span class="number">3</span>x scale (<span class="number">378</span> x <span class="number">378</span> pixel image)</span><br><span class="line"><span class="number">3.</span> Large: <span class="number">206</span> x <span class="number">206</span> pt @<span class="number">3</span>x scale (<span class="number">618</span> x <span class="number">618</span> pixel image)</span><br></pre></td></tr></table></figure>
+
+<p>对于图片的大小也有一些限制：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> 文件中images不可以大于<span class="number">500</span>kb;</span><br><span class="line"><span class="number">2.</span> iamge不可以小于<span class="number">100</span> x <span class="number">100</span> pt (<span class="number">300</span> x <span class="number">300</span> pixels).</span><br><span class="line"><span class="number">3.</span> iamge不可以大于<span class="number">206</span> x <span class="number">206</span> pt (<span class="number">618</span> x <span class="number">618</span> pixels).</span><br><span class="line"><span class="number">4.</span> 图片格式必须是 PNG, APNG, JPEG, GIF ;</span><br></pre></td></tr></table></figure>
+
+<p>太大的图片可以放到Sticker Pack包里，也能启动运行到程序里，只是无法点击发布，可以找个大图试一下。</p>
+<h2 id="动图表情包"><a href="#动图表情包" class="headerlink" title="动图表情包"></a>动图表情包</h2><p>图标格式支持GIF，创建动态表情包可以直接拖GIF图标。</p>
+<p>另一种创建动态表情的方式是使用<code>Sticker Sequence</code>，序列存储帧动画的每一帧，组成一组动画。</p>
+<p>在Sticker Pack空白处右键，Add Assets -&gt; New Sticker Sequence</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-5.png?raw=true" alt="img"></p>
+<p>将帧动画的每一帧图片拖动到<code>Frame1</code>、<code>Frame2</code>….<code>FrameN</code>中。添加完毕之后，command + R运行程序即可</p>
+<table>
+<thead>
+<tr>
+<th align="center">添加帧图片</th>
+<th align="center">运行结果 帧动画/GIF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-8.png?raw=true" alt="img"></td>
+<td align="center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-9.gif?raw=true" alt="img"></td>
+</tr>
+</tbody></table>
+<p>用<code>Sticker Pack Application</code>可以快速创建一个用于iMessage的表情包，不需要写任何代码。</p>
+<h2 id="iMessage-Application"><a href="#iMessage-Application" class="headerlink" title="iMessage Application"></a>iMessage Application</h2><p>这次创建项目要选择iMessage Application</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-9.png?raw=true" alt="img"></p>
+<p>创建完项目之后会有一个<code>MessagesExtension</code>，这是最重要的文件夹，里面的存放着开发iMessage application的代码、storyboard、图片集合和一些配置信息。</p>
+<p>command + R运行程序，会在message里看到在storyboard里默认的<code>Hello World</code>。</p>
+<table>
+<thead>
+<tr>
+<th align="center">MessagesExtension</th>
+<th align="center">运行结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-10.png?raw=true" alt="img"></td>
+<td align="center"><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160921-11.png?raw=true" alt="img"></td>
+</tr>
+</tbody></table>
+<p>未完留坑，不会再填 :)</p>
+]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>iMessage</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>React Native笔记1-第一个项目</title>
+    <url>/2016/08/02/ReactNative2/</url>
+    <content><![CDATA[<p><strong>第一个ReactNative是网络获取电影信息，用列表展示。如图oc中基本的tableview样式</strong></p>
+<p><strong>项目源码请见<a href="https://github.com/mxdios/firstReactNative" target="_blank" rel="noopener">firstReactNative</a></strong></p>
+<a id="more"></a>
+
+<p>展示我的学写该项目的学习笔记，掺杂了一些我的个人理解，可能会更清楚一些。<a href="https://github.com/reactnativecn/react-native-docs-cn/blob/master/docs/0.28/sample-application-movies.md" target="_blank" rel="noopener">原文地址</a></p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建第一个项目，项目名字为<code>firstReactNative</code></p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">react-<span class="keyword">native</span> <span class="keyword">init</span> firstReactNative</span><br></pre></td></tr></table></figure>
+
+<p>用终端或Xcode运行该项目，具体步骤见<a href="https://github.com/mxdios/notebook/blob/master/ReactNative%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md" target="_blank" rel="noopener">React Native准备工作</a></p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/rn1.png" alt="如图"></p>
+<h2 id="引入组件"><a href="#引入组件" class="headerlink" title="引入组件"></a>引入组件</h2><p>创建完毕项目打开<code>index.ios.js</code>文件，文件上部有如下代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import React, &#123; Component &#125; from &#39;react&#39;;</span><br><span class="line">import &#123;</span><br><span class="line">  AppRegistry,</span><br><span class="line">  StyleSheet,</span><br><span class="line">  Text,</span><br><span class="line">  View</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是React Native中的一些组件，需要引入。项目中牵扯到图片展示，需要引入<code>Image</code>组件。</p>
+<p>顾名思义第一个<code>import</code>是引入组件框架，第二个<code>import</code>是引入几个常用的组件。</p>
+<p><code>AppRegistry</code> 是注册应用组件，应用只有注册之后才能正确渲染，应用只整体注册一次，并不是每个组件都注册，对应该文件最下面的注册应用操作</p>
+<figure class="highlight coffeescript"><table><tr><td class="code"><pre><span class="line">AppRegistry.registerComponent(<span class="string">'firstReactNative'</span>, <span class="function"><span class="params">()</span> =&gt;</span> firstReactNative);</span><br></pre></td></tr></table></figure>
+
+<p><code>StyleSheet</code> 是样式创建组件，在<code>const styles = StyleSheet.create()</code>使用。</p>
+<p><code>Text</code> <code>View</code> 是一些常用的控件组件，<code>Image</code>组件添加到这下面，注意要在<code>View</code>后面写<code>,</code>(最后一个后面的<code>,</code>可写可不写)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import React, &#123; Component &#125; from &#39;react&#39;;</span><br><span class="line">import &#123;</span><br><span class="line">  AppRegistry,</span><br><span class="line">  StyleSheet,</span><br><span class="line">  Text,</span><br><span class="line">  View,</span><br><span class="line">  Image,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建模拟数据"><a href="#创建模拟数据" class="headerlink" title="创建模拟数据"></a>创建模拟数据</h2><p>在任意位置添加变量数据<code>URLDATA</code> (不要在其他方法{}内添加)</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> URLDATA = [</span><br><span class="line">	&#123;<span class="attr">title</span>: <span class="string">'标题'</span>, <span class="attr">year</span>: <span class="string">'2016'</span>, <span class="attr">posters</span>:&#123;<span class="attr">thumbnail</span>: <span class="string">'http://i.imgur.com/UePbdph.jpg'</span>&#125;&#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>iOS9中http请求需要添加允许任意的请求方式，在<code>info.plist</code>里添加<code>App Transport Security Settings</code>在该字段下选择<code>Allow Arbitrary Loads</code>并设置为<code>YES</code>。原因见<a href="https://github.com/mxdios/notebook/blob/master/ios9%E7%9A%84%E9%80%82%E9%85%8D%E7%89%B9%E6%80%A7.md" target="_blank" rel="noopener">iOS9的适配特性</a></p>
+<h2 id="修改组件"><a href="#修改组件" class="headerlink" title="修改组件"></a>修改组件</h2><h3 id="渲染组件"><a href="#渲染组件" class="headerlink" title="渲染组件"></a>渲染组件</h3><p>在<code>class firstReactNative extends Component {</code> 里面更改为如下代码：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">    <span class="keyword">var</span> movie = URLDATA[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">        &lt;Text &gt;&#123;movie.title&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">        &lt;Text&gt;&#123;movie.year&#125;&lt;/</span>Text&gt;</span><br><span class="line">        &lt;Image source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125; /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>movie</code>是拿到的模拟数据分别用<code>Text</code> <code>Image</code>渲染到屏幕上。<code>command + R</code>刷新模拟器运行程序。这时候还看不到图片，因为没有指定图片的宽高</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/rn2.png" alt="如图"></p>
+<h3 id="设置组件样式"><a href="#设置组件样式" class="headerlink" title="设置组件样式"></a>设置组件样式</h3><p>把原有代码块<code>const styles = StyleSheet.create({});</code>删除掉</p>
+<p>创建新的渲染样式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> styles = StyleSheet.create(&#123;</span><br><span class="line">  container: &#123;</span><br><span class="line">    flex: <span class="number">1</span>,</span><br><span class="line">    justifyContent: <span class="string">'center'</span>,</span><br><span class="line">    alignItems: <span class="string">'center'</span>,</span><br><span class="line">    backgroundColor: <span class="string">'#F5FCFF'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  thumbnail: &#123;</span><br><span class="line">    width: <span class="number">53</span>,</span><br><span class="line">    height: <span class="number">81</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>并把图片的渲染样式<code>thumbnail</code>添加到组件<code>Image</code>上</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;Image </span><br><span class="line">	source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125;</span><br><span class="line">	style = &#123;styles.thumbnail&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>command + R</code>刷新模拟器运行程序。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/rn3.png" alt="如图"></p>
+<h2 id="改变样式排版"><a href="#改变样式排版" class="headerlink" title="改变样式排版"></a>改变样式排版</h2><p>现在是文字在上图片在下的样式，需要调整样式，图片在左边，文字在右边。这是基本的tableview样式</p>
+<p>在<code>styles</code>里添加几个样式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">rightContainer: &#123; <span class="comment">//存放文字view的样式</span></span><br><span class="line">	flex: <span class="number">1</span>, <span class="comment">//是让里面存放的元素具有相同的宽度，忽略存放内容。css样式属性。</span></span><br><span class="line">&#125;,</span><br><span class="line">title: &#123;<span class="comment">//标题样式</span></span><br><span class="line">	fontSize: <span class="number">20</span>,</span><br><span class="line">	marginBottom: <span class="number">8</span>,</span><br><span class="line">	textAlign: <span class="string">'center'</span>,</span><br><span class="line">&#125;,</span><br><span class="line">year: &#123;<span class="comment">//简介样式</span></span><br><span class="line">	textAlign: <span class="string">'center'</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>return ()</code>里面的代码，将新添加的样式添加到相应组件上</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> (</span><br><span class="line">  &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">  	&lt;Image </span><br><span class="line">      source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125;</span><br><span class="line">      style = &#123;styles.thumbnail&#125;</span><br><span class="line">     /&gt;</span><br><span class="line">    &lt;View style = &#123;styles.rightContainer&#125;&gt;</span><br><span class="line">    	&lt;Text style = &#123;styles.title&#125;&gt;&#123;movie.title&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">    	&lt;Text style = &#123;styles.year&#125;&gt;&#123;movie.year&#125;&lt;/</span>Text&gt;</span><br><span class="line">    &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>View&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>相比于之前代码，<code>&lt;Image /&gt;</code>代码块移动到了<code>&lt;Text&gt;</code>上面，因为image要在文字的左边，从上到下，从左到右渲染，如果还放在text的下面的话，会出现文字在左边，图片在右边的效果，请自行试验。</p>
+<p>把<code>Text</code>用一个<code>&lt;View&gt;</code>组件包起来，并赋予样式<code>rightContainer</code>，里面有一个<code>flex: 1</code>属性，这个容器的属性宽度会自动变宽，不会因为内容多少而定，会把图片挤压到屏幕边缘</p>
+<p>给文字分别添加<code>title</code> <code>year</code>样式，指定的文字的大小以及居中显示。 <code>marginBottom: 8,</code>是让<code>title</code>下面有8像素的距离。</p>
+<p><code>command + R</code>刷新模拟器运行程序。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%889.34.57.png" alt="image"></p>
+<p>至此，基本的单个样式已完成，如图定义完成tableview里单个cell的样式。下面开始获取网络真是数据，完成列表展示</p>
+<h2 id="获取网络数据"><a href="#获取网络数据" class="headerlink" title="获取网络数据"></a>获取网络数据</h2><p>从<code>Rotten Tomatoes（美国影评网站烂番茄）</code>的api获取数据</p>
+<p>在文件开头<code>import</code>的下面定义接口地址变量</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> REQUEST_URL = <span class="string">'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>把下面代码放到<code>render()</code>函数之前。在网络获取之前初始化一个null状态，根据<code>this.state.movies == null</code>判断数据是否抓取成功。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">	<span class="keyword">super</span>(props);</span><br><span class="line">	<span class="keyword">this</span>.state = &#123;</span><br><span class="line">		movies: <span class="literal">null</span>,</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">this</span>.fetchData = <span class="keyword">this</span>.fetchData.bind(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加React组件生命周期方法<code>componentDidMount()</code>，在组件加载完毕之后执行，只执行一次，在这里进行数据请求。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">	<span class="keyword">this</span>.fetchData();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写<code>fetchData()</code>函数，网络请求</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">fetchData() &#123;</span><br><span class="line">	fetch(REQUEST_URL)</span><br><span class="line">		.then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json())</span><br><span class="line">		.then(<span class="function">(<span class="params">responseData</span>) =&gt;</span> &#123;</span><br><span class="line">			<span class="keyword">this</span>.setState(&#123;</span><br><span class="line">				movies: responseData.movies,</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;)</span><br><span class="line">		.done();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改原来的render函数，修改样式</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">	<span class="keyword">if</span> (!<span class="keyword">this</span>.state.movies) &#123; <span class="comment">//如果没有数据 返回renderLoadingView()</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.renderLoadingView();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> movie = <span class="keyword">this</span>.state.movies[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.renderMovie(movie); <span class="comment">//有数据的时候，执行这个函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现<code>renderLoadingView()</code>函数和<code>renderMovie()</code>函数</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">renderLoadingView() &#123;<span class="comment">//添加加载提示</span></span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">		&lt;View style = &#123;styles.container&#125;&gt;</span><br><span class="line">			&lt;Text&gt;</span><br><span class="line">				正在加载电影数据...</span><br><span class="line">			&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">		&lt;/</span>View&gt;</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br><span class="line">renderMovie(movie) &#123;<span class="comment">//拿到网络获取的数据，添加到控件上</span></span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">  	&lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">  		&lt;Image </span><br><span class="line">      		source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125;</span><br><span class="line">      		style = &#123;styles.thumbnail&#125;</span><br><span class="line">     	/&gt;</span><br><span class="line">    	&lt;View style = &#123;styles.rightContainer&#125;&gt;</span><br><span class="line">    		&lt;Text style = &#123;styles.title&#125;&gt;&#123;movie.title&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">    		&lt;Text style = &#123;styles.year&#125;&gt;&#123;movie.year&#125;&lt;/</span>Text&gt;</span><br><span class="line">    	&lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">  	&lt;/</span>View&gt;</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>command + R</code>刷新模拟器运行程序。这时候得到的数据是网络数据</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%8810.34.16.png" alt="image"></p>
+<h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><p><code>ListView</code>可以说是ReactNative里的<code>UITableView</code>，会安排视图的渲染，只渲染屏幕上显示的元素，渲染完毕被移出屏幕外的元素会被移除掉。</p>
+<p>第一步引入<code>ListView</code>组件，跟上文中引入<code>Image</code>组件一样。</p>
+<p>修改render函数，把返回一条数据的代码修改为渲染包含多个电影信息的<code>ListView</code></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">	<span class="keyword">if</span> (!<span class="keyword">this</span>.state.loaded) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.renderLoadingView();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">		&lt;ListView </span><br><span class="line">			dataSource = &#123;<span class="keyword">this</span>.state.dataSource&#125;</span><br><span class="line">			renderRow = &#123;<span class="keyword">this</span>.renderMovie&#125;</span><br><span class="line">			style = &#123;styles.listView&#125;</span><br><span class="line">		/&gt;</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>constructor(props)</code>代码，不再使用<code>this.state.movies</code>来存放数据，把数据存放到<code>dataSource</code>里面，可以根据布尔值<code>this.state.loaded</code>来判断是否加载完毕</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">	<span class="keyword">super</span>(props);</span><br><span class="line">	<span class="keyword">this</span>.state = &#123;</span><br><span class="line">		dataSource: <span class="keyword">new</span> ListView.DataSource(&#123;</span><br><span class="line">			rowHasChanged: <span class="function">(<span class="params">row1, row2</span>) =&gt;</span> row1 !== row2,</span><br><span class="line">		&#125;),</span><br><span class="line">		loaded: <span class="literal">false</span>,</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">this</span>.fetchData = <span class="keyword">this</span>.fetchData.bind(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>fetchData</code>方法，把数据更新到dataSource</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">fetchData() &#123;</span><br><span class="line">	fetch(REQUEST_URL)</span><br><span class="line">		.then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json())</span><br><span class="line">		.then(<span class="function">(<span class="params">responseData</span>) =&gt;</span> &#123;</span><br><span class="line">			<span class="keyword">this</span>.setState(&#123;</span><br><span class="line">				dataSource: <span class="keyword">this</span>.state.dataSource.cloneWithRows(responseData.movies),</span><br><span class="line">				loaded: <span class="literal">true</span>,</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;)</span><br><span class="line">		.done();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加样式<code>listView</code></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">listView</span>: &#123;</span><br><span class="line">  	<span class="attribute">paddingTop</span>: <span class="number">20</span>,</span><br><span class="line">  	backgroundColor: <span class="string">'#F5FCFF'</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><code>command + R</code>刷新模拟器运行程序。达到我们最终要的结果</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%8811.04.52.png" alt="image"></p>
+]]></content>
+      <categories>
+        <category>React Native</category>
+      </categories>
+      <tags>
+        <tag>React Native</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>React Native笔记1-准备工作</title>
+    <url>/2016/08/01/ReactNative1/</url>
+    <content><![CDATA[<h2 id="装环境"><a href="#装环境" class="headerlink" title="装环境"></a>装环境</h2><p>安装<code>Homebrew,</code>mac的套件管理器</p>
+<a id="more"></a>
+
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/usr/</span>bin<span class="regexp">/ruby -e "$(curl -fsSL https:/</span><span class="regexp">/raw.githubusercontent.com/</span>Homebrew<span class="regexp">/install/m</span>aster<span class="regexp">/install)"</span></span><br></pre></td></tr></table></figure>
+<p>安装<code>Node.js</code></p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">brew install <span class="keyword">node</span><span class="title"></span></span><br></pre></td></tr></table></figure>
+
+<p>安装<code>react-native-cli</code>。 React Native的命令行工具</p>
+<figure class="highlight livescript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">npm</span> install -g react-<span class="keyword">native</span>-cli</span><br></pre></td></tr></table></figure>
+
+
+<p>安装<code>Watchman</code>。Facebook提供的监视文件系统变更工具</p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">brew </span><span class="keyword">install </span>watchman</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建React-Native项目"><a href="#创建React-Native项目" class="headerlink" title="创建React Native项目"></a>创建React Native项目</h2><p>定位的指定文件夹，创建React Native项目</p>
+<figure class="highlight kotlin"><table><tr><td class="code"><pre><span class="line">react-<span class="keyword">native</span> <span class="keyword">init</span> firstReactNative</span><br></pre></td></tr></table></figure>
+
+<p>终端内运行项目</p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"><span class="comment">//进入到项目文件夹中</span></span><br><span class="line"><span class="keyword">cd</span> firstReactNative </span><br><span class="line"><span class="comment">//运行项目</span></span><br><span class="line">react-native <span class="keyword">run</span>-ios</span><br></pre></td></tr></table></figure>
+
+<p>也可以在Xcode中点击<code>firstReactNative/ios/firstRectNative.xcodeproj</code>运行</p>
+<h2 id="编写代码并运行"><a href="#编写代码并运行" class="headerlink" title="编写代码并运行"></a>编写代码并运行</h2><p>用编译器打开<code>index.ios.js</code>文件，修改相应代码</p>
+<p>在iOS模拟器上<code>command + R</code>刷新运行app</p>
+]]></content>
+      <categories>
+        <category>React Native</category>
+      </categories>
+      <tags>
+        <tag>React Native</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Core Animation开发笔记</title>
+    <url>/2016/07/27/coreanimation/</url>
+    <content><![CDATA[<h2 id="CAlayer"><a href="#CAlayer" class="headerlink" title="CAlayer"></a>CAlayer</h2><ol>
+<li><p>CALayer 和UIView类似，同样是一些被层级关系树管理的矩形块。包括图片、文本、背景色等。和UIView最大不同是 不能处理用户交互</p>
+<a id="more"></a>
+</li>
+<li><p>CALayer添加图层，需求是在UIView上添加一个图层，处理方式不是添加一个UIView(这样当然可以实现)，是创建一个layer，这是layer的背景色，添加到View的layer上</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">UIView *bgview &#x3D; [[UIView alloc] initWithFrame:CGRectMake(100, 100, 200, 200)];</span><br><span class="line">bgview.backgroundColor &#x3D; [UIColor grayColor];</span><br><span class="line">[self.view addSubview:bgview];</span><br><span class="line">    </span><br><span class="line">CALayer *layer &#x3D; [CALayer layer];</span><br><span class="line">layer.frame &#x3D; CGRectMake(30, 30, 100, 100);</span><br><span class="line">layer.backgroundColor &#x3D; [UIColor blueColor].CGColor;</span><br><span class="line">[bgview.layer addSublayer:layer];</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="layer的contents"><a href="#layer的contents" class="headerlink" title="layer的contents"></a>layer的contents</h2><ol>
+<li><p>在UIView上显示一张图片。一般的处理方式是在view上添加一个UIImageView ，现在可以用layer的contents</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">UIView *bgview &#x3D; [[UIView alloc] initWithFrame:CGRectMake(100, 100, 200, 100)];</span><br><span class="line">  bgview.backgroundColor &#x3D; [UIColor grayColor];</span><br><span class="line">  [self.view addSubview:bgview];</span><br><span class="line"></span><br><span class="line">bgview.layer.contents &#x3D; (__bridge id _Nullable)([UIImage imageNamed:@&quot;Icon-Small-50&quot;].CGImage);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为什么要用关键字 __bridge 修饰UIImage？ 因为，contents的类型是id，之所以被定义为id，是因为在MacOS系统上，这个属性对CGImage和NSImage都有作用。在iOS上，如果赋值UIImage，只能得到一个空白图层。其实真正赋值的是CGImageRef类型，它是指向CGImage结构的指针，.CGImage返回了“CGImageRef”，把它直接赋值给contents，会报编译错误，因为CGImageRef不是一个Cocoa对象，而是一个Core Foundation类型，所以要通过__bridge 修饰。（如果用的非arc则不需要）</p>
+</li>
+<li><p>这时image会根据bgview的大小形变缩放了。 在UIImageView里有一个contentMode的属性来设置image的缩放</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">imageview.contentMode &#x3D; UIViewContentModeScaleAspectFit;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在layer里有 contentsGravity</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bgview.layer.contentsGravity &#x3D; kCAGravityResizeAspect;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="contentsScale"><a href="#contentsScale" class="headerlink" title="contentsScale"></a>contentsScale</h2><ol>
+<li><p>这个属性很少用到。这个属性顶一个图片的像素尺寸和视图比例</p>
+</li>
+<li><p>举个例子，将图片设置为不能拉伸， kCAGravityCenter这个属性值，会将图设置为不拉伸，图有多大就显示多大，不会局限于view的大小</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bgview.layer.contentsGravity &#x3D; kCAGravityCenter;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>图片为@2x图片，这时图片会放大了，会有明显的颗粒点。因为这时每个点1个像素绘制了图片，retina屏幕是每个点绘制2个像素点。CGImage没有拉伸的概念，如果用UIImage去拉伸图片没有问题。在用CGImage时拉伸时会丢失，所以模糊了。这时需要用contentsScale来修复这个问题</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bgview.layer.contentsScale &#x3D; image.scale;</span><br><span class="line">	</span><br><span class="line">&#x2F;&#x2F;image.scale 在@2x时 &#x3D; 2， @1x时 &#x3D; 1</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="maskToBounds"><a href="#maskToBounds" class="headerlink" title="maskToBounds"></a>maskToBounds</h2><ol>
+<li><p>图片超出view的范围要切掉。在UIView中用 clispToBounds ，在CALayer中 使用 maskToBounds</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bgview.layer.masksToBounds &#x3D; YES;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="contentsRect"><a href="#contentsRect" class="headerlink" title="contentsRect"></a>contentsRect</h2><ol>
+<li><p>切割图片，设置添加到layer.contents上的图片的子域。就是只显示某一部分</p>
+</li>
+<li><p>contentsRect 的取值是相对值。相对于图片的尺寸。默认 {0,0,1,1}， 如果取值 {0, 0, 0.5, 0.5} 则显示图片的左上角整个图片的1/4处</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;显示图片的上面1&#x2F;2处</span><br><span class="line">bgview.layer.contentsRect &#x3D; CGRectMake(0, 0, 1, 0.5);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用场景：载入多张图拼合一起的整张图，切割了放在不同地方。单张大图比多张小图载入速度快。缺点就是某个小图尺寸改变时会很麻烦。</p>
+</li>
+<li><p>有一些软件可以生成拼合图片，并生成拼合坐标的xml或plist文件，并给每个拼合图层设置contentsRect。这样就方便多了。我也在找这个软件</p>
+</li>
+</ol>
+<h2 id="contentsCenter"><a href="#contentsCenter" class="headerlink" title="contentsCenter"></a>contentsCenter</h2><ol>
+<li><p>可拉伸区域, contentsCenter的值也是相对值，默认 {0,0,1,1}，图片将会均匀拉伸。contentsCenter可以指定拉伸区域</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">bgview.layer.contentsCenter &#x3D; CGRectMake(0.25, 0.25, 0.5, 0.5);</span><br><span class="line">&#x2F;&#x2F;中间一部分可以拉伸</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>类似UIImage的不形变拉伸方法，指定拉伸位置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- (UIImage *)stretchableImageWithLeftCapWidth:(NSInteger)leftCapWidth topCapHeight:(NSInteger)topCapHeight</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="drawing"><a href="#drawing" class="headerlink" title="drawing"></a>drawing</h2><ol>
+<li><p>自定义view的时候，会有-drawRect方法，在这里可以绘制。这个方法不会默认实现，如果用不到寄宿图的话，就不要创建这个方法。没有自定义的绘制任务时，不要写一个空的 -drawRect方法，会造成资源浪费</p>
+</li>
+<li><p>使用layer的代理方法，绘制寄宿图</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CALayer *layer &#x3D; [CALayer layer];</span><br><span class="line">layer.frame &#x3D; CGRectMake(30, 30, 100, 100);</span><br><span class="line">layer.backgroundColor &#x3D; [UIColor blueColor].CGColor;</span><br><span class="line">layer.delegate &#x3D; self;</span><br><span class="line">layer.contentsScale &#x3D; [UIScreen mainScreen].scale;</span><br><span class="line">[bgview.layer addSublayer:layer];</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F; 需要手动调用，因为CALayer不会自动重绘内容。</span><br><span class="line">[layer display];</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F;代理方法</span><br><span class="line">- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx</span><br><span class="line">&#123;</span><br><span class="line">    CGContextSetLineWidth(ctx, 10);</span><br><span class="line">    CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);</span><br><span class="line">    CGContextStrokeEllipseInRect(ctx, layer.bounds);</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 不会对超出layer存放边界以外的地方有绘制作用，所有超出的地方就像被切掉了一样，类似masksToBounds一样</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>animation</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python笔记5-模块</title>
+    <url>/2016/07/05/Python5/</url>
+    <content><![CDATA[<h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><p>把代码放到不同的<code>.py</code>文件，一个<code>.py</code>文件是一个模块(Module)。有Python的内置模块和第三方模块。</p>
+<a id="more"></a>
+
+<p>不同模块间不必考虑函数名变量名冲突，因为不同模块间完全允许函数名变量名相同。注意不要与内置函数名冲突。</p>
+<p>避免模块名冲突，引入目录来组织模块，称为包(Package)。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160816-0.png?raw=true" alt="img"></p>
+<p>引入包，顶层包名不冲突，那么里面所有的模块都不会冲突。例如<code>hello.py</code>模块，引入包<code>PythonTest</code>中，模块名就变成了<code>PythonTest.hello</code>。</p>
+<p>注意：每个包目录下面都有一个<code>__init__.py</code>文件，这个文件必须存在，不然这就是个普通目录，而不是一个包。<code>__init__.py</code>是空文件也可以写代码，他的模块名是<code>PythonTest</code>。</p>
+<p>注意：创建模块命名时，不能与自带模块名称冲突。例如系统自带<code>sys</code>模块，自己的模块不能命名为<code>sys.py</code>，否则将无法导入系统自带<code>sys</code>模块。</p>
+<p>如果有多层级的包结构，就一路<code>.</code>下去。</p>
+<h2 id="使用模块"><a href="#使用模块" class="headerlink" title="使用模块"></a>使用模块</h2><p>Python有很多内置模块，安装完毕即可使用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">'a test module'</span></span><br><span class="line"></span><br><span class="line">__author__ = <span class="string">'MXD'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">	args = sys.argv</span><br><span class="line">	<span class="keyword">if</span> len(args) == <span class="number">1</span>:</span><br><span class="line">		print(<span class="string">'hello world!'</span>)</span><br><span class="line">	<span class="keyword">elif</span> len(args) == <span class="number">2</span>:</span><br><span class="line">		print(<span class="string">'hello %s!'</span> % args[<span class="number">1</span>])</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		print(<span class="string">'end'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	test()</span><br></pre></td></tr></table></figure>
+
+<h3 id="标准模板"><a href="#标准模板" class="headerlink" title="标准模板"></a>标准模板</h3><p><code>#!/usr/bin/env python3</code> 标准注释，可以让这个模块文件直接在Unix/Linux/Mac上运行</p>
+<p><code># -*- coding: utf-8 -*-</code> 标准注释，表示该文件使用标准UTF-8编码</p>
+<p><code>&#39;a test module&#39;</code> 表示该模块的文档注释，任何模块代码的第一个字符串都会被视为模块的文档注释</p>
+<p><code>__author__ = &#39;MXD&#39;</code> 作者</p>
+<p>以上是Python模块的标准模板，不是强制必写，写总是没错的</p>
+<h3 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h3><p>下面是代码部分</p>
+<p><code>import sys</code> 导入<code>sys</code>模块。导入模块之后就可以用了，相当于有了变量<code>sys</code>指向该模块，利用这个变量可以访问<code>sys</code>模块中的所有功能。</p>
+<p><code>sys</code>模块有一个<code>argv</code>变量，是用list存储了在命令行中输入的所有参数。例如在命令行中输入如如下第一行代码，这是运行<code>hello.py</code>模块，这时<code>argv</code>中存的就是<code>[&#39;hello.py&#39;]</code>。<code>argv</code>中至少有一个元素，因为第一个元素永远是该模块名</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py</span><br><span class="line">hello world!</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py mxd</span><br><span class="line">hello mxd!</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py mxd,xx</span><br><span class="line">hello mxd,xx!</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py [&#39;a&#39;, &#39;adf&#39;]</span><br><span class="line">end</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py mxd adf</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="最后两行代码的详细解释"><a href="#最后两行代码的详细解释" class="headerlink" title="最后两行代码的详细解释"></a>最后两行代码的详细解释</h3><p>注意最后的代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	test()</span><br></pre></td></tr></table></figure>
+
+<p>在命令行中运行<code>hello</code>模块文件时，Python解释器会把特殊变量<code>__name__</code>置为<code>__main__</code>，如果在其他地方导入该    <code>hello</code>模块时，<code>if</code>判断将失败。这种<code>if</code>测试可以让一个模块通过命令行运行时执行一些额外代码，最常见的就是运行测试。</p>
+<p>下面详细记录我对这两行代码的作用理解。</p>
+<p>注释掉这两行代码，再在终端上执行<code>python3 hello.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3 hello.py</span><br><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$</span><br></pre></td></tr></table></figure>
+
+<p>不会有任何结果返回。</p>
+<p>因为在终端执行该模块，该模块中只定义了一个<code>test</code>函数，并没有调用操作。如果这时放开<code>test()</code>这一行代码，调用该函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3 hello.py</span><br><span class="line">hello world!</span><br></pre></td></tr></table></figure>
+
+<p>调用成功！</p>
+<p>但是，在启动Python交互环境的时候，导入该模块时，也会调用该函数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3</span><br><span class="line">Python <span class="number">3.5</span><span class="number">.2</span> (v3<span class="number">.5</span><span class="number">.2</span>:<span class="number">4</span>def2a2901a5, Jun <span class="number">26</span> <span class="number">2016</span>, <span class="number">10</span>:<span class="number">47</span>:<span class="number">25</span>) </span><br><span class="line">[GCC <span class="number">4.2</span><span class="number">.1</span> (Apple Inc. build <span class="number">5666</span>) (dot <span class="number">3</span>)] on darwin</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> <span class="keyword">or</span> <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> hello</span><br><span class="line">hello world!</span><br></pre></td></tr></table></figure>
+
+<p>这就非我所愿了，我们想要的是我在调用模块的时候返回执行结果，我导入模块的时候不能调用函数。这就用到了注释掉的判断条件<code>if __name__ == &#39;__main__&#39;:</code></p>
+<p>放开这行注释的判断条件，在Python交互环境下的执行结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3</span><br><span class="line">Python <span class="number">3.5</span><span class="number">.2</span> (v3<span class="number">.5</span><span class="number">.2</span>:<span class="number">4</span>def2a2901a5, Jun <span class="number">26</span> <span class="number">2016</span>, <span class="number">10</span>:<span class="number">47</span>:<span class="number">25</span>) </span><br><span class="line">[GCC <span class="number">4.2</span><span class="number">.1</span> (Apple Inc. build <span class="number">5666</span>) (dot <span class="number">3</span>)] on darwin</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> <span class="keyword">or</span> <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> hello</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello.test()</span><br><span class="line">hello world!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>还是上文的解释：<strong>在命令行中运行模块文件时，Python解释器会把特殊变量<code>__name__</code>置为<code>__main__</code>，而在导入模块时则不会有这种改变。</strong></p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>正常的函数和变量名是公开的(public)，可以被直接引用，比如<code>abc</code>, <code>m322</code>等；</p>
+<p>双下划线开头双下划线结尾的变量<code>__xxx__</code>是特殊变量，有特殊用途，自定义变量不要用这种变量名;</p>
+<p>单下划线或双下划线开头无下划线结尾的函数或变量名是非公开的(private),不应该被直接引用，比如<code>_abc</code>, <code>__xyz</code>;</p>
+<p>只是”不应该”被直接引用，并不是”不能”被直接引用。Python并没有一种方法能完全限制访问非公开变量或函数。只是编程习惯上不应该这么引用。</p>
+<p>使用案例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_abc</span><span class="params">(name)</span>:</span></span><br><span class="line">	print(<span class="string">'hello %s'</span> % name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_xyz</span><span class="params">(name)</span>:</span></span><br><span class="line">	print(<span class="string">'biu %s'</span> % name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(name)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> len(name) &gt; <span class="number">3</span>:</span><br><span class="line">		<span class="keyword">return</span> _abc(name)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> _xyz(name)</span><br></pre></td></tr></table></figure>
+
+<p>这是一个自定义模块，<code>test</code>函数是公开的函数，<code>_abc</code>和<code>_xyz</code>函数是内部函数实现，不需要调用。在调用的时候只需要调用公开的<code>test</code>函数即可，不需要关心内部实现细节。调用结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello.test(<span class="string">'aa'</span>)</span><br><span class="line">biu aa</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello.test(<span class="string">'aaaa'</span>)</span><br><span class="line">hello aaaa</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这是一种非常有用的代码封装和抽象方法，外部不需要引用的函数全部定义为未公开的(private)，只有外部需要引用的函数才定义为<code>public</code>。</p>
+<p>当然，坚持调用<code>_abc</code>函数也是可以的</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello._abc(<span class="string">'aaaa'</span>)</span><br><span class="line">hello aaaa</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>只是不建议这么做。</p>
+<h2 id="安装第三方模块"><a href="#安装第三方模块" class="headerlink" title="安装第三方模块"></a>安装第三方模块</h2><p>安装第三方模块，需要通过包管理工具<code>pip</code>完成。Mac或Linux不需要手动安装<code>pip</code>，Mac或Linux上可能并存Python3.x和Python2.x版本，对应的pip命令是<code>pip3</code></p>
+<p>安装第三方库<code>Python Imaging Library</code>，这是Python下的图像处理工具库，目前<code>PIL</code>只支持到Python2.7，并且很久没更新。基于PIL的Pillow项目非常活跃，支持Python3.</p>
+<p>安装Pillow</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip3 install Pillow</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，使用Pillow生成图片缩略图</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>im = Image.open(<span class="string">'img.png'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(im.format, im.size, im.mode)</span><br><span class="line">PNG (<span class="number">1920</span>, <span class="number">2172</span>) RGBA</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>im.thumbnail((<span class="number">100</span>,<span class="number">200</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>im.save(<span class="string">'newimg.jpg'</span>, <span class="string">'JPEG'</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其他常用的第三方库还有MySQL的驱动：<code>mysql-connector-python</code>，用于科学计算的NumPy库：<code>numpy</code>，用于生成文本的模板工具<code>Jinja2</code>，等等。</p>
+<h2 id="模块搜索路径"><a href="#模块搜索路径" class="headerlink" title="模块搜索路径"></a>模块搜索路径</h2><p>在加载模块时，Python会在指定路径下找.py文件，找不到就报错。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> mymod</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">ImportError: No module named <span class="string">'mymod'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>显示搜索路径，搜索路径存放在<code>sys.path</code>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.path</span><br><span class="line">[<span class="string">''</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python35.zip'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/plat-darwin'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/lib-dynload'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>添加搜索路径，可以直接在运行时修改<code>sys.path</code>，运行关闭后失效</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.path.append(<span class="string">'/Users/inspiry/desktop/work/PythonCode/PythonTest/hello'</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python笔记4-函数式编程</title>
+    <url>/2016/07/04/Python4/</url>
+    <content><![CDATA[<p><em>Python不是纯函数式编程语言</em></p>
+<a id="more"></a>
+
+<h1 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h1><h2 id="变量与函数名"><a href="#变量与函数名" class="headerlink" title="变量与函数名"></a>变量与函数名</h2><p>可以用一个变量指向一个函数名，而代替这个函数的操作。也可以说函数本身可以赋值给变量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-10</span>)</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs</span><br><span class="line">&lt;built-<span class="keyword">in</span> function abs&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = abs</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b(<span class="number">-29</span>)</span><br><span class="line"><span class="number">29</span></span><br></pre></td></tr></table></figure>
+
+<p>其实函数名本身也是一个变量，是指向函数的变量。下面的代码可以验证这个结论</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-10</span>)</span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">aa</span><span class="params">(num)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(num + <span class="number">100</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>aa(<span class="number">10</span>)</span><br><span class="line"><span class="number">110</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs = aa</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">10</span>)</span><br><span class="line"><span class="number">110</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-10</span>)</span><br><span class="line"><span class="number">90</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>abs()</code>是系统提供的求绝对值得函数，我自定义了一个函数<code>aa()</code>，让输入的数+100然后打印出来，然后把<code>aa</code>函数名赋值给<code>abs</code>，然后系统的求绝对值的函数就变成了打印+100操作的函数了。</p>
+<p>要恢复<code>abs()</code>的函数功能，要重启Python交互环境 <code>exit()</code>  -&gt; <code>python</code></p>
+<hr>
+<p>函数名可以赋值给变量，函数名本身也是个指向函数的变量。函数可以接受变量为参数，那么函数也可以作为参数传给另一个函数。</p>
+<p>这句绕口令的意思是：函数可以作为另一个函数的参数，这种函数称为<code>高阶函数</code>。</p>
+<p>自定义函数<code>addnum(x,y,z)</code>包含了三个参数，其中参数<code>z</code>是传入的是一个函数名，在<code>addnum</code>函数内<code>z,y</code>变为函数<code>z</code>的参数，执行完函数<code>z</code>操作，把结果相加打印出来。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">addnum</span><span class="params">(x,y,z)</span>:</span></span><br><span class="line"><span class="meta">... </span>    print(z(x) + z(y))</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addnum(<span class="number">-10</span>, <span class="number">10</span>, abs)</span><br><span class="line"><span class="number">20</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h2><p><code>map()</code>函数传入两个参数，第一个参数是一个函数，第二个参数是一个可迭代对象<code>Iterable</code>，函数将作用于序列的每一个元素，把结果作为<code>生成器Iterator</code>返回。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">st</span><span class="params">(s)</span>:</span>						<span class="comment">#自定义函数st</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> s + a</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>st(<span class="string">'a'</span>)							<span class="comment">#结果是把传入的字符串拼接一个a'字符</span></span><br><span class="line"><span class="string">'aa'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = map(st, <span class="string">'12345'</span>)			<span class="comment">#调用map函数</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line">&lt;map object at <span class="number">0x101517320</span>&gt;			<span class="comment">#返回一个Iterator</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(a)</span><br><span class="line">[<span class="string">'1a'</span>, <span class="string">'2a'</span>, <span class="string">'3a'</span>, <span class="string">'4a'</span>, <span class="string">'5a'</span>]		<span class="comment">#转为list</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h2><p><code>reduce()</code>函数也接受两个参数，第一个是有两个参数的函数，第二个参数是可迭代对象<code>Iterable</code>，两个元素作为参数作用于函数，结果和第三个元素作为参数作用于函数，依次运行下去，最后return结果</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">reduce(fun, [x, y, z, m, n]) = fun(fun(fun(fun(x, y) z) m) n)</span><br></pre></td></tr></table></figure>
+
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h2><p><code>filter()</code>函数用于筛选过滤序列。操作方式类似<code>map()</code>，只是传入的函数返回值是<code>bool</code>类型，如果是<code>True</code>则保留该元素，如果是<code>False</code>则清除该元素，最后剩下的list作为<code>Iterator</code>返回</p>
+<p>自定义函数，传入整数，偶数返回<code>True</code>，奇数返回<code>False</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(a)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> a % <span class="number">2</span> == <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(filter(test, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>]))</span><br><span class="line">[<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>]    <span class="comment">#只保留了偶数</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="sorted"><a href="#sorted" class="headerlink" title="sorted()"></a>sorted()</h2><p><code>sorted()</code>是排序算法的高阶函数，可以对list进行排序</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">10</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">-23</span>,<span class="number">33</span>])</span><br><span class="line">[<span class="number">-23</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">10</span>, <span class="number">33</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>也可以对字符串的list进行排序，是根据ASCII码排序的</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="string">'a'</span>, <span class="string">'B'</span>, <span class="string">'Za'</span>, <span class="string">'Zb'</span>])</span><br><span class="line">[<span class="string">'B'</span>, <span class="string">'Za'</span>, <span class="string">'Zb'</span>, <span class="string">'a'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>还可以接收一个参数<code>key</code>函数，来实现自定义排序，比如按照绝对值大小排序</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="number">10</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">-23</span>], key = abs)</span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">10</span>, <span class="number">-23</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这种实现原理是：key指向的函数作用于list里的每一个元素得到结果，把结果进行排序得到一个新list，命名为：newList，然后将原list按照这个newList里每个元素的对应关系返回相应的元素，实现排序</p>
+<p>上文说到，默认的字符串排序是按照ASCII码排序的，大写字母的ASSCII码值要小于小写字母的ASSCII码值，所以<code>&#39;A&#39;</code>要排在<code>&#39;a&#39;</code>前面。如果要实现按照字母表顺序呢？其实只要忽略每个字符串的大小写就OK</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="string">'a'</span>, <span class="string">'B'</span>, <span class="string">'Za'</span>, <span class="string">'Zb'</span>], key = str.lower)</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'B'</span>, <span class="string">'Za'</span>, <span class="string">'Zb'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>要实现反向排序，只需要加入第三个参数<code>reverse = True</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sorted([<span class="string">'a'</span>, <span class="string">'B'</span>, <span class="string">'Za'</span>, <span class="string">'Zb'</span>], key = str.lower, reverse = <span class="literal">True</span>)</span><br><span class="line">[<span class="string">'Zb'</span>, <span class="string">'Za'</span>, <span class="string">'B'</span>, <span class="string">'a'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="返回函数"><a href="#返回函数" class="headerlink" title="返回函数"></a>返回函数</h1><h2 id="函数作为返回值"><a href="#函数作为返回值" class="headerlink" title="函数作为返回值"></a>函数作为返回值</h2><p>函数既然可以作为参数传递到函数中，自然也可以作为返回值被函数<code>return</code>出来。</p>
+<p>定义一个求平方的函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(a)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> a * a</span><br></pre></td></tr></table></figure>
+
+<p>将该函数作为返回值放到另一个函数<code>testTest()</code>中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testTest</span><span class="params">(b)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">		<span class="keyword">return</span> b * b</span><br><span class="line">	<span class="keyword">return</span> test</span><br></pre></td></tr></table></figure>
+
+<p>调用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>w = testTest(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>w()</span><br><span class="line"><span class="number">100</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在调用<code>testTest()</code>的时候，每次调用都是返回一个全新的函数。即便是传入相同的参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>w = testTest(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>z = testTest(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>w == z</span><br><span class="line"><span class="literal">False</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h2><p>外部函数<code>testTest()</code>包含了内部函数<code>test()</code>，内部函数<code>test()</code>引用了外部函数变量。调用外部函数，在返回函数的时候，包括函数的相关参数都一起返回了。这种程序结构被称为<code>闭包</code>。</p>
+<p>还有一个注意点，调用外部函数，返回的函数并没有立即执行，只有在调用的时候才会执行。返回的函数不要引用任何可能会变化的变量。</p>
+<p>下面一个例子说明返回函数没有立即执行，和返回函数引用会变化的变量引发的问题。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">test1</span><span class="params">()</span>:</span></span><br><span class="line">	array = []</span><br><span class="line">	<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">5</span>):</span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">fs</span><span class="params">()</span>:</span></span><br><span class="line">			<span class="keyword">return</span> x</span><br><span class="line">		array.append(fs)</span><br><span class="line">	<span class="keyword">return</span> array</span><br></pre></td></tr></table></figure>
+
+<p>定义函数<code>test1()</code>，函数内包含了一个循环，循环的<code>x</code>是一个变化的变量，内部函数<code>fs()</code>引用了外部这个可变化的变量<code>x</code>。每次循环生成一个<code>fs()</code>函数，存放到<code>array</code>数组中，最后返回<code>array</code>数组，里面放了四个<code>fs</code>函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1, f2, f3, f4 = test1()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f1()</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f2()</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f3()</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f4()</span><br><span class="line"><span class="number">4</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>最后的结果不是<code>1</code>,<code>2</code>,<code>3</code>,<code>4</code>，而全部都是<code>4</code></p>
+<p>该函数的运行原理是：调用<code>test1()</code>，执行函数内的<code>for</code>循环，每一次循环都生成一个<code>fs()</code>内部函数，每个内部函数都互不干扰，但是每个函数都引用的外部函数的<code>x</code>，最后<code>for</code>循环执行完毕，返回了存放函数的数组。这时里面的函数没有任何一个执行了，但是此时的<code>x</code>早已变为<code>4</code>了。拿到四个函数<code>f1</code> <code>f2</code> <code>f3</code> <code>f4</code>运行，所以全部返回<code>4</code>。</p>
+<p>所以说谨记一点：<strong>返回函数不要引用任何可变化的变量</strong></p>
+<h1 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h1><p>匿名函数就是没有写函数名的函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list(map(<span class="keyword">lambda</span> x: x + x, [<span class="number">10</span>,<span class="number">22</span>,<span class="number">4</span>,<span class="number">21</span>]))</span><br><span class="line">[<span class="number">20</span>, <span class="number">44</span>, <span class="number">8</span>, <span class="number">42</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这里面<code>lambda x: x + x</code>就是匿名函数，<code>lambda</code>是表示匿名函数的关键字，<code>:</code>前是参数，后表达式。匿名函数只能有一个表达式，不用写<code>return</code>，返回值就是该表达式的结果。</p>
+<p>匿名函数也是函数，所以也可以赋值给变量，作为参数传入函数或被函数返回。</p>
+<p>但是，<em>Python对匿名函数支持有限，只有一些简单情况下可以用匿名参数</em></p>
+<h1 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h1><p>不更改函数的情况下，动态增加函数功能的方式，称为<code>装饰器(Decoratot)</code></p>
+<p>函数的<code>__name__</code>属性可以获得函数名</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>test()</span><br><span class="line">helloworld</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = test</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a()</span><br><span class="line">helloworld</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.__name__</span><br><span class="line"><span class="string">'test'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>装饰器是一个返回函数的高阶函数。</p>
+<p>自定义函数，打印hello world：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> (<span class="string">'hello world'</span>)</span><br></pre></td></tr></table></figure>
+<p>如何在不改动该函数的前提下，打印出调用该函数的函数名？这就使用到了<code>装饰器</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inputTest</span><span class="params">(func)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">inputFunc</span><span class="params">(*args, **kw)</span>:</span></span><br><span class="line">		print(<span class="string">'调用函数 %s():'</span> % func.__name__)</span><br><span class="line">		<span class="keyword">return</span> func(*args, **kw)</span><br><span class="line">	<span class="keyword">return</span> inputFunc</span><br></pre></td></tr></table></figure>
+<p>上面代码就是一个打印日志的装饰器，<code>inputTest</code>函数，传入了一个函数<code>func</code>，返回了函数<code>inputFunc</code>。函数内自定义的函数<code>inputFunc</code>实现了打印传入函数<code>func</code>的函数名，并执行传入函数。</p>
+<p>如何将这个装饰器作用于<code>test</code>函数？使用Python的<code>@</code>语法。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@inputTest</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> (<span class="string">'hello world'</span>)</span><br></pre></td></tr></table></figure>
+<p>将<code>@inputTest</code>放到<code>test()</code>函数定义上面，相当于执行了<code>test = inputTest(test)</code></p>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>test()</span><br><span class="line">调用函数 test():</span><br><span class="line">hello world</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>装饰器本身如果需要加入参数，就需要编写一个返回装饰器的高阶函数。例如打印log需要自定义文本+函数名</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span><span class="params">(text)</span>:</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">inputTest</span><span class="params">(func)</span>:</span></span><br><span class="line">		<span class="function"><span class="keyword">def</span> <span class="title">inputFunc</span><span class="params">(*args, **kw)</span>:</span></span><br><span class="line">			print(<span class="string">'%s %s():'</span> % (text, func.__name__))</span><br><span class="line">			<span class="keyword">return</span> func(*args, **kw)</span><br><span class="line">		<span class="keyword">return</span> inputFunc</span><br><span class="line">	<span class="keyword">return</span> inputTest</span><br><span class="line"></span><br><span class="line"><span class="meta">@log('你好')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">print</span> (<span class="string">'hello world'</span>)</span><br></pre></td></tr></table></figure>
+<p>执行结果：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>test()</span><br><span class="line">你好 test():</span><br><span class="line">hello world</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="偏函数"><a href="#偏函数" class="headerlink" title="偏函数"></a>偏函数</h1><p>Python的<code>functools</code>模块提供了很多功能，其中一种就是偏函数(Partial function)。</p>
+<p>之前说的函数的<a href="https://github.com/mxdios/notebook/blob/master/notebooks/Python%E5%87%BD%E6%95%B0.md#%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0" target="_blank" rel="noopener">默认参数</a>，指定某一函数的默认值，降低函数调用难度。偏函数也可以做到</p>
+<p>函数<code>int()</code>可以吧字符串转换为整数，默认按照十进制转换。该函数还有一个额外参数<code>base</code>，可以指定按照某进制转换。注：<code>int(&#39;2323232&#39;, base = 8)</code>是指字符串是八进制数据字符串，转为十进制整数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'2323232'</span>) <span class="comment"># 十进制转换十进制</span></span><br><span class="line"><span class="number">2323232</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'2323232'</span>, base = <span class="number">8</span>) <span class="comment"># 八进制转换十进制</span></span><br><span class="line"><span class="number">632474</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'2323232'</span>, base = <span class="number">16</span>) <span class="comment"># 十六进制转换十进制</span></span><br><span class="line"><span class="number">36844082</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>需要大量转换二进制字符串时，每次传入<code>int(x, base = 2)</code>太麻烦，自定义函数<code>int2()</code>，转换二进制字符串</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">int2</span><span class="params">(x, base = <span class="number">2</span>)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> int(x, base)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int2(<span class="string">'1001001'</span>) <span class="comment"># 不传base默认按照二进制转换</span></span><br><span class="line"><span class="number">73</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int2(<span class="string">'1001001'</span>, base = <span class="number">8</span>)</span><br><span class="line"><span class="number">262657</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int2(<span class="string">'100110'</span>, base = <span class="number">10</span>)</span><br><span class="line"><span class="number">100110</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上述是基本做法，可以创建偏函数实现上述需求，不需要自定义函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> functools</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int2 = functools.partial(int, base = <span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int2(<span class="string">'100111'</span>)</span><br><span class="line"><span class="number">39</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int2(<span class="string">'1001'</span>, base = <span class="number">10</span>)</span><br><span class="line"><span class="number">1001</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p><code>functools.partial</code>是将函数的某个参数给定一个默认值，返回新的函数。<code>int2 = functools.partial(int, base = 2)</code>就是指定<code>int()</code>函数中<code>base</code>参数的默认值是<code>2</code>并返回新的函数。</p>
+<p>创建偏函数时，实际上可以接收函数对象、<code>*args</code> 和 <code>**kw</code> 三个参数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>max2 = functools.partial(max, <span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>max2(<span class="number">3</span>,<span class="number">9</span>)  <span class="comment"># 相当于 max(10, 3, 9)</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>当函数参数太多时，需要简化，可以使用<code>functools.partial</code>创建一个偏函数。可以固定原函数的部分参数，调用起来更简单。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python笔记3-高级特性</title>
+    <url>/2016/07/03/Python3/</url>
+    <content><![CDATA[<h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><p>切片就是切割list或者tuple里面的元素，获取某个或某段元素。</p>
+<a id="more"></a>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>L = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>L[:<span class="number">1</span>]</span><br><span class="line">[<span class="string">'a'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>L[:<span class="number">3</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>L[<span class="number">2</span>:<span class="number">3</span>]</span><br><span class="line">[<span class="string">'c'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>L[a:b]</code> 表示返回从第<code>a</code>个元素到第<code>b</code>个元素，不包含第<code>b</code>个元素。 如果索引为<code>0</code>的话可以省略。</p>
+<p>同样支持倒数切片，倒数第一个元素是的索引是<code>-1</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>L[<span class="number">-2</span>:<span class="number">-1</span>]</span><br><span class="line">[<span class="string">'d'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>L[<span class="number">-1</span>:]</span><br><span class="line">[<span class="string">'e'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>L[<span class="number">-4</span>:<span class="number">-1</span>]</span><br><span class="line">[<span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>切片操作不仅可以切割相邻的元素，还可以分段切割</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>l = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[::<span class="number">2</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l[<span class="number">1</span>:<span class="number">3</span>:<span class="number">2</span>]</span><br><span class="line">[<span class="number">2</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>L[a:b:c]</code> 表示返回从第<code>a</code>个元素到第<code>b</code>个元素(不包含第<code>b</code>个元素),每<code>c</code>个元素取一个。</p>
+<p>同样对tuple也支持，只是返回的结果格式还是tuple</p>
+<p>对字符串也同样适用，返回的还是字符串</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>str = <span class="string">'123456789'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str[<span class="number">1</span>:<span class="number">4</span>]</span><br><span class="line"><span class="string">'234'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>str[::<span class="number">3</span>]</span><br><span class="line"><span class="string">'147'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>切片是一种很高能的操作。能随意截取list、tuple甚至字符串，相比于oc截取字符串的某一段，Python这种切片操作简单极了</p>
+<h1 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h1><p>用<code>for</code>循环来遍历一个可遍历对象称为迭代</p>
+<p>可遍历对象: list、 tuple、 dict、 set、str…</p>
+<h2 id="迭代list"><a href="#迭代list" class="headerlink" title="迭代list"></a>迭代list</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>l = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> a <span class="keyword">in</span> l:</span><br><span class="line"><span class="meta">... </span>    print(a)</span><br><span class="line">...</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="迭代tuple"><a href="#迭代tuple" class="headerlink" title="迭代tuple"></a>迭代tuple</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>tup = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> a <span class="keyword">in</span> tup:</span><br><span class="line"><span class="meta">... </span>    print(a)</span><br><span class="line">...</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="迭代dict"><a href="#迭代dict" class="headerlink" title="迭代dict"></a>迭代dict</h2><p>dict是key-value存储的，默认迭代的是key， 若想迭代value需要<code>.values()</code>, 若想同事迭代key-value 需要<code>.items()</code>。</p>
+<p>dict的存储顺序是无序的，迭代结果的顺序并不一定按照顺序排列</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dict = &#123;<span class="number">1</span>:<span class="string">'a'</span>, <span class="number">2</span>:<span class="string">'b'</span>, <span class="number">3</span>:<span class="string">'c'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> d <span class="keyword">in</span> dict:					<span class="comment">#默认迭代key</span></span><br><span class="line"><span class="meta">... </span>    print(d)</span><br><span class="line">...</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> d <span class="keyword">in</span> dict.values():       <span class="comment">#迭代value</span></span><br><span class="line"><span class="meta">... </span>    print(d)</span><br><span class="line">...</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> k, v <span class="keyword">in</span> dict.items():		<span class="comment">#迭代key-value</span></span><br><span class="line"><span class="meta">... </span>    print(k, v)</span><br><span class="line">...</span><br><span class="line"><span class="number">1</span> a</span><br><span class="line"><span class="number">2</span> b</span><br><span class="line"><span class="number">3</span> c</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="迭代set"><a href="#迭代set" class="headerlink" title="迭代set"></a>迭代set</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sets = set([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">2</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sets</span><br><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> k <span class="keyword">in</span> sets:</span><br><span class="line"><span class="meta">... </span>    print(k)</span><br><span class="line">...</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="迭代str"><a href="#迭代str" class="headerlink" title="迭代str"></a>迭代str</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>str = <span class="string">'abc'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> s <span class="keyword">in</span> str:</span><br><span class="line"><span class="meta">... </span>    print(s)</span><br><span class="line">...</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="带索引的list迭代"><a href="#带索引的list迭代" class="headerlink" title="带索引的list迭代"></a>带索引的list迭代</h2><p>迭代一个list，还需要显示list的索引。在Java或oc中有<code>for(int i = 0; i &lt; list.count; i ++)</code>这样的for循环，打印i就是list的索引。 在Python中有<code>enumerate()</code>函数，能拿到list的索引</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>l = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> i, s <span class="keyword">in</span> enumerate(l):</span><br><span class="line"><span class="meta">... </span>    print(i, s)</span><br><span class="line">...</span><br><span class="line"><span class="number">0</span> a</span><br><span class="line"><span class="number">1</span> b</span><br><span class="line"><span class="number">2</span> c</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="多个迭代变量"><a href="#多个迭代变量" class="headerlink" title="多个迭代变量"></a>多个迭代变量</h2><p>迭代时两个变量，比如一个list里面放了tuple <code>[(1,2),(3,4),(5,6)]</code> 可以引入两个迭代变量，遍历内容。 注意点是tuple的元素个数必须固定，跟给定的迭代变量参数个数相同，否则会报错</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> a, b <span class="keyword">in</span> [(<span class="number">1</span>,<span class="number">2</span>),(<span class="number">3</span>,<span class="number">4</span>),(<span class="number">5</span>,<span class="number">6</span>)]</span><br><span class="line">	print(a, b)</span><br><span class="line"><span class="comment"># 结果</span></span><br><span class="line"><span class="number">1</span> <span class="number">2</span></span><br><span class="line"><span class="number">3</span> <span class="number">4</span></span><br><span class="line"><span class="number">5</span> <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="判断对象是否可迭代"><a href="#判断对象是否可迭代" class="headerlink" title="判断对象是否可迭代"></a>判断对象是否可迭代</h2><p>引入<code>collections</code>模块的<code>Iterable</code>做类型判断</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> Iterable</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">10</span>, Iterable)   <span class="comment">#整数不可迭代</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">10.4</span>, Iterable)   <span class="comment">#浮点型不可迭代</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([<span class="number">10</span>,<span class="number">11</span>], Iterable)  <span class="comment">#list可以迭代</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(&#123;<span class="number">10</span>:<span class="string">'a'</span>,<span class="number">11</span>:<span class="string">'b'</span>&#125;, Iterable)   <span class="comment">#dict可以迭代</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(&#123;<span class="number">10</span>,<span class="number">11</span>&#125;, Iterable)   <span class="comment">#set可迭代</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="列表生成式"><a href="#列表生成式" class="headerlink" title="列表生成式"></a>列表生成式</h1><p><code>List Comprehensions</code>列表生成式，用简单的代码生成复杂的list</p>
+<p>生成<code>[1,2,3,4]</code> 使用<code>list(range(1,5))</code>，x从<code>1</code>到<code>5</code>不包括<code>5</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>list(range(<span class="number">1</span>,<span class="number">5</span>))</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="普通列表生成式"><a href="#普通列表生成式" class="headerlink" title="普通列表生成式"></a>普通列表生成式</h2><p>如果要生成<code>[1*1, 2*2, 3*3, 4*4, 5*5]</code>的list的话怎么生成呢？ 可以用for循环</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>l = []</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">5</span>):</span><br><span class="line"><span class="meta">... </span>    l.append(x * x)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>l</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果要用列表生成式的话，只需要一行代码就能搞定</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">5</span>)]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>列表生成式<code>[x * x for x in range(1,5)]</code>可以这样理解：<code>for</code>循环是生成元素的，<code>for</code>循环生成的元素放到前面结果元素计算式<code>x * x</code>中计算得到最终结果，结果本身就在<code>[]</code>中，不需要<code>append</code>了。</p>
+<h2 id="带筛选条件的列表生成式"><a href="#带筛选条件的列表生成式" class="headerlink" title="带筛选条件的列表生成式"></a>带筛选条件的列表生成式</h2><p>列表生成式还可以增加筛选条，比如，生成1-10(包括10)中所有偶数的平方组成的list</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">11</span>) <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]</span><br><span class="line">[<span class="number">4</span>, <span class="number">16</span>, <span class="number">36</span>, <span class="number">64</span>, <span class="number">100</span>]</span><br></pre></td></tr></table></figure>
+
+<p>筛选条件跟在for循环后面，筛选for循环生成的元素，让只有符合条件的元素进入<code>结果元素计算式</code>中计算，组成最终的list</p>
+<h2 id="两层循环的列表生成式"><a href="#两层循环的列表生成式" class="headerlink" title="两层循环的列表生成式"></a>两层循环的列表生成式</h2><p>需求：列出两个list里元素的两两一起的所有组合</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[n + m <span class="keyword">for</span> n <span class="keyword">in</span> [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>] <span class="keyword">for</span> m <span class="keyword">in</span> [<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'C'</span>,<span class="string">'D'</span>]]</span><br><span class="line">[<span class="string">'aA'</span>, <span class="string">'aB'</span>, <span class="string">'aC'</span>, <span class="string">'aD'</span>, <span class="string">'bA'</span>, <span class="string">'bB'</span>, <span class="string">'bC'</span>, <span class="string">'bD'</span>, <span class="string">'cA'</span>, <span class="string">'cB'</span>, <span class="string">'cC'</span>, <span class="string">'cD'</span>, <span class="string">'dA'</span>, <span class="string">'dB'</span>, <span class="string">'dC'</span>, <span class="string">'dD'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>根据打印结果知道，其实就是循环嵌套。这是二层嵌套，其实也可以有n层嵌套，可以试试。下面是三次for循环，可以自己试试</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[n + m + x <span class="keyword">for</span> n <span class="keyword">in</span> [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,<span class="string">'d'</span>] <span class="keyword">for</span> m <span class="keyword">in</span> [<span class="string">'A'</span>,<span class="string">'B'</span>,<span class="string">'C'</span>,<span class="string">'D'</span>] <span class="keyword">for</span> x <span class="keyword">in</span> <span class="string">'1234'</span>]</span><br></pre></td></tr></table></figure>
+
+<h2 id="多个变量的列表生成式"><a href="#多个变量的列表生成式" class="headerlink" title="多个变量的列表生成式"></a>多个变量的列表生成式</h2><p>嵌套循环其实就是多个变量的列表生成式，一层循环的多个变量同样适用。比如迭代(遍历)dict，同时迭代出key-value，然后组成list</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[str(k) + v <span class="keyword">for</span> k,v <span class="keyword">in</span> &#123;<span class="number">1</span>:<span class="string">'a'</span>, <span class="number">2</span>:<span class="string">'b'</span>, <span class="number">3</span>:<span class="string">'c'</span>, <span class="number">4</span>:<span class="string">'d'</span>&#125;.items()]   <span class="comment">#str()是类型转换，迭代出来的k是int类型，要想与字符串拼接要先转成str类型</span></span><br><span class="line">[<span class="string">'1a'</span>, <span class="string">'2b'</span>, <span class="string">'3c'</span>, <span class="string">'4d'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>列表生成式只能生成有一定规律的list，比如1-10的偶数平方list，1-100中能被3整除的list。每个元素都是能通过算法计算出来的。</p>
+<p>当用到一个list时，为节省存储空间，不用创建出完整的list再去使用，可以在循环中不断推算出后面的元素。类似iOS中的UItableView，只创建显示到屏幕上的cell，在滑动过程中再去创建设置cell(其实是拿内存中闲置的cell，cell的循环机制)。这种边循环边计算的机制称为<code>生成器(generator)</code></p>
+<h2 id="创建生成器1"><a href="#创建生成器1" class="headerlink" title="创建生成器1"></a>创建生成器1</h2><p>创建一个<code>generator</code>方法很多，其中一种只要把生成式的<code>[]</code>换成<code>()</code>即可</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>[x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>)]             <span class="comment">#列表生成式创建list</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(x * x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">10</span>))				<span class="comment">#创建generator</span></span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x1025e08e0</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="遍历生成器元素"><a href="#遍历生成器元素" class="headerlink" title="遍历生成器元素"></a>遍历生成器元素</h2><p>生成器是边循环边计算元素的，那怎么打印其中每个元素呢？有一个函数<code>next()</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">3</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>g</span><br><span class="line">&lt;generator object &lt;genexpr&gt; at <span class="number">0x1025e0938</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(g)</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(g)</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(g)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(g)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>每次调用<code>next(g)</code>的时候，计算出下一个元素的值，当超出list的长度时，就会抛出异常<code>StopIteration(停止迭代)</code></p>
+<p>这种方法读取元素实在是太low了，generator也是可迭代对象，完全可以用for循环迭代</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>g = (x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">3</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> z <span class="keyword">in</span> g:</span><br><span class="line"><span class="meta">... </span>    print(z)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建生成器2"><a href="#创建生成器2" class="headerlink" title="创建生成器2"></a>创建生成器2</h2><p>有一种数列跟生成器运行机制类似，就是<code>斐波拉契数列</code>，除了开始的两个1，每个数都是前两个数的和。这个数列就是边循环边计算出元素的。</p>
+<p>可以用函数打印这样的一个数列，输出指定位数的<code>斐波拉契数列</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(num)</span>:</span></span><br><span class="line">	n, a, b = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> n &lt; num:</span><br><span class="line">		print(b)</span><br><span class="line">		a, b = b, a + b</span><br><span class="line">		n = n + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="插曲-有趣的赋值方式"><a href="#插曲-有趣的赋值方式" class="headerlink" title="插曲:有趣的赋值方式"></a>插曲:有趣的赋值方式</h3><p>这里有一种很有趣的赋值方式，在oc和java中看不到。就是上面函数中的<code>n, a, b = 0, 0, 1</code>和<code>a, b = b, a + b</code>，这是一种同时赋值的方法，<code>=</code>右边的值赋值给<code>=</code>左边相应位置的参数，每个参数赋值是同时进行的，他们的值都是这条赋值式上面时获得的值。</p>
+<p>比如<code>a, b = b, a + b</code>,在赋值的时候，<code>a = b</code> 和 <code>b = a + b</code>是同时进行的，最终的结果都是在<code>a = 1, b = 2</code>的前提下得到的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b = b, a + b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>在其他语言中，这种赋值要引入第三变量。不然第二条赋值结果会因为第一条赋值操作而改变。</p>
+<hr>
+<p>上文中的<code>test(num)</code>函数变为生成器很简单，只需要把函数的<code>print(b)</code>换成<code>yield b</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(num)</span>:</span></span><br><span class="line">	n, a, b = <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> n &lt; num:</span><br><span class="line">		<span class="keyword">yield</span> b</span><br><span class="line">		a, b = b, a + b</span><br><span class="line">		n = n + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>如果一个函数定义中包含了关键字<code>yield</code>，那么这个函数不再是一个普通的函数，而是一个生成器</p>
+<p>调用结果，返回的是一个generator对象:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>test(<span class="number">9</span>)</span><br><span class="line">&lt;generator object test at <span class="number">0x101f0f8e0</span>&gt;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成器的执行原理"><a href="#生成器的执行原理" class="headerlink" title="生成器的执行原理"></a>生成器的执行原理</h3><p>在函数中添加了<code>yield</code>，这个函数就变成了生成器。这时就改变了Python函数的执行顺序，Python函数是顺序执行的，遇到return或最后一行语句就返回。如果变成了生成器，执行顺序就变成了遇到<code>yield</code>返回，下次执行会从上次返回<code>yield</code>的位置处继续执行</p>
+<p>例如定义函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">	print(<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">yield</span> <span class="string">'a'</span></span><br><span class="line">	print(<span class="number">2</span>)</span><br><span class="line">	<span class="keyword">yield</span> <span class="string">'b'</span></span><br><span class="line">	print(<span class="number">3</span>)</span><br><span class="line">	<span class="keyword">yield</span> <span class="string">'c'</span></span><br><span class="line">	print(<span class="number">4</span>)</span><br><span class="line">	<span class="keyword">yield</span> <span class="string">'d'</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">'END'</span></span><br></pre></td></tr></table></figure>
+<p>执行调用：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>test()</span><br><span class="line">&lt;generator object test at <span class="number">0x101ae08e0</span>&gt;   <span class="comment">#test()函数是生成器generator</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = test()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(a)     <span class="comment">#第一次调用</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="string">'a'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(a)     <span class="comment">#第二次调用</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="string">'b'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(a)     <span class="comment">#第三次调用</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="string">'c'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(a)     <span class="comment">#第四次调用</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="string">'d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>next(a)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration: END</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>和第一种创建的生成器一样，用for循环遍历该生成器 test()</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> n <span class="keyword">in</span> test():</span><br><span class="line"><span class="meta">... </span>    print(n)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">a</span><br><span class="line"><span class="number">2</span></span><br><span class="line">b</span><br><span class="line"><span class="number">3</span></span><br><span class="line">c</span><br><span class="line"><span class="number">4</span></span><br><span class="line">d</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>发现了一个问题，for循环遍历拿不到<code>return</code>的返回值<code>END</code>。看上面的<code>next(a)</code>调用，最后超出范围时抛出的错误<code>: END</code>， <code>END</code>在这里面。</p>
+<p>其实生成器generator的return值在异常错误<code>StopIteration</code>的<code>value</code>值里</p>
+<p>用循环遍历<code>test()</code>，并捕获异常，拿到<code>return</code>返回的<code>END</code>值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = test()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">try</span>:</span><br><span class="line"><span class="meta">... </span>            x = next(a)</span><br><span class="line"><span class="meta">... </span>            print(x)</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">except</span> StopIteration <span class="keyword">as</span> e:</span><br><span class="line"><span class="meta">... </span>            print(e.value)</span><br><span class="line"><span class="meta">... </span>            <span class="keyword">break</span></span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="number">1</span></span><br><span class="line">a</span><br><span class="line"><span class="number">2</span></span><br><span class="line">b</span><br><span class="line"><span class="number">3</span></span><br><span class="line">c</span><br><span class="line"><span class="number">4</span></span><br><span class="line">d</span><br><span class="line">END</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>总结：generator是在循环过程中不断计算出下一个元素的值，并在适当条件结束循环。对于函数改为的generator遇到return或者到函数的最后一行语句就是结束generator的指令。就是<strong>函数结束，generator结束</strong></p>
+<h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><p>可以直接作用于for循环的对象为可迭代对象: <code>Iterable</code></p>
+<p>可迭代对象有：<code>list(数组)</code>、<code>tuple(元组)</code>、<code>dict(字典)</code>、<code>set(key的集合)</code>、<code>str(字符串)</code>、<code>generator(生成器/带yiel的函数)</code></p>
+<p>引入<code>collections</code>模块里的<code>Iterable</code> 可以判断一个对象是否是<code>Iterable(可迭代对象)</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> Iterable</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], Iterable)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance((x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)), Iterable)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(&#123;&#125;, Iterable)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">100</span>, Iterable)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>可迭代对象里的<code>generator</code>，不但可以作用于for循环，还可以被<code>next()</code>不断调用并返回下一个值，直到抛出错误<code>StopIteration</code>。这种可以被<code>next()</code>函数调用不断返回下一个值得对象被称为迭代器<code>Iterator</code></p>
+<p>引入<code>collections</code>模块里的<code>Iterator</code> 可以判断一个对象是否是<code>Iterator(迭代器)</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> collections <span class="keyword">import</span> Iterator</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance([], Iterator)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(&#123;&#125;, Iterator)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance((x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)), Iterator)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(<span class="number">10</span>, Iterator)</span><br><span class="line"><span class="literal">False</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>可迭代对象里的<code>生成器generator</code>是<code>Iterator迭代器</code></p>
+<p>其他的<code>list(数组)</code>、<code>tuple(元组)</code>、<code>dict(字典)</code>、<code>set(key的集合)</code>、<code>str(字符串)</code> 虽然是<code>可迭代对象Iterable</code>，但不是<code>Iterator(迭代器)</code></p>
+<p>可以用<code>iter()</code>函数把这些可迭代对象变为迭代器</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(iter(&#123;&#125;), Iterator)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(iter([]), Iterator)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>isinstance(iter(<span class="number">10</span>), Iterator)   <span class="comment">#int类型连可迭代对象都不是，无法转为迭代器</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: <span class="string">'int'</span> object <span class="keyword">is</span> <span class="keyword">not</span> iterable</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>为什么<code>list</code>这些可迭代对象不是迭代器呢？因为迭代器<code>Iterator</code>是一个数据流，可以存放无限大的数据，只是一个有序序列，不可能知道他的长度，只能不断<code>next()</code>计算下一个数据，只有在需要下一个数据的时候才去计算，是一种惰性计算。而<code>list</code>等这类可迭代对象都是可知长度的，不能<code>next()</code>循环计算下一个值。</p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python笔记2-函数</title>
+    <url>/2016/07/02/Python2/</url>
+    <content><![CDATA[<h2 id="一些函数举例"><a href="#一些函数举例" class="headerlink" title="一些函数举例"></a>一些函数举例</h2><a id="more"></a>
+
+<ul>
+<li><p>绝对值 abs(-1)</p>
+</li>
+<li><p>最大值 max(1,2,3)</p>
+</li>
+<li><p>类型转换 int(‘123’)  float(‘12.3’) str(100) bool(1)</p>
+</li>
+<li><p>整数转十六进制 hex(10)</p>
+</li>
+</ul>
+<p>给函数起别名</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = abs</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a(<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><p>在Python交互环境中自定义函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">myAbs</span><span class="params">(x)</span>:</span>       <span class="comment">#def是定义函数的关键字 myAbs是函数名 x是参数</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">if</span> x &gt;= <span class="number">0</span>:      <span class="comment">#注意要缩进四个空格，不然会自定义失败</span></span><br><span class="line"><span class="meta">... </span>         <span class="keyword">return</span> x   <span class="comment">#同样要缩进，if判断语句的写法，代码块</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</span><br><span class="line"><span class="meta">... </span>         <span class="keyword">return</span> -x</span><br><span class="line"><span class="meta">... </span>					 <span class="comment">#两个回车，退出函数编辑</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-5</span>)			 <span class="comment">#调用函数</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">5</span>)</span><br><span class="line"><span class="number">5</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在.py文件中自定义函数并运行</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abs</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">	<span class="keyword">return</span> x</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">return</span> -x</span><br><span class="line"></span><br><span class="line">print(my_abs(<span class="number">10</span>))		<span class="comment">#调用函数，并打印出结果</span></span><br><span class="line">print(my_abs(<span class="number">-10</span>))</span><br></pre></td></tr></table></figure>
+
+<p>将函数封装在一个.py文件，并在Python交互环境中调用</p>
+<p>将下面函数代码写入一个.py文件，并将该文件命名为myabs.py</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abs</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">	<span class="keyword">return</span> x</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">return</span> -x</span><br></pre></td></tr></table></figure>
+
+<p>python 进入Python交互环境</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> myabs <span class="keyword">import</span> my_abs  <span class="comment">#引入函数  myabs是文件名不带.py， my_abs是文件里的函数名</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_abs(<span class="number">-5</span>)     			   <span class="comment">#调用函数</span></span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="空函数与pass语句"><a href="#空函数与pass语句" class="headerlink" title="空函数与pass语句"></a>空函数与pass语句</h2><p>自定义一个空函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nodef</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>pass 就是什么都不做，用作占位符，能让程序运行起来，不报错。没有它会有语法错误</p>
+<p>用Sublime text文本编辑器写好多语句时，都会自动加上pass</p>
+<h2 id="参数检查"><a href="#参数检查" class="headerlink" title="参数检查"></a>参数检查</h2><p>自定义的my_abs()函数相比于系统的abs函数还是不一样。比如传入错误类型的参数’a’</p>
+<p>两者报错不同。系统abs函数会检查出参数错误，而自定义的my_abs 是if判断条件错误。所以要增加参数类型检查，判断如果是不符合的参数类型，抛出异常</p>
+<p>检查数据类型用isinstance()函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abss</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> isinstance(x, (int, float)):   <span class="comment">##如果不是int和float类型的话，抛出类型异常</span></span><br><span class="line">	<span class="keyword">raise</span> TypeError(<span class="string">'输入类型错误'</span>)</span><br><span class="line"><span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">	<span class="keyword">return</span> x</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">return</span> -x</span><br></pre></td></tr></table></figure>
+
+<p><strong>写这个的时候遇到了一个问题，一个看代码很难发现的问题</strong></p>
+<p>错误提示如下：</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">TabError:</span> inconsistent use of tabs <span class="keyword">and</span> spaces <span class="keyword">in</span> indentation</span><br><span class="line"><span class="meta">#翻译: 在缩进制表符和空格的使用不一致</span></span><br></pre></td></tr></table></figure>
+
+<p>在我进行缩进的时候，不同位置用了不同的缩进方式，四个空格和tab共用了，然后就报错了。我尝试了一下，全部使用四个空格缩进和全部使用tab缩进都可以，但是不能混合使用。</p>
+<h2 id="函数多个返回值"><a href="#函数多个返回值" class="headerlink" title="函数多个返回值"></a>函数多个返回值</h2><p>函数可以有多个返回值，return 时用分号分割开来每个返回值即可</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abss</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> isinstance(x, (int, float)):</span><br><span class="line">		<span class="keyword">raise</span> TypeError(<span class="string">'输入类型错误'</span>)</span><br><span class="line">	<span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> x, x + <span class="number">1</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> -x, x + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>返回结果 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_abss(<span class="number">10</span>)</span><br><span class="line">(<span class="number">10</span>, <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其实返回的就是一个tuple</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li><p>定义函数需要写函数名和参数</p>
+</li>
+<li><p>做必要的参数数据类型检查</p>
+</li>
+<li><p>随时随地都可以return结果</p>
+</li>
+<li><p>可以有多个返回值，以tuple的形式返回</p>
+</li>
+<li><p>函数执行完毕也没有return，会return None</p>
+</li>
+</ul>
+<h1 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h1><h2 id="位置参数"><a href="#位置参数" class="headerlink" title="位置参数"></a>位置参数</h2><p>计算某一个数的平方值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPower</span><span class="params">(a)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> a * a</span><br><span class="line">	</span><br><span class="line"><span class="comment">#参数a就是一个位置参数</span></span><br></pre></td></tr></table></figure>
+
+<p>另一种需求，我要计算 a的3次方、4次方、5次方…… 可以加一个参数，把函数改为</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPower</span><span class="params">(a, n)</span>:</span></span><br><span class="line">	s = <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">		n = n - <span class="number">1</span></span><br><span class="line">		s = s * a</span><br><span class="line">	<span class="keyword">return</span> s</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以完成需求了。</p>
+<p>但是，算平方是最常用的，在算平方的时候依旧输入两个参数 myPower(2, 2)，这样感觉很费劲。</p>
+<p>Python中有一个叫默认参数的东西可以解决这个问题</p>
+<h2 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h2><p>指定某一个参数的默认值，如果这个参数不传值的话就用某个值。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPower</span><span class="params">(a, n = <span class="number">2</span>)</span>:</span>  <span class="comment">#如果n没有传值，则n=2</span></span><br><span class="line">	s = <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">		n = n - <span class="number">1</span></span><br><span class="line">		s = s * a</span><br><span class="line">	<span class="keyword">return</span> s</span><br></pre></td></tr></table></figure>
+
+<p>调用函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>myPower(<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myPower(<span class="number">2</span>)</span><br><span class="line"><span class="number">4</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意点：有多个参数时，必须按参数必须在前面，默认参数在后面</strong></p>
+<p>因为默认参数如果在必选参数前面的话，调用时输入参数，第一个参数无法确定是给默认参数的还是给必选参数的。</p>
+<p>但是，只有一个参数的时候，可以把这个参数设置为默认参数。</p>
+<hr>
+<p><em>有两个默认参数的时候怎么办？</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classname</span><span class="params">(name, age, city = <span class="number">6</span>, gender = <span class="string">'Beijing'</span>)</span>:</span></span><br><span class="line">	print(name, age, city, gender)</span><br></pre></td></tr></table></figure>
+
+<p>调用结果:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">6</span> Beijing</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, <span class="number">10</span>, <span class="string">'tianjing'</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">10</span> tianjing</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, <span class="number">15</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">15</span> Beijing</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, <span class="string">'shanghai'</span>)</span><br><span class="line">小明 <span class="number">10</span> shanghai Beijing</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>前三次调用都没有问题，最后一次有问题了。</p>
+<p>有多个默认参数的时候，调用时按顺序写入参数没有问题，如果要跳过某个默认参数输入后面的默认参数，就要指定参数名</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, gender = <span class="string">'shanghai'</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">6</span> shanghai</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>默认参数还有一个注意点: <strong>默认参数必须为指向不可变的对象</strong></p>
+<p>举例：以list为默认参数，设置函数。 给定一个list，添加’z’元素返回lsit。默认list为[‘a’]</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addend</span><span class="params">(L = [<span class="string">'a'</span>])</span>:</span></span><br><span class="line">	L.append(<span class="string">'z'</span>)</span><br><span class="line">	<span class="keyword">return</span> L</span><br></pre></td></tr></table></figure>
+
+<p>调用结果为</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>每次运行函数记住了上次的结果，叠加了内容</p>
+<p>因为参数L 是一个变量，指向一个对象list [‘a’] , list是可变的，每次运行L指向的list都改变了，不再是默认参数[‘a’]</p>
+<p>所以 <strong>默认参数必须指向不可变对象！！</strong></p>
+<p>其实上述需求也是可以实现的</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addend</span><span class="params">(L = None)</span>:</span></span><br><span class="line"><span class="keyword">if</span> L <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">	L = [<span class="string">'a'</span>]</span><br><span class="line">L.append(<span class="string">'z'</span>)</span><br><span class="line"><span class="keyword">return</span> L</span><br></pre></td></tr></table></figure>
+
+<p>调用结果</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这种实现方式类似于oc中在方法内部处理某个参数的操作，如果某个参数传了nil，则参数初始化为某个值</p>
+<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><p>计算多个数字的平方和，用list或者tuple包一组数，传入函数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(num)</span>:</span></span><br><span class="line">	sum = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> num:</span><br><span class="line">		sum = sum + n * n</span><br><span class="line">	<span class="keyword">return</span> sum</span><br></pre></td></tr></table></figure>
+
+<p>调用结果</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line"><span class="number">14</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>可以用可变参数，实现并不需要用list或tuple包裹数字，直接传入数 calc(1,2,3)。 可变参数会在函数调用时自动组装为一个tuple</p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(*num)</span>:</span>			<span class="comment">#加一个*即可</span></span><br><span class="line">	sum = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> num:</span><br><span class="line">		sum = sum + n * n</span><br><span class="line">	<span class="keyword">return</span> sum</span><br></pre></td></tr></table></figure>
+
+<p>调用结果</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="number">14</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>可变参数可以传入任意个参数包括0个。cals()也可以</strong></p>
+<p><strong>可变参数一般要放到所有参数的最后面，如果可变参数后面还跟着其他参数，这些参数有独特的含义——命名关键字参数</strong></p>
+<hr>
+<p>这时如果有一组list或者tuple数据要计算平方和，nums = [1,2,3], 单个元素取出传入calc函数 calc(nums[0], nums[1], nums[2])，这样做肯定是可以的，但是太麻烦，如果list有一百个元素就疯了。如果把整个list传入的话又会报错</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">  File <span class="string">"/Users/inspiry/Desktop/myabs.py"</span>, line <span class="number">7</span>, <span class="keyword">in</span> calc</span><br><span class="line">    sum = sum + n * n</span><br><span class="line">TypeError: can<span class="string">'t multiply sequence by non-int of type '</span>list<span class="string">'</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>简单，传入list或者tuple的时候加一个*，</p>
+<p>Python允许添加*号， 把list或tuple变为可变参数传入函数中</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(*[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>默认参数和可变参数的概念swift中也有，应该是借鉴Python吧</strong></p>
+<h2 id="关键字参数"><a href="#关键字参数" class="headerlink" title="关键字参数"></a>关键字参数</h2><p>关键字参数是用两个星号(**)表示的，会在函数调用时自动组装为dict</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, age, **other)</span>:</span></span><br><span class="line">	print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, other)</span><br></pre></td></tr></table></figure>
+
+<p>**other为关键字参数，可以传入任意个参数，也可以不传入。传入参数时是以key-value的方式传的</p>
+<p>调用:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">10</span>)</span><br><span class="line">name: mxd age: <span class="number">10</span> other: &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">18</span>, a = <span class="string">'a'</span>, b = <span class="number">20</span>)</span><br><span class="line">name: mxd age: <span class="number">18</span> other: &#123;<span class="string">'a'</span>: <span class="string">'a'</span>, <span class="string">'b'</span>: <span class="number">20</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>类比可变参数可以把list添加一个*传入函数中作为参数，同样关键字参数也可以这样做。把一个dict 传入函数当做关键字参数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>oth = &#123;<span class="string">'job'</span>: <span class="string">'ios'</span>, <span class="string">'book'</span>: <span class="string">'macbook pro'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">18</span>, **oth)</span><br><span class="line">name: mxd age: <span class="number">18</span> other: &#123;<span class="string">'job'</span>: <span class="string">'ios'</span>, <span class="string">'book'</span>: <span class="string">'macbook pro'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意点: 函数 calc(name, age, **other) 中的other得到了一个oth指向的dict，得到的其实是oth的一份拷贝，在函数内对其改变操作，不会影响外面的oth</p>
+<h2 id="命名关键字参数"><a href="#命名关键字参数" class="headerlink" title="命名关键字参数"></a>命名关键字参数</h2><p>命名关键字参数是给参数起名，关键字参数虽然以key-value的方式传入参数，给每个参数制定了key，但是这个key还是不能确定，调用者可以传入不受限制的关键字参数。</p>
+<p>限制关键字参数的key，就是指定关键字参数的名字，就用到了命名关键字参数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, *, age)</span>:</span></span><br><span class="line">	print(name, age)</span><br></pre></td></tr></table></figure>
+
+<p>命名关键字参数的写法是以*作为分隔符，分号后面的参数为命名关键字参数。可以跟多个参数，def calc(name, *, age, other):  这时age 和 other都是命名关键字</p>
+<p>调用时必须传入，且必须以 命名 = 内容 的key-value方式调用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, age = <span class="number">18</span>)</span><br><span class="line">mxd <span class="number">18</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>之前说可变参数要放到参数最后面，后面再跟参数的话就是命名关键字参数了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, *age, other, zz)</span>:</span></span><br><span class="line">	print(name, age, other, zz)</span><br></pre></td></tr></table></figure>
+
+<p>other 和 zz 都是命名关键字了，必须传入，调用:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">18</span>, <span class="number">11</span>, other = <span class="string">'2'</span>, zz = <span class="number">3</span>)</span><br><span class="line">mxd (<span class="number">18</span>, <span class="number">11</span>) <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>命名关键字参数也可以指定参数默认值，指定other参数的默认值为’good’</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, *age, other = <span class="string">'good'</span>, zz)</span>:</span></span><br><span class="line">	print(name, age, other, zz)</span><br></pre></td></tr></table></figure>
+
+<p>调用</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">32</span>,<span class="number">22</span>,<span class="number">22</span>, zz = <span class="string">'a'</span>)</span><br><span class="line">mxd (<span class="number">32</span>, <span class="number">22</span>, <span class="number">22</span>) good a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">10</span>, other = <span class="string">'no'</span>, zz = <span class="string">'b'</span>)</span><br><span class="line">mxd (<span class="number">10</span>,) no b</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数组合"><a href="#参数组合" class="headerlink" title="参数组合"></a>参数组合</h2><p><strong>5种参数：必选参数、默认参数、可变参数、关键字参数、命名关键字参数。在使用的时候如果有多种参数共同存在是，顺序必须为：必选参数、默认参数、可变参数、命名关键字参数、关键字参数</strong></p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python笔记1-基础</title>
+    <url>/2016/07/01/Python1/</url>
+    <content><![CDATA[<h2 id="安装Python环境"><a href="#安装Python环境" class="headerlink" title="安装Python环境"></a>安装Python环境</h2><a id="more"></a>
+
+<ul>
+<li><p>在安装了Homebrew的前提下，终端命令brew install python3</p>
+</li>
+<li><p>安装Homebrew</p>
+<pre><code>/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</code></pre></li>
+<li><p>安装完成之后输入 python  终端显示&gt;&gt;&gt;，  说明Python安装成功，进入了Python交互环境，输入Python代码回车得到执行结果</p>
+</li>
+<li><p>退出Python交互环境  exit() 回车。 或者直接关闭终端</p>
+</li>
+</ul>
+<h2 id="第一个Python程序"><a href="#第一个Python程序" class="headerlink" title="第一个Python程序"></a>第一个Python程序</h2><p>在终端环境下，输入python 进入&gt;&gt;&gt;  Python交互环境</p>
+<ul>
+<li><p>打印hello world</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">"hello world"</span>)</span><br><span class="line">或者</span><br><span class="line">print(<span class="string">'hello world'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数字计算，直接输入 100+33 回车 会得到133的结果，任何有效的数学计算都能算出来</p>
+</li>
+</ul>
+<p>运行.py文件 (包含Python的代码是以.py为拓展名的文本文件，需要用Python解析器去执行该文件)</p>
+<ul>
+<li>终端中输入 python 文件名.py 回车，执行.py文件中的Python代码</li>
+</ul>
+<p><strong>注意点: 文本文件中的Python代码必须是执行代码，例如打印100+10，不能像终端&gt;&gt;&gt;Python交互环境中100+10这样写，而应该写为print(100+10),这样才能输出结果</strong></p>
+<h2 id="Python代码文本执行"><a href="#Python代码文本执行" class="headerlink" title="Python代码文本执行"></a>Python代码文本执行</h2><h3 id="Python交互环境下执行代码文件"><a href="#Python交互环境下执行代码文件" class="headerlink" title="Python交互环境下执行代码文件"></a>Python交互环境下执行代码文件</h3><ul>
+<li><p>创建一个文本文件hello.py, 文本文件里写print(“hello world”)。 终端cd切换到文件所在的目录。执行代码，终端会打印出hello world</p>
+<pre><code>python hello.py</code></pre></li>
+</ul>
+<h3 id="直接运行-py文件，执行代码文件"><a href="#直接运行-py文件，执行代码文件" class="headerlink" title="直接运行.py文件，执行代码文件"></a>直接运行.py文件，执行代码文件</h3><ul>
+<li><p>在终端中直接运行.py文件，不用写python。在Windows环境下不可以，在mac和Linux下是可以的。</p>
+</li>
+<li><p>更改文本文件hello.py里的代码</p>
+<pre><code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line">print(<span class="string">"hello world"</span>)</span><br></pre></td></tr></table></figure></code></pre></li>
+<li><p>在终端中赋予hello.py执行权限</p>
+<pre><code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">chmod a+x hello.py</span><br></pre></td></tr></table></figure></code></pre></li>
+<li><p>直接运行hello.py</p>
+<pre><code><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">./hello.py</span><br></pre></td></tr></table></figure></code></pre><h2 id="Python代码助手"><a href="#Python代码助手" class="headerlink" title="Python代码助手"></a>Python代码助手</h2></li>
+</ul>
+<p>python代码助手是在先输入Python代码，然后本机运行Python脚本执行代码。</p>
+<p>脚本地址 <a href="https://raw.githubusercontent.com/michaelliao/learn-python3/master/teach/learning.py" target="_blank" rel="noopener">learning.py</a> 右键保存</p>
+<p>在终端中 python learning.py 运行。显示 <strong>Ready for Python code on port 39093…</strong> 运行成功</p>
+<p>问题： 提醒 <strong>Your current python is 2.7. Please use Python 3.4.</strong>  Mac上自带的Python版本是2.7，装了3.4，两个版本并存了，需要把2.7卸载掉，过或者把3.4放到path的前面。或者在输入执行脚本 ： python3 learning.py</p>
+<p>可以使用 pyenv 或者 virtualenv 切换Python版本</p>
+<h2 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h2><h3 id="输出"><a href="#输出" class="headerlink" title="输出"></a>输出</h3><ul>
+<li><p>输出字符串</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'hello world'</span>) 或者 print(<span class="string">'hello'</span>, <span class="string">'world'</span>)  </span><br><span class="line"><span class="comment">#结果 hello world</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出计算结果</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="number">10</span>+<span class="number">10</span>)  <span class="comment">#20</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输出字符串+计算结果</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">'10+10='</span>, <span class="number">10</span>+<span class="number">10</span>) <span class="comment">#10+10= 20</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h2><ul>
+<li><p>输入操作</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name = input()</span><br><span class="line">mxd</span><br><span class="line">print(name)   <span class="comment">#mxd</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>有内容提醒的输入操作</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name = input(<span class="string">'请输入名字'</span>)</span><br><span class="line">mxd</span><br><span class="line">print(<span class="string">'你好'</span> + name) <span class="comment">#你好 mxd</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Python的语法格式"><a href="#Python的语法格式" class="headerlink" title="Python的语法格式"></a>Python的语法格式</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 是注释</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>每一行都是一个语句，不用加; 结尾。 当以:结尾时，第二行缩进为代码块，例如 if 语句</p>
+  <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> a &gt; <span class="number">10</span>:</span><br><span class="line">	print(a)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(-a)</span><br></pre></td></tr></table></figure></li>
+<li><p>注意点： 缩进要用4个空格，或者tab，但是绝对不能混用</p>
+</li>
+<li><p>Python区分大小写</p>
+</li>
+</ul>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>python 的变量数据类型是可变的，不固定的，成为动态语言</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">123</span></span><br><span class="line">print(a)</span><br><span class="line">a = <span class="string">"abc"</span></span><br><span class="line">print(a)</span><br><span class="line">	</span><br><span class="line"><span class="comment">#会打印出来</span></span><br><span class="line"><span class="number">123</span></span><br><span class="line">abc</span><br></pre></td></tr></table></figure>
+
+<p>a的数据类型改变了。这是允许的。但是在Java oc中是不可以的。</p>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>在Python中，通常用全部大写的变量名表示常量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">PI = <span class="number">3.1415926</span></span><br></pre></td></tr></table></figure>
+
+<p>其实实际意义上 PI 仍然是一个变量，Python不会保证PI的值不会被改变。全部大写只是一个习惯写法，改变PI的值也没问题</p>
+<h3 id="地板除"><a href="#地板除" class="headerlink" title="地板除"></a>地板除</h3><p>在Python中有两种除法， 浮点型的除法 /    整数除法 //</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="number">10</span> / <span class="number">3</span>)</span><br><span class="line"><span class="comment">#得出结果 3.3333333333333335</span></span><br></pre></td></tr></table></figure>
+
+<p>即使除数和被除数都是整型，除完之后也是浮点型。即便是能整除</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="number">9</span> / <span class="number">3</span>)</span><br><span class="line"><span class="comment">#得出结果 3.0</span></span><br></pre></td></tr></table></figure>
+<p>要想得到跟oc中 / 除法一样的整型相除得整型的除法结果，就要用地板除 //</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="number">10</span>//<span class="number">3</span>)</span><br><span class="line">print(<span class="number">9</span>//<span class="number">3</span>)</span><br><span class="line"><span class="comment">#两个打印结果都是  3</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串和编码"><a href="#字符串和编码" class="headerlink" title="字符串和编码"></a>字符串和编码</h2><p>字符串类型 str</p>
+<p>% 运算符用作格式化字符串，  %s 字符串， %d 整数， %f 浮点数。 如果不确定数据类型，%s 可以用作任何数据类型，它会把别的数据类型转为字符串</p>
+<h2 id="list-和-tuple"><a href="#list-和-tuple" class="headerlink" title="list 和 tuple"></a>list 和 tuple</h2><h3 id="list-数组"><a href="#list-数组" class="headerlink" title="list 数组"></a>list 数组</h3><p>list是一种有序集合，就是数组。list相比于oc中的NSMutableArray有很多独有的特性。比NSMutableArray更加易操作，有更多的功能。swift中新的数据类型元组貌似就借鉴了Python中的list部分功能</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname = [<span class="string">'abc'</span>, <span class="string">'xyz'</span>,<span class="string">'bob'</span>]</span><br></pre></td></tr></table></figure>
+<p>获取list元素个数 </p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">len(classname)</span><br></pre></td></tr></table></figure>
+
+<p>角标索引访问某个元素</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>Python有一种比较特殊的元素访问方式，以负数做索引。 比如 classname[-1], 这是访问最后一个元素，也就是倒数第一个元素。</p>
+<p>以类推，访问倒数第二个元素 classname[-2], 访问倒数第三个元素classname[-3]</p>
+<p>当然数组角标索引不能越界！</p>
+<p>list数组是可变的</p>
+<hr>
+<p>追加元素</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname.append(<span class="string">'admin'</span>)</span><br><span class="line">	</span><br><span class="line">print(classname) <span class="comment">#结果['abc', 'xyz', 'bob', 'admin']</span></span><br></pre></td></tr></table></figure>
+
+<p>插入元素，插入到索引为1的位置</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname.insert(<span class="number">1</span>, <span class="string">'jack'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>删除指定索引的list元素</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname.pop(<span class="number">0</span>)</span><br><span class="line">	</span><br><span class="line"><span class="comment">#删除最后一个元素</span></span><br><span class="line">classname.pop()</span><br></pre></td></tr></table></figure>
+
+<p>替换某个索引的元素值，直接给该索引元素赋值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname[<span class="number">0</span>] = <span class="string">'mak'</span></span><br></pre></td></tr></table></figure>
+
+<p>list内的元素类型也可以不同，不像oc似的必须为对象类型。而且，也可以编辑某一个元素，改变其数据类型</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname = [<span class="string">'abc'</span>, <span class="number">123</span>, <span class="literal">True</span>]</span><br><span class="line">	</span><br><span class="line">classname[<span class="number">1</span>] = <span class="string">'efg'</span></span><br></pre></td></tr></table></figure>
+<p>list嵌套， list里的元素也可以是一个list。 可以用类似oc中字典一层一层往下找的办法，获取list里面list里的元素</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname = [<span class="string">'abc'</span>, <span class="number">123</span>, <span class="literal">True</span>, [<span class="number">1</span>, <span class="string">'bc'</span>, <span class="string">'ff'</span>]]</span><br><span class="line">	</span><br><span class="line"><span class="comment"># 获取打印 ff。 classname这个list里的第三个元素里的第二个元素</span></span><br><span class="line">print(classname[<span class="number">3</span>][<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<p>空list也是可以的，长度为0</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">classname = []</span><br><span class="line">	</span><br><span class="line">len(classname)  <span class="comment"># 0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="tuple元组"><a href="#tuple元组" class="headerlink" title="tuple元组"></a>tuple元组</h3><p>tuple 不可变，创建时用(), 创建时内容就要确定下来，而且后面不能更改</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuples = (<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>也可以创建空的</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuples = ()</span><br></pre></td></tr></table></figure>
+
+<p>注意点是创建只有一个元素的tuple</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#如果写成这样的话，会容易误解，因为()也是数学公式中的小括号，这种情况下，Python会当做小括号处理</span></span><br><span class="line">	</span><br><span class="line">tuples = (<span class="number">1</span>) 就变成了 tuples = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>如果想创建一个只有一个元素的tuple，需要这样写:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuples = (<span class="number">1</span>,)</span><br><span class="line">	</span><br><span class="line"><span class="comment">#打印出来的也是(1,)  这是为了避免出现歧义</span></span><br></pre></td></tr></table></figure>
+
+<p>tuple 元素的可变现象， 不是说tuple只要定义了就不能变了吗？为什么还有可变现象？看下面代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuples = (<span class="number">1</span>,<span class="number">2</span>, [<span class="string">'a'</span>, <span class="string">'b'</span>])</span><br><span class="line">tuples[<span class="number">2</span>][<span class="number">0</span>] = <span class="string">'x'</span></span><br><span class="line">tuples[<span class="number">2</span>][<span class="number">1</span>] = <span class="string">'y'</span></span><br><span class="line">tuples[<span class="number">2</span>].append(<span class="string">'f'</span>)</span><br><span class="line">print(tuples)</span><br><span class="line">	</span><br><span class="line"><span class="comment">#打印出来的tuples是  (1, 2, ['x', 'y', 'f'])</span></span><br></pre></td></tr></table></figure>
+
+<p>表面上看tuple内的元素变了，其实并不是tuple变了，而是tuple里面的list变了。tuple内部每个元素的指向并没有发生变化，指向1的还是指向1，指向2的还是指向2，指向list的还是指向list</p>
+<h2 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h2><p>if else 的条件判断，执行流程肯定是国际惯例，区别只是写法不同</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> a &gt; <span class="number">0</span>:</span><br><span class="line">    print(a)</span><br><span class="line">    print(<span class="string">'a是正整数'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(-a)</span><br></pre></td></tr></table></figure>
+<dl><dt>缩进去的是代码块，可以有多行，都是一块代码。</dt><dd>千万不能少些，缩进千万不能省略，而且建议用四个空格缩进。</dd></dl><hr>
+<p>还有一种写法不同，就是else if 需要简写为elif</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">age = <span class="number">200</span></span><br><span class="line"><span class="keyword">if</span> age &lt; <span class="number">10</span>:</span><br><span class="line">    print(<span class="string">'小于10'</span>)</span><br><span class="line"><span class="keyword">elif</span> age &gt; <span class="number">100</span>:</span><br><span class="line">    print(<span class="string">'大于100'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">'其他'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>if判断条件简写</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line"><span class="keyword">if</span> a:</span><br><span class="line">    print(<span class="string">'a非零'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>非零、非空即真的理念同样适用于Python。只是不适用于swift，其他的貌似都适应吧</p>
+<hr>
+<p>一个错误的判断条件</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = input(<span class="string">'请输入一个数字'</span>)</span><br><span class="line"><span class="keyword">if</span> a &gt; <span class="number">0</span>:</span><br><span class="line">	print(<span class="string">'正数'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(<span class="string">'负数'</span>)</span><br></pre></td></tr></table></figure>
+<p>报错了。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"./hello.py"</span>, line <span class="number">5</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">if</span> a &gt; <span class="number">0</span>:</span><br><span class="line">TypeError: unorderable types: str() &gt; int()</span><br></pre></td></tr></table></figure>
+<p>一个str类型的和一个int类型的做 &gt; 比较， 所以报错了。</p>
+<p>用int()函数将str类型转为整数类型，再比较就OK了</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = int(input(<span class="string">'请输入一个数字'</span>))</span><br><span class="line"><span class="keyword">if</span> a &gt; <span class="number">0</span>:</span><br><span class="line">	print(<span class="string">'正数'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	print(<span class="string">'负数'</span>)</span><br></pre></td></tr></table></figure>
+<p>但这时如果输入一个字符a，还是会报错。 后面会讲到错误和调试，检查并捕获程序运行时的错误。</p>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><h3 id="for-in-循环"><a href="#for-in-循环" class="headerlink" title="for-in 循环"></a>for-in 循环</h3><p>for-in 遍历list里的每一个元素</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">name = [<span class="string">'xiao'</span>, <span class="string">'ming'</span>, <span class="string">'haha'</span>]	</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> name:</span><br><span class="line">	print(a)</span><br></pre></td></tr></table></figure>
+
+<p>range()函数。 可以生成一个整数数列，比如 range[5] 是从0到5(不包括5)的整数</p>
+<p>把range()函数生成的数列转为list  list(range(5))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(list(range(<span class="number">5</span>)))</span><br><span class="line"><span class="comment">#打印出来是 [1,2,3,4]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> n &lt; <span class="number">10</span>:</span><br><span class="line">	print(n)</span><br><span class="line">	n = n+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>注意点： n++不适用，会语法报错。 ++n会死循环输出0</p>
+<h2 id="字典dict-和-set"><a href="#字典dict-和-set" class="headerlink" title="字典dict 和 set"></a>字典dict 和 set</h2><h2 id="dict"><a href="#dict" class="headerlink" title="dict"></a>dict</h2><p>dict 字典是以key-value键值方式存储数据的一种集合。oc中的字典NSDictionary。Java中一般称为key-value数组。</p>
+<p>初始化一个dict</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">d = &#123;<span class="string">'xiaoming'</span>: <span class="number">10</span>, <span class="string">'xiaohua'</span>: <span class="number">20</span>, <span class="string">'xiaoli'</span>: <span class="string">'dd'</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>一个key只能对应一个value，相同的key后面的值会把前面的值冲掉</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">d = &#123;<span class="string">'xiaoming'</span>: <span class="number">10</span>, <span class="string">'xiaohua'</span>: <span class="number">20</span>, <span class="string">'xiaoming'</span>: <span class="number">80</span>&#125;</span><br><span class="line">print(d)</span><br><span class="line"><span class="comment">#这句打印出来的结果为： &#123;'xiaoming': 'dd', 'xiaohua': 20&#125;</span></span><br></pre></td></tr></table></figure>
+<p>可以根据key修改对应value的值，也可以增加新的key-value键值对</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">d = &#123;<span class="string">'xiaoming'</span>: <span class="number">10</span>, <span class="string">'xiaohua'</span>: <span class="number">20</span>, <span class="string">'xiaoli'</span>: <span class="string">'dd'</span>&#125;</span><br><span class="line">d[<span class="string">'xiaoli'</span>] = <span class="number">30</span>  <span class="comment">#修改xiaoli 为 30</span></span><br><span class="line">d[<span class="string">'xiaowang'</span>] = <span class="number">80</span> <span class="comment">#新增一个数据xiaowang: 80</span></span><br></pre></td></tr></table></figure>
+
+<p>根据不存在的key读取value会报错，判断key是否存在的方法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="string">'xiaoming'</span> <span class="keyword">in</span> d:</span><br><span class="line">    print(<span class="string">'yes'</span>)</span><br><span class="line"><span class="comment">#判断'xiaoming'是不是dict d 中的key  'xiaoming' in d 如果是True，如果不是False</span></span><br></pre></td></tr></table></figure>
+<p>第二种判断key是否存在的方法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(d.get(<span class="string">'xiaoming'</span>))</span><br><span class="line"><span class="comment">#如果有xiaoming这个key 则返回对应的value，如果没有则返回None。</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">#或者如果没有返回指定的值</span></span><br><span class="line">print(d.get(<span class="string">'xiaoming'</span>, <span class="number">-1</span>))</span><br><span class="line"><span class="comment">#如果没有，返回指定的-1</span></span><br></pre></td></tr></table></figure>
+
+<p>删除某个key-value键值对</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">d.pop(<span class="string">'xiaoming'</span>)</span><br><span class="line"><span class="comment">#如果key不存在，也会报错</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意: dict内部数据的顺序跟key放入顺序没有关系。是无序的</strong><br><strong>注意: dict的key必须为不可变对象，只要不可变就行(数字也行)。list是可变的，不能作为key</strong></p>
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><p>set是一组key的集合，没有value。之所以说它是一组key，是因为set里面存储的东西不重复、不可变、无序</p>
+<p>创建set， 需要提供一个list作为输入集合。但是set里面的元素顺序跟list元素顺序没有关系。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s = set([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<p>单个添加key的方法, 不能一次添加多个。允许添加重复的key，但是无效果。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s.add(<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>删除元素，删除无效的key会报错</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s.remove(<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+<p>set的不重复特点可以做两个set的交集并集操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">s = set([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>])</span><br><span class="line">w = set([<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">7</span>])</span><br><span class="line">	</span><br><span class="line">print(s &amp; w, s | w) <span class="comment">#打印的是交集 和 并集</span></span><br></pre></td></tr></table></figure>
+
+<p>set内的元素也是不可变的，不能存放list</p>
+<h3 id="不可变对象的永远不可变性"><a href="#不可变对象的永远不可变性" class="headerlink" title="不可变对象的永远不可变性"></a>不可变对象的永远不可变性</h3><p>字符串是不可变的对象</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">'abc'</span>				<span class="comment">#创建字符串</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.replace(<span class="string">'a'</span>, <span class="string">'A'</span>)    <span class="comment">#将字符串中的a字符替换为A</span></span><br><span class="line"><span class="string">'Abc'</span>						<span class="comment">#得到结果</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="string">'abc'</span>						<span class="comment">#打印a还是'abc'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>为什么a的值没有改变？</p>
+<p>其实内存中是这样运行的，a是一个变量，’abc’是字符串对象，a这个变量指向了’abc’字符串对象。</p>
+<p>执行 a.replace(‘a’, ‘A’) 操作时，replace方法作用于字符串对象’abc’, ‘abc’是不可变的字符串对象，replace改变不了其中某个字符，其实是创建了一个新的字符串’Abc’返回了。</p>
+<p>下面代码说明了这个原理：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">'abc'</span>					<span class="comment">#创建字符串</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a.replace(<span class="string">'a'</span>, <span class="string">'A'</span>)		<span class="comment">#将字符串中的a字符替换为A  用b指向这个新串</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">'Abc'</span>							<span class="comment">#打印b是'Abc'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="string">'abc'</span>							<span class="comment">#打印a是'abc'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>对于不变的对象，调用任一方法操作对象，对象自身内容都不会改变，这些方法会创建新的对象并返回。这样保证了不可变对象本身的永远不可变性</strong></p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>iOS的cookie使用</title>
+    <url>/2016/01/27/ioscookie/</url>
+    <content><![CDATA[<p>cookie是网络会话过程中记录客户端用户身份的一段文本信息。</p>
+<p>http协议是一种无状态协议，每次数据交换都是一次单独的会话链接。一次数据交换结束，链接断开，再次交换数据，就需要重新链接。服务器无法从链接上跟踪客户端信息。cookie弥补了http协议的不足。</p>
+<a id="more"></a>
+
+<p>在网站访问中，cookie用的非常频繁。</p>
+<p>客户端开发中，用到cookie的机会比较少。但是cookie是一直存在的，只是我们不用而已。</p>
+<p>http请求，cookie会一直存在，任何一次http请求都会携带cookie到服务端。有时候我们可以把cookie作为识别用户身份的参数。而不必将uid放到请求参数中传递给服务器。</p>
+<p><strong>保存cookie</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NSArray *cookies &#x3D; [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:[NSURL URLWithString:@&quot;接口地址&quot;]];</span><br><span class="line">NSData *data &#x3D; [NSKeyedArchiver archivedDataWithRootObject:cookies];</span><br><span class="line">[[NSUserDefaults standardUserDefaults] setObject:data forKey:@&quot;UserDefaultsCookie&quot;];</span><br></pre></td></tr></table></figure>
+
+<p>在获取用户信息的接口请求时获取cookie，并用userDefaults保存到plist里。</p>
+<p><strong>设置cookie</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">NSData *cookiesdata &#x3D; [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsCookie];</span><br><span class="line">if([cookiesdata length]) &#123;</span><br><span class="line">    NSArray *cookies &#x3D; [NSKeyedUnarchiver unarchiveObjectWithData:cookiesdata];</span><br><span class="line">    NSHTTPCookie *cookie;</span><br><span class="line">    for (cookie in cookies) &#123;</span><br><span class="line">        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>设置cookie在程序启动的时候设置</em></p>
+<p>程序启动时设置cookie，此次程序运行所有的http请求都会携带这个cookie，服务器会拿到这个cookie，在session中比对，找到对应的用户，做相应操作。</p>
+]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>cookie</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记个人博客时代的开始</title>
+    <url>/2016/01/01/%E8%AE%B0%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E4%BB%A3%E7%9A%84%E5%BC%80%E5%A7%8B/</url>
+    <content><![CDATA[<p>接触编程有六年了，以敲代码为职业混饭吃也有三年了。既不是名牌大学毕业，也没就职过牛逼闪闪的金牌企业。作为一个默默无闻的码农，耕种着自己的一亩三分地，偶尔在CSDN或者简书上写篇博客，也不是什么高深技术，只是自己工作中遇到的一些问题。即便如此，也没积累下来，博客单薄的像是篇目录。</p>
+<a id="more"></a>
+
+<p>用了两天时间使用 Hexo + github 搭建了自己的博客，终于开启了个人博客时代，虽然有点晚，但比起明天还是早。搭建过程中也踩了不少坑，网络上有各种各样的解决办法，搭建博客的流程也烂大街般的多，我也不逞能再写一篇更烂的了。</p>
+<p>一直以来想学的太多，关注的太杂，总是不能聚焦一点深入下去，行动的步伐跟不上大脑的冲动。还有之前敲代码时遇到的问题也没有记录完全，想钻研的技术一搁下就抛到脑后了。希望有自己的博客后，能专注一些，不贪多，不烂尾。</p>
+<p>现在码代码，之前喜欢写文字。要不是我写的太烂，现在就不是码农而是作家了(说的好像代码写的不烂似的)。不管怎么说，还是很有兴趣写博客的，只是之前没坚持下来。</p>
+<p>这个博客不会是纯技术，会掺杂其他的文，但还会以技术为主。目前也别期望出现高质量有深度的技术文，我也写不出来。算是我的个人学习博客，慢慢写，慢慢积累…</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>短文</tag>
+        <tag>碎碎念</tag>
       </tags>
   </entry>
 </search>

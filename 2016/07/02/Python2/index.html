@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"markmiao.com","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一些函数举例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python笔记2-函数">
+<meta property="og:url" content="http://markmiao.com/2016/07/02/Python2/index.html">
+<meta property="og:site_name" content="Mark Miao">
+<meta property="og:description" content="一些函数举例">
+<meta property="article:published_time" content="2016-07-02T01:27:01.000Z">
+<meta property="article:modified_time" content="2020-03-19T07:03:36.700Z">
+<meta property="article:author" content="Mark">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://markmiao.com/2016/07/02/Python2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Python笔记2-函数 | Mark Miao</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3a6b5f9b69c85227a288646d3403af6e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mark Miao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mark Miao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Mark’s blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2016/07/02/Python2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+      <meta itemprop="name" content="Mark">
+      <meta itemprop="description" content="Hello world, Coding life;">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mark Miao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python笔记2-函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-07-02 09:27:01" itemprop="dateCreated datePublished" datetime="2016-07-02T09:27:01+08:00">2016-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-19 15:03:36" itemprop="dateModified" datetime="2020-03-19T15:03:36+08:00">2020-03-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/07/02/Python2/" class="post-meta-item leancloud_visitors" data-flag-title="Python笔记2-函数" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/07/02/Python2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/07/02/Python2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="一些函数举例"><a href="#一些函数举例" class="headerlink" title="一些函数举例"></a>一些函数举例</h2><a id="more"></a>
+
+<ul>
+<li><p>绝对值 abs(-1)</p>
+</li>
+<li><p>最大值 max(1,2,3)</p>
+</li>
+<li><p>类型转换 int(‘123’)  float(‘12.3’) str(100) bool(1)</p>
+</li>
+<li><p>整数转十六进制 hex(10)</p>
+</li>
+</ul>
+<p>给函数起别名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = abs</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a(<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><p>在Python交互环境中自定义函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">myAbs</span><span class="params">(x)</span>:</span>       <span class="comment">#def是定义函数的关键字 myAbs是函数名 x是参数</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">if</span> x &gt;= <span class="number">0</span>:      <span class="comment">#注意要缩进四个空格，不然会自定义失败</span></span><br><span class="line"><span class="meta">... </span>         <span class="keyword">return</span> x   <span class="comment">#同样要缩进，if判断语句的写法，代码块</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</span><br><span class="line"><span class="meta">... </span>         <span class="keyword">return</span> -x</span><br><span class="line"><span class="meta">... </span>					 <span class="comment">#两个回车，退出函数编辑</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">-5</span>)			 <span class="comment">#调用函数</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myAbs(<span class="number">5</span>)</span><br><span class="line"><span class="number">5</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在.py文件中自定义函数并运行</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abs</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">	<span class="keyword">return</span> x</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">return</span> -x</span><br><span class="line"></span><br><span class="line">print(my_abs(<span class="number">10</span>))		<span class="comment">#调用函数，并打印出结果</span></span><br><span class="line">print(my_abs(<span class="number">-10</span>))</span><br></pre></td></tr></table></figure>
+
+<p>将函数封装在一个.py文件，并在Python交互环境中调用</p>
+<p>将下面函数代码写入一个.py文件，并将该文件命名为myabs.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abs</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">	<span class="keyword">return</span> x</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">return</span> -x</span><br></pre></td></tr></table></figure>
+
+<p>python 进入Python交互环境</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> myabs <span class="keyword">import</span> my_abs  <span class="comment">#引入函数  myabs是文件名不带.py， my_abs是文件里的函数名</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_abs(<span class="number">-5</span>)     			   <span class="comment">#调用函数</span></span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="空函数与pass语句"><a href="#空函数与pass语句" class="headerlink" title="空函数与pass语句"></a>空函数与pass语句</h2><p>自定义一个空函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nodef</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>pass 就是什么都不做，用作占位符，能让程序运行起来，不报错。没有它会有语法错误</p>
+<p>用Sublime text文本编辑器写好多语句时，都会自动加上pass</p>
+<h2 id="参数检查"><a href="#参数检查" class="headerlink" title="参数检查"></a>参数检查</h2><p>自定义的my_abs()函数相比于系统的abs函数还是不一样。比如传入错误类型的参数’a’</p>
+<p>两者报错不同。系统abs函数会检查出参数错误，而自定义的my_abs 是if判断条件错误。所以要增加参数类型检查，判断如果是不符合的参数类型，抛出异常</p>
+<p>检查数据类型用isinstance()函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abss</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> isinstance(x, (int, float)):   <span class="comment">##如果不是int和float类型的话，抛出类型异常</span></span><br><span class="line">	<span class="keyword">raise</span> TypeError(<span class="string">'输入类型错误'</span>)</span><br><span class="line"><span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">	<span class="keyword">return</span> x</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	<span class="keyword">return</span> -x</span><br></pre></td></tr></table></figure>
+
+<p><strong>写这个的时候遇到了一个问题，一个看代码很难发现的问题</strong></p>
+<p>错误提示如下：</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">TabError:</span> inconsistent use of tabs <span class="keyword">and</span> spaces <span class="keyword">in</span> indentation</span><br><span class="line"><span class="meta">#翻译: 在缩进制表符和空格的使用不一致</span></span><br></pre></td></tr></table></figure>
+
+<p>在我进行缩进的时候，不同位置用了不同的缩进方式，四个空格和tab共用了，然后就报错了。我尝试了一下，全部使用四个空格缩进和全部使用tab缩进都可以，但是不能混合使用。</p>
+<h2 id="函数多个返回值"><a href="#函数多个返回值" class="headerlink" title="函数多个返回值"></a>函数多个返回值</h2><p>函数可以有多个返回值，return 时用分号分割开来每个返回值即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abss</span><span class="params">(x)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> isinstance(x, (int, float)):</span><br><span class="line">		<span class="keyword">raise</span> TypeError(<span class="string">'输入类型错误'</span>)</span><br><span class="line">	<span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">		<span class="keyword">return</span> x, x + <span class="number">1</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> -x, x + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>返回结果 </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>my_abss(<span class="number">10</span>)</span><br><span class="line">(<span class="number">10</span>, <span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其实返回的就是一个tuple</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><ul>
+<li><p>定义函数需要写函数名和参数</p>
+</li>
+<li><p>做必要的参数数据类型检查</p>
+</li>
+<li><p>随时随地都可以return结果</p>
+</li>
+<li><p>可以有多个返回值，以tuple的形式返回</p>
+</li>
+<li><p>函数执行完毕也没有return，会return None</p>
+</li>
+</ul>
+<h1 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h1><h2 id="位置参数"><a href="#位置参数" class="headerlink" title="位置参数"></a>位置参数</h2><p>计算某一个数的平方值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPower</span><span class="params">(a)</span>:</span></span><br><span class="line">	<span class="keyword">return</span> a * a</span><br><span class="line">	</span><br><span class="line"><span class="comment">#参数a就是一个位置参数</span></span><br></pre></td></tr></table></figure>
+
+<p>另一种需求，我要计算 a的3次方、4次方、5次方…… 可以加一个参数，把函数改为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPower</span><span class="params">(a, n)</span>:</span></span><br><span class="line">	s = <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">		n = n - <span class="number">1</span></span><br><span class="line">		s = s * a</span><br><span class="line">	<span class="keyword">return</span> s</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以完成需求了。</p>
+<p>但是，算平方是最常用的，在算平方的时候依旧输入两个参数 myPower(2, 2)，这样感觉很费劲。</p>
+<p>Python中有一个叫默认参数的东西可以解决这个问题</p>
+<h2 id="默认参数"><a href="#默认参数" class="headerlink" title="默认参数"></a>默认参数</h2><p>指定某一个参数的默认值，如果这个参数不传值的话就用某个值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">myPower</span><span class="params">(a, n = <span class="number">2</span>)</span>:</span>  <span class="comment">#如果n没有传值，则n=2</span></span><br><span class="line">	s = <span class="number">1</span></span><br><span class="line">	<span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">		n = n - <span class="number">1</span></span><br><span class="line">		s = s * a</span><br><span class="line">	<span class="keyword">return</span> s</span><br></pre></td></tr></table></figure>
+
+<p>调用函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>myPower(<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myPower(<span class="number">2</span>)</span><br><span class="line"><span class="number">4</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意点：有多个参数时，必须按参数必须在前面，默认参数在后面</strong></p>
+<p>因为默认参数如果在必选参数前面的话，调用时输入参数，第一个参数无法确定是给默认参数的还是给必选参数的。</p>
+<p>但是，只有一个参数的时候，可以把这个参数设置为默认参数。</p>
+<hr>
+<p><em>有两个默认参数的时候怎么办？</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">classname</span><span class="params">(name, age, city = <span class="number">6</span>, gender = <span class="string">'Beijing'</span>)</span>:</span></span><br><span class="line">	print(name, age, city, gender)</span><br></pre></td></tr></table></figure>
+
+<p>调用结果:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">6</span> Beijing</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, <span class="number">10</span>, <span class="string">'tianjing'</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">10</span> tianjing</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, <span class="number">15</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">15</span> Beijing</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, <span class="string">'shanghai'</span>)</span><br><span class="line">小明 <span class="number">10</span> shanghai Beijing</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>前三次调用都没有问题，最后一次有问题了。</p>
+<p>有多个默认参数的时候，调用时按顺序写入参数没有问题，如果要跳过某个默认参数输入后面的默认参数，就要指定参数名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>classname(<span class="string">'小明'</span>, <span class="number">10</span>, gender = <span class="string">'shanghai'</span>)</span><br><span class="line">小明 <span class="number">10</span> <span class="number">6</span> shanghai</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>默认参数还有一个注意点: <strong>默认参数必须为指向不可变的对象</strong></p>
+<p>举例：以list为默认参数，设置函数。 给定一个list，添加’z’元素返回lsit。默认list为[‘a’]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addend</span><span class="params">(L = [<span class="string">'a'</span>])</span>:</span></span><br><span class="line">	L.append(<span class="string">'z'</span>)</span><br><span class="line">	<span class="keyword">return</span> L</span><br></pre></td></tr></table></figure>
+
+<p>调用结果为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>, <span class="string">'z'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>每次运行函数记住了上次的结果，叠加了内容</p>
+<p>因为参数L 是一个变量，指向一个对象list [‘a’] , list是可变的，每次运行L指向的list都改变了，不再是默认参数[‘a’]</p>
+<p>所以 <strong>默认参数必须指向不可变对象！！</strong></p>
+<p>其实上述需求也是可以实现的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addend</span><span class="params">(L = None)</span>:</span></span><br><span class="line"><span class="keyword">if</span> L <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">	L = [<span class="string">'a'</span>]</span><br><span class="line">L.append(<span class="string">'z'</span>)</span><br><span class="line"><span class="keyword">return</span> L</span><br></pre></td></tr></table></figure>
+
+<p>调用结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>addend()</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'z'</span>]</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这种实现方式类似于oc中在方法内部处理某个参数的操作，如果某个参数传了nil，则参数初始化为某个值</p>
+<h2 id="可变参数"><a href="#可变参数" class="headerlink" title="可变参数"></a>可变参数</h2><p>计算多个数字的平方和，用list或者tuple包一组数，传入函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(num)</span>:</span></span><br><span class="line">	sum = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> num:</span><br><span class="line">		sum = sum + n * n</span><br><span class="line">	<span class="keyword">return</span> sum</span><br></pre></td></tr></table></figure>
+
+<p>调用结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line"><span class="number">14</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>可以用可变参数，实现并不需要用list或tuple包裹数字，直接传入数 calc(1,2,3)。 可变参数会在函数调用时自动组装为一个tuple</p>
+<p>代码实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(*num)</span>:</span>			<span class="comment">#加一个*即可</span></span><br><span class="line">	sum = <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> num:</span><br><span class="line">		sum = sum + n * n</span><br><span class="line">	<span class="keyword">return</span> sum</span><br></pre></td></tr></table></figure>
+
+<p>调用结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line"><span class="number">14</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>可变参数可以传入任意个参数包括0个。cals()也可以</strong></p>
+<p><strong>可变参数一般要放到所有参数的最后面，如果可变参数后面还跟着其他参数，这些参数有独特的含义——命名关键字参数</strong></p>
+<hr>
+<p>这时如果有一组list或者tuple数据要计算平方和，nums = [1,2,3], 单个元素取出传入calc函数 calc(nums[0], nums[1], nums[2])，这样做肯定是可以的，但是太麻烦，如果list有一百个元素就疯了。如果把整个list传入的话又会报错</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">  File <span class="string">"/Users/inspiry/Desktop/myabs.py"</span>, line <span class="number">7</span>, <span class="keyword">in</span> calc</span><br><span class="line">    sum = sum + n * n</span><br><span class="line">TypeError: can<span class="string">'t multiply sequence by non-int of type '</span>list<span class="string">'</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>简单，传入list或者tuple的时候加一个*，</p>
+<p>Python允许添加*号， 把list或tuple变为可变参数传入函数中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(*[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line"><span class="number">14</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>默认参数和可变参数的概念swift中也有，应该是借鉴Python吧</strong></p>
+<h2 id="关键字参数"><a href="#关键字参数" class="headerlink" title="关键字参数"></a>关键字参数</h2><p>关键字参数是用两个星号(**)表示的，会在函数调用时自动组装为dict</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, age, **other)</span>:</span></span><br><span class="line">	print(<span class="string">'name:'</span>, name, <span class="string">'age:'</span>, age, <span class="string">'other:'</span>, other)</span><br></pre></td></tr></table></figure>
+
+<p>**other为关键字参数，可以传入任意个参数，也可以不传入。传入参数时是以key-value的方式传的</p>
+<p>调用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">10</span>)</span><br><span class="line">name: mxd age: <span class="number">10</span> other: &#123;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">18</span>, a = <span class="string">'a'</span>, b = <span class="number">20</span>)</span><br><span class="line">name: mxd age: <span class="number">18</span> other: &#123;<span class="string">'a'</span>: <span class="string">'a'</span>, <span class="string">'b'</span>: <span class="number">20</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>类比可变参数可以把list添加一个*传入函数中作为参数，同样关键字参数也可以这样做。把一个dict 传入函数当做关键字参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>oth = &#123;<span class="string">'job'</span>: <span class="string">'ios'</span>, <span class="string">'book'</span>: <span class="string">'macbook pro'</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">18</span>, **oth)</span><br><span class="line">name: mxd age: <span class="number">18</span> other: &#123;<span class="string">'job'</span>: <span class="string">'ios'</span>, <span class="string">'book'</span>: <span class="string">'macbook pro'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意点: 函数 calc(name, age, **other) 中的other得到了一个oth指向的dict，得到的其实是oth的一份拷贝，在函数内对其改变操作，不会影响外面的oth</p>
+<h2 id="命名关键字参数"><a href="#命名关键字参数" class="headerlink" title="命名关键字参数"></a>命名关键字参数</h2><p>命名关键字参数是给参数起名，关键字参数虽然以key-value的方式传入参数，给每个参数制定了key，但是这个key还是不能确定，调用者可以传入不受限制的关键字参数。</p>
+<p>限制关键字参数的key，就是指定关键字参数的名字，就用到了命名关键字参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, *, age)</span>:</span></span><br><span class="line">	print(name, age)</span><br></pre></td></tr></table></figure>
+
+<p>命名关键字参数的写法是以*作为分隔符，分号后面的参数为命名关键字参数。可以跟多个参数，def calc(name, *, age, other):  这时age 和 other都是命名关键字</p>
+<p>调用时必须传入，且必须以 命名 = 内容 的key-value方式调用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, age = <span class="number">18</span>)</span><br><span class="line">mxd <span class="number">18</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>之前说可变参数要放到参数最后面，后面再跟参数的话就是命名关键字参数了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, *age, other, zz)</span>:</span></span><br><span class="line">	print(name, age, other, zz)</span><br></pre></td></tr></table></figure>
+
+<p>other 和 zz 都是命名关键字了，必须传入，调用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">18</span>, <span class="number">11</span>, other = <span class="string">'2'</span>, zz = <span class="number">3</span>)</span><br><span class="line">mxd (<span class="number">18</span>, <span class="number">11</span>) <span class="number">2</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>命名关键字参数也可以指定参数默认值，指定other参数的默认值为’good’</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calc</span><span class="params">(name, *age, other = <span class="string">'good'</span>, zz)</span>:</span></span><br><span class="line">	print(name, age, other, zz)</span><br></pre></td></tr></table></figure>
+
+<p>调用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">32</span>,<span class="number">22</span>,<span class="number">22</span>, zz = <span class="string">'a'</span>)</span><br><span class="line">mxd (<span class="number">32</span>, <span class="number">22</span>, <span class="number">22</span>) good a</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>calc(<span class="string">'mxd'</span>, <span class="number">10</span>, other = <span class="string">'no'</span>, zz = <span class="string">'b'</span>)</span><br><span class="line">mxd (<span class="number">10</span>,) no b</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参数组合"><a href="#参数组合" class="headerlink" title="参数组合"></a>参数组合</h2><p><strong>5种参数：必选参数、默认参数、可变参数、关键字参数、命名关键字参数。在使用的时候如果有多种参数共同存在是，顺序必须为：必选参数、默认参数、可变参数、命名关键字参数、关键字参数</strong></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>打赏作者一杯咖啡</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mark
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://markmiao.com/2016/07/02/Python2/" title="Python笔记2-函数">http://markmiao.com/2016/07/02/Python2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/07/01/Python1/" rel="prev" title="Python笔记1-基础">
+      <i class="fa fa-chevron-left"></i> Python笔记1-基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/07/03/Python3/" rel="next" title="Python笔记3-高级特性">
+      Python笔记3-高级特性 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些函数举例"><span class="nav-number">1.</span> <span class="nav-text">一些函数举例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义函数"><span class="nav-number">2.</span> <span class="nav-text">自定义函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空函数与pass语句"><span class="nav-number">3.</span> <span class="nav-text">空函数与pass语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数检查"><span class="nav-number">4.</span> <span class="nav-text">参数检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数多个返回值"><span class="nav-number">5.</span> <span class="nav-text">函数多个返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">6.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数参数"><span class="nav-number"></span> <span class="nav-text">函数参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#位置参数"><span class="nav-number">1.</span> <span class="nav-text">位置参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#默认参数"><span class="nav-number">2.</span> <span class="nav-text">默认参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可变参数"><span class="nav-number">3.</span> <span class="nav-text">可变参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关键字参数"><span class="nav-number">4.</span> <span class="nav-text">关键字参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命名关键字参数"><span class="nav-number">5.</span> <span class="nav-text">命名关键字参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数组合"><span class="nav-number">6.</span> <span class="nav-text">参数组合</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mark"
+      src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+  <p class="site-author-name" itemprop="name">Mark</p>
+  <div class="site-description" itemprop="description">Hello world, Coding life;</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mxdios" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mxdios" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@markmiao.com" title="E-Mail → mailto:i@markmiao.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友链
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://chenxiao.wang/" title="https:&#x2F;&#x2F;chenxiao.wang&#x2F;" rel="noopener" target="_blank">喵汪之家</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mark</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+      appKey     : 'CFqU7nywNAD5QcP8kUqfHKNB',
+      placeholder: "欢迎吐槽~~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

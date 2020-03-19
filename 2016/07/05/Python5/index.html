@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"markmiao.com","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="模块把代码放到不同的.py文件，一个.py文件是一个模块(Module)。有Python的内置模块和第三方模块。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python笔记5-模块">
+<meta property="og:url" content="http://markmiao.com/2016/07/05/Python5/index.html">
+<meta property="og:site_name" content="Mark Miao">
+<meta property="og:description" content="模块把代码放到不同的.py文件，一个.py文件是一个模块(Module)。有Python的内置模块和第三方模块。">
+<meta property="og:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160816-0.png?raw=true">
+<meta property="article:published_time" content="2016-07-05T01:27:01.000Z">
+<meta property="article:modified_time" content="2020-03-19T07:07:13.439Z">
+<meta property="article:author" content="Mark">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160816-0.png?raw=true">
+
+<link rel="canonical" href="http://markmiao.com/2016/07/05/Python5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Python笔记5-模块 | Mark Miao</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3a6b5f9b69c85227a288646d3403af6e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mark Miao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mark Miao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Mark’s blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2016/07/05/Python5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+      <meta itemprop="name" content="Mark">
+      <meta itemprop="description" content="Hello world, Coding life;">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mark Miao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Python笔记5-模块
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-07-05 09:27:01" itemprop="dateCreated datePublished" datetime="2016-07-05T09:27:01+08:00">2016-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-19 15:07:13" itemprop="dateModified" datetime="2020-03-19T15:07:13+08:00">2020-03-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/07/05/Python5/" class="post-meta-item leancloud_visitors" data-flag-title="Python笔记5-模块" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/07/05/Python5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/07/05/Python5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><p>把代码放到不同的<code>.py</code>文件，一个<code>.py</code>文件是一个模块(Module)。有Python的内置模块和第三方模块。</p>
+<a id="more"></a>
+
+<p>不同模块间不必考虑函数名变量名冲突，因为不同模块间完全允许函数名变量名相同。注意不要与内置函数名冲突。</p>
+<p>避免模块名冲突，引入目录来组织模块，称为包(Package)。</p>
+<p><img src="https://github.com/mxdios/notebook/blob/master/notebooks/images/QQ20160816-0.png?raw=true" alt="img"></p>
+<p>引入包，顶层包名不冲突，那么里面所有的模块都不会冲突。例如<code>hello.py</code>模块，引入包<code>PythonTest</code>中，模块名就变成了<code>PythonTest.hello</code>。</p>
+<p>注意：每个包目录下面都有一个<code>__init__.py</code>文件，这个文件必须存在，不然这就是个普通目录，而不是一个包。<code>__init__.py</code>是空文件也可以写代码，他的模块名是<code>PythonTest</code>。</p>
+<p>注意：创建模块命名时，不能与自带模块名称冲突。例如系统自带<code>sys</code>模块，自己的模块不能命名为<code>sys.py</code>，否则将无法导入系统自带<code>sys</code>模块。</p>
+<p>如果有多层级的包结构，就一路<code>.</code>下去。</p>
+<h2 id="使用模块"><a href="#使用模块" class="headerlink" title="使用模块"></a>使用模块</h2><p>Python有很多内置模块，安装完毕即可使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="string">'a test module'</span></span><br><span class="line"></span><br><span class="line">__author__ = <span class="string">'MXD'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">()</span>:</span></span><br><span class="line">	args = sys.argv</span><br><span class="line">	<span class="keyword">if</span> len(args) == <span class="number">1</span>:</span><br><span class="line">		print(<span class="string">'hello world!'</span>)</span><br><span class="line">	<span class="keyword">elif</span> len(args) == <span class="number">2</span>:</span><br><span class="line">		print(<span class="string">'hello %s!'</span> % args[<span class="number">1</span>])</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		print(<span class="string">'end'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	test()</span><br></pre></td></tr></table></figure>
+
+<h3 id="标准模板"><a href="#标准模板" class="headerlink" title="标准模板"></a>标准模板</h3><p><code>#!/usr/bin/env python3</code> 标准注释，可以让这个模块文件直接在Unix/Linux/Mac上运行</p>
+<p><code># -*- coding: utf-8 -*-</code> 标准注释，表示该文件使用标准UTF-8编码</p>
+<p><code>&#39;a test module&#39;</code> 表示该模块的文档注释，任何模块代码的第一个字符串都会被视为模块的文档注释</p>
+<p><code>__author__ = &#39;MXD&#39;</code> 作者</p>
+<p>以上是Python模块的标准模板，不是强制必写，写总是没错的</p>
+<h3 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h3><p>下面是代码部分</p>
+<p><code>import sys</code> 导入<code>sys</code>模块。导入模块之后就可以用了，相当于有了变量<code>sys</code>指向该模块，利用这个变量可以访问<code>sys</code>模块中的所有功能。</p>
+<p><code>sys</code>模块有一个<code>argv</code>变量，是用list存储了在命令行中输入的所有参数。例如在命令行中输入如如下第一行代码，这是运行<code>hello.py</code>模块，这时<code>argv</code>中存的就是<code>[&#39;hello.py&#39;]</code>。<code>argv</code>中至少有一个元素，因为第一个元素永远是该模块名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py</span><br><span class="line">hello world!</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py mxd</span><br><span class="line">hello mxd!</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py mxd,xx</span><br><span class="line">hello mxd,xx!</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py [&#39;a&#39;, &#39;adf&#39;]</span><br><span class="line">end</span><br><span class="line">mxdMacBook-Pro-3:PythonTest inspiry$ python3 hello.py mxd adf</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="最后两行代码的详细解释"><a href="#最后两行代码的详细解释" class="headerlink" title="最后两行代码的详细解释"></a>最后两行代码的详细解释</h3><p>注意最后的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">	test()</span><br></pre></td></tr></table></figure>
+
+<p>在命令行中运行<code>hello</code>模块文件时，Python解释器会把特殊变量<code>__name__</code>置为<code>__main__</code>，如果在其他地方导入该    <code>hello</code>模块时，<code>if</code>判断将失败。这种<code>if</code>测试可以让一个模块通过命令行运行时执行一些额外代码，最常见的就是运行测试。</p>
+<p>下面详细记录我对这两行代码的作用理解。</p>
+<p>注释掉这两行代码，再在终端上执行<code>python3 hello.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3 hello.py</span><br><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$</span><br></pre></td></tr></table></figure>
+
+<p>不会有任何结果返回。</p>
+<p>因为在终端执行该模块，该模块中只定义了一个<code>test</code>函数，并没有调用操作。如果这时放开<code>test()</code>这一行代码，调用该函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3 hello.py</span><br><span class="line">hello world!</span><br></pre></td></tr></table></figure>
+
+<p>调用成功！</p>
+<p>但是，在启动Python交互环境的时候，导入该模块时，也会调用该函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3</span><br><span class="line">Python <span class="number">3.5</span><span class="number">.2</span> (v3<span class="number">.5</span><span class="number">.2</span>:<span class="number">4</span>def2a2901a5, Jun <span class="number">26</span> <span class="number">2016</span>, <span class="number">10</span>:<span class="number">47</span>:<span class="number">25</span>) </span><br><span class="line">[GCC <span class="number">4.2</span><span class="number">.1</span> (Apple Inc. build <span class="number">5666</span>) (dot <span class="number">3</span>)] on darwin</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> <span class="keyword">or</span> <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> hello</span><br><span class="line">hello world!</span><br></pre></td></tr></table></figure>
+
+<p>这就非我所愿了，我们想要的是我在调用模块的时候返回执行结果，我导入模块的时候不能调用函数。这就用到了注释掉的判断条件<code>if __name__ == &#39;__main__&#39;:</code></p>
+<p>放开这行注释的判断条件，在Python交互环境下的执行结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mxdMacBook-Pro<span class="number">-3</span>:PythonTest inspiry$ python3</span><br><span class="line">Python <span class="number">3.5</span><span class="number">.2</span> (v3<span class="number">.5</span><span class="number">.2</span>:<span class="number">4</span>def2a2901a5, Jun <span class="number">26</span> <span class="number">2016</span>, <span class="number">10</span>:<span class="number">47</span>:<span class="number">25</span>) </span><br><span class="line">[GCC <span class="number">4.2</span><span class="number">.1</span> (Apple Inc. build <span class="number">5666</span>) (dot <span class="number">3</span>)] on darwin</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> <span class="keyword">or</span> <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> hello</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello.test()</span><br><span class="line">hello world!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>还是上文的解释：<strong>在命令行中运行模块文件时，Python解释器会把特殊变量<code>__name__</code>置为<code>__main__</code>，而在导入模块时则不会有这种改变。</strong></p>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>正常的函数和变量名是公开的(public)，可以被直接引用，比如<code>abc</code>, <code>m322</code>等；</p>
+<p>双下划线开头双下划线结尾的变量<code>__xxx__</code>是特殊变量，有特殊用途，自定义变量不要用这种变量名;</p>
+<p>单下划线或双下划线开头无下划线结尾的函数或变量名是非公开的(private),不应该被直接引用，比如<code>_abc</code>, <code>__xyz</code>;</p>
+<p>只是”不应该”被直接引用，并不是”不能”被直接引用。Python并没有一种方法能完全限制访问非公开变量或函数。只是编程习惯上不应该这么引用。</p>
+<p>使用案例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_abc</span><span class="params">(name)</span>:</span></span><br><span class="line">	print(<span class="string">'hello %s'</span> % name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_xyz</span><span class="params">(name)</span>:</span></span><br><span class="line">	print(<span class="string">'biu %s'</span> % name)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(name)</span>:</span></span><br><span class="line">	<span class="keyword">if</span> len(name) &gt; <span class="number">3</span>:</span><br><span class="line">		<span class="keyword">return</span> _abc(name)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">return</span> _xyz(name)</span><br></pre></td></tr></table></figure>
+
+<p>这是一个自定义模块，<code>test</code>函数是公开的函数，<code>_abc</code>和<code>_xyz</code>函数是内部函数实现，不需要调用。在调用的时候只需要调用公开的<code>test</code>函数即可，不需要关心内部实现细节。调用结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello.test(<span class="string">'aa'</span>)</span><br><span class="line">biu aa</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello.test(<span class="string">'aaaa'</span>)</span><br><span class="line">hello aaaa</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这是一种非常有用的代码封装和抽象方法，外部不需要引用的函数全部定义为未公开的(private)，只有外部需要引用的函数才定义为<code>public</code>。</p>
+<p>当然，坚持调用<code>_abc</code>函数也是可以的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>hello._abc(<span class="string">'aaaa'</span>)</span><br><span class="line">hello aaaa</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>只是不建议这么做。</p>
+<h2 id="安装第三方模块"><a href="#安装第三方模块" class="headerlink" title="安装第三方模块"></a>安装第三方模块</h2><p>安装第三方模块，需要通过包管理工具<code>pip</code>完成。Mac或Linux不需要手动安装<code>pip</code>，Mac或Linux上可能并存Python3.x和Python2.x版本，对应的pip命令是<code>pip3</code></p>
+<p>安装第三方库<code>Python Imaging Library</code>，这是Python下的图像处理工具库，目前<code>PIL</code>只支持到Python2.7，并且很久没更新。基于PIL的Pillow项目非常活跃，支持Python3.</p>
+<p>安装Pillow</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install Pillow</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，使用Pillow生成图片缩略图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>im = Image.open(<span class="string">'img.png'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(im.format, im.size, im.mode)</span><br><span class="line">PNG (<span class="number">1920</span>, <span class="number">2172</span>) RGBA</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>im.thumbnail((<span class="number">100</span>,<span class="number">200</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>im.save(<span class="string">'newimg.jpg'</span>, <span class="string">'JPEG'</span>)</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>其他常用的第三方库还有MySQL的驱动：<code>mysql-connector-python</code>，用于科学计算的NumPy库：<code>numpy</code>，用于生成文本的模板工具<code>Jinja2</code>，等等。</p>
+<h2 id="模块搜索路径"><a href="#模块搜索路径" class="headerlink" title="模块搜索路径"></a>模块搜索路径</h2><p>在加载模块时，Python会在指定路径下找.py文件，找不到就报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> mymod</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">ImportError: No module named <span class="string">'mymod'</span></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>显示搜索路径，搜索路径存放在<code>sys.path</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.path</span><br><span class="line">[<span class="string">''</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python35.zip'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/plat-darwin'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/lib-dynload'</span>, <span class="string">'/Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/site-packages'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>添加搜索路径，可以直接在运行时修改<code>sys.path</code>，运行关闭后失效</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.path.append(<span class="string">'/Users/inspiry/desktop/work/PythonCode/PythonTest/hello'</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>打赏作者一杯咖啡</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mark
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://markmiao.com/2016/07/05/Python5/" title="Python笔记5-模块">http://markmiao.com/2016/07/05/Python5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/07/04/Python4/" rel="prev" title="Python笔记4-函数式编程">
+      <i class="fa fa-chevron-left"></i> Python笔记4-函数式编程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/07/27/coreanimation/" rel="next" title="Core Animation开发笔记">
+      Core Animation开发笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#模块"><span class="nav-number">1.</span> <span class="nav-text">模块</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用模块"><span class="nav-number">1.1.</span> <span class="nav-text">使用模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标准模板"><span class="nav-number">1.1.1.</span> <span class="nav-text">标准模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码部分"><span class="nav-number">1.1.2.</span> <span class="nav-text">代码部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后两行代码的详细解释"><span class="nav-number">1.1.3.</span> <span class="nav-text">最后两行代码的详细解释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作用域"><span class="nav-number">1.2.</span> <span class="nav-text">作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装第三方模块"><span class="nav-number">1.3.</span> <span class="nav-text">安装第三方模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块搜索路径"><span class="nav-number">1.4.</span> <span class="nav-text">模块搜索路径</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mark"
+      src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+  <p class="site-author-name" itemprop="name">Mark</p>
+  <div class="site-description" itemprop="description">Hello world, Coding life;</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mxdios" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mxdios" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@markmiao.com" title="E-Mail → mailto:i@markmiao.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友链
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://chenxiao.wang/" title="https:&#x2F;&#x2F;chenxiao.wang&#x2F;" rel="noopener" target="_blank">喵汪之家</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mark</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+      appKey     : 'CFqU7nywNAD5QcP8kUqfHKNB',
+      placeholder: "欢迎吐槽~~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

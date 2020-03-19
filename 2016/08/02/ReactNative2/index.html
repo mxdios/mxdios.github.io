@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"markmiao.com","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="第一个ReactNative是网络获取电影信息，用列表展示。如图oc中基本的tableview样式 项目源码请见firstReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React Native笔记1-第一个项目">
+<meta property="og:url" content="http://markmiao.com/2016/08/02/ReactNative2/index.html">
+<meta property="og:site_name" content="Mark Miao">
+<meta property="og:description" content="第一个ReactNative是网络获取电影信息，用列表展示。如图oc中基本的tableview样式 项目源码请见firstReactNative">
+<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/image/rn1.png">
+<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/image/rn2.png">
+<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/image/rn3.png">
+<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%889.34.57.png">
+<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%8810.34.16.png">
+<meta property="og:image" content="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%8811.04.52.png">
+<meta property="article:published_time" content="2016-08-02T01:27:01.000Z">
+<meta property="article:modified_time" content="2020-03-19T07:16:22.765Z">
+<meta property="article:author" content="Mark">
+<meta property="article:tag" content="React Native">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://oalg33nuc.bkt.clouddn.com/image/rn1.png">
+
+<link rel="canonical" href="http://markmiao.com/2016/08/02/ReactNative2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>React Native笔记1-第一个项目 | Mark Miao</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3a6b5f9b69c85227a288646d3403af6e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mark Miao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mark Miao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Mark’s blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2016/08/02/ReactNative2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+      <meta itemprop="name" content="Mark">
+      <meta itemprop="description" content="Hello world, Coding life;">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mark Miao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React Native笔记1-第一个项目
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-08-02 09:27:01" itemprop="dateCreated datePublished" datetime="2016-08-02T09:27:01+08:00">2016-08-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-19 15:16:22" itemprop="dateModified" datetime="2020-03-19T15:16:22+08:00">2020-03-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React-Native/" itemprop="url" rel="index"><span itemprop="name">React Native</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/08/02/ReactNative2/" class="post-meta-item leancloud_visitors" data-flag-title="React Native笔记1-第一个项目" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/08/02/ReactNative2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/08/02/ReactNative2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>第一个ReactNative是网络获取电影信息，用列表展示。如图oc中基本的tableview样式</strong></p>
+<p><strong>项目源码请见<a href="https://github.com/mxdios/firstReactNative" target="_blank" rel="noopener">firstReactNative</a></strong></p>
+<a id="more"></a>
+
+<p>展示我的学写该项目的学习笔记，掺杂了一些我的个人理解，可能会更清楚一些。<a href="https://github.com/reactnativecn/react-native-docs-cn/blob/master/docs/0.28/sample-application-movies.md" target="_blank" rel="noopener">原文地址</a></p>
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>创建第一个项目，项目名字为<code>firstReactNative</code></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-<span class="keyword">native</span> <span class="keyword">init</span> firstReactNative</span><br></pre></td></tr></table></figure>
+
+<p>用终端或Xcode运行该项目，具体步骤见<a href="https://github.com/mxdios/notebook/blob/master/ReactNative%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C.md" target="_blank" rel="noopener">React Native准备工作</a></p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/rn1.png" alt="如图"></p>
+<h2 id="引入组件"><a href="#引入组件" class="headerlink" title="引入组件"></a>引入组件</h2><p>创建完毕项目打开<code>index.ios.js</code>文件，文件上部有如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; Component &#125; from &#39;react&#39;;</span><br><span class="line">import &#123;</span><br><span class="line">  AppRegistry,</span><br><span class="line">  StyleSheet,</span><br><span class="line">  Text,</span><br><span class="line">  View</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是React Native中的一些组件，需要引入。项目中牵扯到图片展示，需要引入<code>Image</code>组件。</p>
+<p>顾名思义第一个<code>import</code>是引入组件框架，第二个<code>import</code>是引入几个常用的组件。</p>
+<p><code>AppRegistry</code> 是注册应用组件，应用只有注册之后才能正确渲染，应用只整体注册一次，并不是每个组件都注册，对应该文件最下面的注册应用操作</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AppRegistry.registerComponent(<span class="string">'firstReactNative'</span>, <span class="function"><span class="params">()</span> =&gt;</span> firstReactNative);</span><br></pre></td></tr></table></figure>
+
+<p><code>StyleSheet</code> 是样式创建组件，在<code>const styles = StyleSheet.create()</code>使用。</p>
+<p><code>Text</code> <code>View</code> 是一些常用的控件组件，<code>Image</code>组件添加到这下面，注意要在<code>View</code>后面写<code>,</code>(最后一个后面的<code>,</code>可写可不写)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; Component &#125; from &#39;react&#39;;</span><br><span class="line">import &#123;</span><br><span class="line">  AppRegistry,</span><br><span class="line">  StyleSheet,</span><br><span class="line">  Text,</span><br><span class="line">  View,</span><br><span class="line">  Image,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建模拟数据"><a href="#创建模拟数据" class="headerlink" title="创建模拟数据"></a>创建模拟数据</h2><p>在任意位置添加变量数据<code>URLDATA</code> (不要在其他方法{}内添加)</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> URLDATA = [</span><br><span class="line">	&#123;<span class="attr">title</span>: <span class="string">'标题'</span>, <span class="attr">year</span>: <span class="string">'2016'</span>, <span class="attr">posters</span>:&#123;<span class="attr">thumbnail</span>: <span class="string">'http://i.imgur.com/UePbdph.jpg'</span>&#125;&#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>iOS9中http请求需要添加允许任意的请求方式，在<code>info.plist</code>里添加<code>App Transport Security Settings</code>在该字段下选择<code>Allow Arbitrary Loads</code>并设置为<code>YES</code>。原因见<a href="https://github.com/mxdios/notebook/blob/master/ios9%E7%9A%84%E9%80%82%E9%85%8D%E7%89%B9%E6%80%A7.md" target="_blank" rel="noopener">iOS9的适配特性</a></p>
+<h2 id="修改组件"><a href="#修改组件" class="headerlink" title="修改组件"></a>修改组件</h2><h3 id="渲染组件"><a href="#渲染组件" class="headerlink" title="渲染组件"></a>渲染组件</h3><p>在<code>class firstReactNative extends Component {</code> 里面更改为如下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">    <span class="keyword">var</span> movie = URLDATA[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">        &lt;Text &gt;&#123;movie.title&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">        &lt;Text&gt;&#123;movie.year&#125;&lt;/</span>Text&gt;</span><br><span class="line">        &lt;Image source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125; /&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>movie</code>是拿到的模拟数据分别用<code>Text</code> <code>Image</code>渲染到屏幕上。<code>command + R</code>刷新模拟器运行程序。这时候还看不到图片，因为没有指定图片的宽高</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/rn2.png" alt="如图"></p>
+<h3 id="设置组件样式"><a href="#设置组件样式" class="headerlink" title="设置组件样式"></a>设置组件样式</h3><p>把原有代码块<code>const styles = StyleSheet.create({});</code>删除掉</p>
+<p>创建新的渲染样式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> styles = StyleSheet.create(&#123;</span><br><span class="line">  container: &#123;</span><br><span class="line">    flex: <span class="number">1</span>,</span><br><span class="line">    justifyContent: <span class="string">'center'</span>,</span><br><span class="line">    alignItems: <span class="string">'center'</span>,</span><br><span class="line">    backgroundColor: <span class="string">'#F5FCFF'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  thumbnail: &#123;</span><br><span class="line">    width: <span class="number">53</span>,</span><br><span class="line">    height: <span class="number">81</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>并把图片的渲染样式<code>thumbnail</code>添加到组件<code>Image</code>上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;Image </span><br><span class="line">	source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125;</span><br><span class="line">	style = &#123;styles.thumbnail&#125;</span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>command + R</code>刷新模拟器运行程序。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/rn3.png" alt="如图"></p>
+<h2 id="改变样式排版"><a href="#改变样式排版" class="headerlink" title="改变样式排版"></a>改变样式排版</h2><p>现在是文字在上图片在下的样式，需要调整样式，图片在左边，文字在右边。这是基本的tableview样式</p>
+<p>在<code>styles</code>里添加几个样式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">rightContainer: &#123; <span class="comment">//存放文字view的样式</span></span><br><span class="line">	flex: <span class="number">1</span>, <span class="comment">//是让里面存放的元素具有相同的宽度，忽略存放内容。css样式属性。</span></span><br><span class="line">&#125;,</span><br><span class="line">title: &#123;<span class="comment">//标题样式</span></span><br><span class="line">	fontSize: <span class="number">20</span>,</span><br><span class="line">	marginBottom: <span class="number">8</span>,</span><br><span class="line">	textAlign: <span class="string">'center'</span>,</span><br><span class="line">&#125;,</span><br><span class="line">year: &#123;<span class="comment">//简介样式</span></span><br><span class="line">	textAlign: <span class="string">'center'</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>return ()</code>里面的代码，将新添加的样式添加到相应组件上</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> (</span><br><span class="line">  &lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">  	&lt;Image </span><br><span class="line">      source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125;</span><br><span class="line">      style = &#123;styles.thumbnail&#125;</span><br><span class="line">     /&gt;</span><br><span class="line">    &lt;View style = &#123;styles.rightContainer&#125;&gt;</span><br><span class="line">    	&lt;Text style = &#123;styles.title&#125;&gt;&#123;movie.title&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">    	&lt;Text style = &#123;styles.year&#125;&gt;&#123;movie.year&#125;&lt;/</span>Text&gt;</span><br><span class="line">    &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>View&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>相比于之前代码，<code>&lt;Image /&gt;</code>代码块移动到了<code>&lt;Text&gt;</code>上面，因为image要在文字的左边，从上到下，从左到右渲染，如果还放在text的下面的话，会出现文字在左边，图片在右边的效果，请自行试验。</p>
+<p>把<code>Text</code>用一个<code>&lt;View&gt;</code>组件包起来，并赋予样式<code>rightContainer</code>，里面有一个<code>flex: 1</code>属性，这个容器的属性宽度会自动变宽，不会因为内容多少而定，会把图片挤压到屏幕边缘</p>
+<p>给文字分别添加<code>title</code> <code>year</code>样式，指定的文字的大小以及居中显示。 <code>marginBottom: 8,</code>是让<code>title</code>下面有8像素的距离。</p>
+<p><code>command + R</code>刷新模拟器运行程序。</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%889.34.57.png" alt="image"></p>
+<p>至此，基本的单个样式已完成，如图定义完成tableview里单个cell的样式。下面开始获取网络真是数据，完成列表展示</p>
+<h2 id="获取网络数据"><a href="#获取网络数据" class="headerlink" title="获取网络数据"></a>获取网络数据</h2><p>从<code>Rotten Tomatoes（美国影评网站烂番茄）</code>的api获取数据</p>
+<p>在文件开头<code>import</code>的下面定义接口地址变量</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> REQUEST_URL = <span class="string">'https://raw.githubusercontent.com/facebook/react-native/master/docs/MoviesExample.json'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>把下面代码放到<code>render()</code>函数之前。在网络获取之前初始化一个null状态，根据<code>this.state.movies == null</code>判断数据是否抓取成功。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">	<span class="keyword">super</span>(props);</span><br><span class="line">	<span class="keyword">this</span>.state = &#123;</span><br><span class="line">		movies: <span class="literal">null</span>,</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">this</span>.fetchData = <span class="keyword">this</span>.fetchData.bind(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加React组件生命周期方法<code>componentDidMount()</code>，在组件加载完毕之后执行，只执行一次，在这里进行数据请求。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">	<span class="keyword">this</span>.fetchData();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写<code>fetchData()</code>函数，网络请求</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fetchData() &#123;</span><br><span class="line">	fetch(REQUEST_URL)</span><br><span class="line">		.then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json())</span><br><span class="line">		.then(<span class="function">(<span class="params">responseData</span>) =&gt;</span> &#123;</span><br><span class="line">			<span class="keyword">this</span>.setState(&#123;</span><br><span class="line">				movies: responseData.movies,</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;)</span><br><span class="line">		.done();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改原来的render函数，修改样式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">	<span class="keyword">if</span> (!<span class="keyword">this</span>.state.movies) &#123; <span class="comment">//如果没有数据 返回renderLoadingView()</span></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.renderLoadingView();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> movie = <span class="keyword">this</span>.state.movies[<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.renderMovie(movie); <span class="comment">//有数据的时候，执行这个函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>实现<code>renderLoadingView()</code>函数和<code>renderMovie()</code>函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">renderLoadingView() &#123;<span class="comment">//添加加载提示</span></span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">		&lt;View style = &#123;styles.container&#125;&gt;</span><br><span class="line">			&lt;Text&gt;</span><br><span class="line">				正在加载电影数据...</span><br><span class="line">			&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">		&lt;/</span>View&gt;</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br><span class="line">renderMovie(movie) &#123;<span class="comment">//拿到网络获取的数据，添加到控件上</span></span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">  	&lt;View style=&#123;styles.container&#125;&gt;</span><br><span class="line">  		&lt;Image </span><br><span class="line">      		source = &#123;&#123;<span class="attr">uri</span>: movie.posters.thumbnail&#125;&#125;</span><br><span class="line">      		style = &#123;styles.thumbnail&#125;</span><br><span class="line">     	/&gt;</span><br><span class="line">    	&lt;View style = &#123;styles.rightContainer&#125;&gt;</span><br><span class="line">    		&lt;Text style = &#123;styles.title&#125;&gt;&#123;movie.title&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">    		&lt;Text style = &#123;styles.year&#125;&gt;&#123;movie.year&#125;&lt;/</span>Text&gt;</span><br><span class="line">    	&lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">  	&lt;/</span>View&gt;</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>command + R</code>刷新模拟器运行程序。这时候得到的数据是网络数据</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%8810.34.16.png" alt="image"></p>
+<h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><p><code>ListView</code>可以说是ReactNative里的<code>UITableView</code>，会安排视图的渲染，只渲染屏幕上显示的元素，渲染完毕被移出屏幕外的元素会被移除掉。</p>
+<p>第一步引入<code>ListView</code>组件，跟上文中引入<code>Image</code>组件一样。</p>
+<p>修改render函数，把返回一条数据的代码修改为渲染包含多个电影信息的<code>ListView</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">	<span class="keyword">if</span> (!<span class="keyword">this</span>.state.loaded) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">this</span>.renderLoadingView();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (</span><br><span class="line">		&lt;ListView </span><br><span class="line">			dataSource = &#123;<span class="keyword">this</span>.state.dataSource&#125;</span><br><span class="line">			renderRow = &#123;<span class="keyword">this</span>.renderMovie&#125;</span><br><span class="line">			style = &#123;styles.listView&#125;</span><br><span class="line">		/&gt;</span><br><span class="line">	);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>constructor(props)</code>代码，不再使用<code>this.state.movies</code>来存放数据，把数据存放到<code>dataSource</code>里面，可以根据布尔值<code>this.state.loaded</code>来判断是否加载完毕</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">	<span class="keyword">super</span>(props);</span><br><span class="line">	<span class="keyword">this</span>.state = &#123;</span><br><span class="line">		dataSource: <span class="keyword">new</span> ListView.DataSource(&#123;</span><br><span class="line">			rowHasChanged: <span class="function">(<span class="params">row1, row2</span>) =&gt;</span> row1 !== row2,</span><br><span class="line">		&#125;),</span><br><span class="line">		loaded: <span class="literal">false</span>,</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="keyword">this</span>.fetchData = <span class="keyword">this</span>.fetchData.bind(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改<code>fetchData</code>方法，把数据更新到dataSource</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fetchData() &#123;</span><br><span class="line">	fetch(REQUEST_URL)</span><br><span class="line">		.then(<span class="function">(<span class="params">response</span>) =&gt;</span> response.json())</span><br><span class="line">		.then(<span class="function">(<span class="params">responseData</span>) =&gt;</span> &#123;</span><br><span class="line">			<span class="keyword">this</span>.setState(&#123;</span><br><span class="line">				dataSource: <span class="keyword">this</span>.state.dataSource.cloneWithRows(responseData.movies),</span><br><span class="line">				loaded: <span class="literal">true</span>,</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;)</span><br><span class="line">		.done();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>添加样式<code>listView</code></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">listView</span>: &#123;</span><br><span class="line">  	<span class="attribute">paddingTop</span>: <span class="number">20</span>,</span><br><span class="line">  	backgroundColor: <span class="string">'#F5FCFF'</span>,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><code>command + R</code>刷新模拟器运行程序。达到我们最终要的结果</p>
+<p><img src="http://oalg33nuc.bkt.clouddn.com/image/Simulator%20Screen%20Shot%202016%E5%B9%B47%E6%9C%8827%E6%97%A5%20%E4%B8%8A%E5%8D%8811.04.52.png" alt="image"></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>打赏作者一杯咖啡</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mark
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://markmiao.com/2016/08/02/ReactNative2/" title="React Native笔记1-第一个项目">http://markmiao.com/2016/08/02/ReactNative2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/React-Native/" rel="tag"># React Native</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/08/01/ReactNative1/" rel="prev" title="React Native笔记1-准备工作">
+      <i class="fa fa-chevron-left"></i> React Native笔记1-准备工作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/09/23/imessageapp/" rel="next" title="开发iMessage App">
+      开发iMessage App <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引入组件"><span class="nav-number">2.</span> <span class="nav-text">引入组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建模拟数据"><span class="nav-number">3.</span> <span class="nav-text">创建模拟数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改组件"><span class="nav-number">4.</span> <span class="nav-text">修改组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#渲染组件"><span class="nav-number">4.1.</span> <span class="nav-text">渲染组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置组件样式"><span class="nav-number">4.2.</span> <span class="nav-text">设置组件样式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改变样式排版"><span class="nav-number">5.</span> <span class="nav-text">改变样式排版</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取网络数据"><span class="nav-number">6.</span> <span class="nav-text">获取网络数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ListView"><span class="nav-number">7.</span> <span class="nav-text">ListView</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mark"
+      src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+  <p class="site-author-name" itemprop="name">Mark</p>
+  <div class="site-description" itemprop="description">Hello world, Coding life;</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mxdios" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mxdios" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@markmiao.com" title="E-Mail → mailto:i@markmiao.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友链
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://chenxiao.wang/" title="https:&#x2F;&#x2F;chenxiao.wang&#x2F;" rel="noopener" target="_blank">喵汪之家</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mark</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+      appKey     : 'CFqU7nywNAD5QcP8kUqfHKNB',
+      placeholder: "欢迎吐槽~~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

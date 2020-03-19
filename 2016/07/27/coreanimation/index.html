@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"markmiao.com","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="CAlayer CALayer 和UIView类似，同样是一些被层级关系树管理的矩形块。包括图片、文本、背景色等。和UIView最大不同是 不能处理用户交互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Core Animation开发笔记">
+<meta property="og:url" content="http://markmiao.com/2016/07/27/coreanimation/index.html">
+<meta property="og:site_name" content="Mark Miao">
+<meta property="og:description" content="CAlayer CALayer 和UIView类似，同样是一些被层级关系树管理的矩形块。包括图片、文本、背景色等。和UIView最大不同是 不能处理用户交互">
+<meta property="article:published_time" content="2016-07-27T08:59:51.000Z">
+<meta property="article:modified_time" content="2020-03-19T06:36:49.946Z">
+<meta property="article:author" content="Mark">
+<meta property="article:tag" content="animation">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://markmiao.com/2016/07/27/coreanimation/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Core Animation开发笔记 | Mark Miao</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3a6b5f9b69c85227a288646d3403af6e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Mark Miao" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mark Miao</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Mark’s blog</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="search-pop-overlay">
+  <div class="popup search-popup">
+      <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+  </div>
+</div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2016/07/27/coreanimation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+      <meta itemprop="name" content="Mark">
+      <meta itemprop="description" content="Hello world, Coding life;">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mark Miao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Core Animation开发笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-07-27 16:59:51" itemprop="dateCreated datePublished" datetime="2016-07-27T16:59:51+08:00">2016-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-19 14:36:49" itemprop="dateModified" datetime="2020-03-19T14:36:49+08:00">2020-03-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">iOS开发</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/07/27/coreanimation/" class="post-meta-item leancloud_visitors" data-flag-title="Core Animation开发笔记" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/07/27/coreanimation/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/07/27/coreanimation/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="CAlayer"><a href="#CAlayer" class="headerlink" title="CAlayer"></a>CAlayer</h2><ol>
+<li><p>CALayer 和UIView类似，同样是一些被层级关系树管理的矩形块。包括图片、文本、背景色等。和UIView最大不同是 不能处理用户交互</p>
+<a id="more"></a>
+</li>
+<li><p>CALayer添加图层，需求是在UIView上添加一个图层，处理方式不是添加一个UIView(这样当然可以实现)，是创建一个layer，这是layer的背景色，添加到View的layer上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">UIView *bgview &#x3D; [[UIView alloc] initWithFrame:CGRectMake(100, 100, 200, 200)];</span><br><span class="line">bgview.backgroundColor &#x3D; [UIColor grayColor];</span><br><span class="line">[self.view addSubview:bgview];</span><br><span class="line">    </span><br><span class="line">CALayer *layer &#x3D; [CALayer layer];</span><br><span class="line">layer.frame &#x3D; CGRectMake(30, 30, 100, 100);</span><br><span class="line">layer.backgroundColor &#x3D; [UIColor blueColor].CGColor;</span><br><span class="line">[bgview.layer addSublayer:layer];</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="layer的contents"><a href="#layer的contents" class="headerlink" title="layer的contents"></a>layer的contents</h2><ol>
+<li><p>在UIView上显示一张图片。一般的处理方式是在view上添加一个UIImageView ，现在可以用layer的contents</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">UIView *bgview &#x3D; [[UIView alloc] initWithFrame:CGRectMake(100, 100, 200, 100)];</span><br><span class="line">  bgview.backgroundColor &#x3D; [UIColor grayColor];</span><br><span class="line">  [self.view addSubview:bgview];</span><br><span class="line"></span><br><span class="line">bgview.layer.contents &#x3D; (__bridge id _Nullable)([UIImage imageNamed:@&quot;Icon-Small-50&quot;].CGImage);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>为什么要用关键字 __bridge 修饰UIImage？ 因为，contents的类型是id，之所以被定义为id，是因为在MacOS系统上，这个属性对CGImage和NSImage都有作用。在iOS上，如果赋值UIImage，只能得到一个空白图层。其实真正赋值的是CGImageRef类型，它是指向CGImage结构的指针，.CGImage返回了“CGImageRef”，把它直接赋值给contents，会报编译错误，因为CGImageRef不是一个Cocoa对象，而是一个Core Foundation类型，所以要通过__bridge 修饰。（如果用的非arc则不需要）</p>
+</li>
+<li><p>这时image会根据bgview的大小形变缩放了。 在UIImageView里有一个contentMode的属性来设置image的缩放</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">imageview.contentMode &#x3D; UIViewContentModeScaleAspectFit;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在layer里有 contentsGravity</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bgview.layer.contentsGravity &#x3D; kCAGravityResizeAspect;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="contentsScale"><a href="#contentsScale" class="headerlink" title="contentsScale"></a>contentsScale</h2><ol>
+<li><p>这个属性很少用到。这个属性顶一个图片的像素尺寸和视图比例</p>
+</li>
+<li><p>举个例子，将图片设置为不能拉伸， kCAGravityCenter这个属性值，会将图设置为不拉伸，图有多大就显示多大，不会局限于view的大小</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bgview.layer.contentsGravity &#x3D; kCAGravityCenter;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>图片为@2x图片，这时图片会放大了，会有明显的颗粒点。因为这时每个点1个像素绘制了图片，retina屏幕是每个点绘制2个像素点。CGImage没有拉伸的概念，如果用UIImage去拉伸图片没有问题。在用CGImage时拉伸时会丢失，所以模糊了。这时需要用contentsScale来修复这个问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bgview.layer.contentsScale &#x3D; image.scale;</span><br><span class="line">	</span><br><span class="line">&#x2F;&#x2F;image.scale 在@2x时 &#x3D; 2， @1x时 &#x3D; 1</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="maskToBounds"><a href="#maskToBounds" class="headerlink" title="maskToBounds"></a>maskToBounds</h2><ol>
+<li><p>图片超出view的范围要切掉。在UIView中用 clispToBounds ，在CALayer中 使用 maskToBounds</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bgview.layer.masksToBounds &#x3D; YES;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="contentsRect"><a href="#contentsRect" class="headerlink" title="contentsRect"></a>contentsRect</h2><ol>
+<li><p>切割图片，设置添加到layer.contents上的图片的子域。就是只显示某一部分</p>
+</li>
+<li><p>contentsRect 的取值是相对值。相对于图片的尺寸。默认 {0,0,1,1}， 如果取值 {0, 0, 0.5, 0.5} 则显示图片的左上角整个图片的1/4处</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;显示图片的上面1&#x2F;2处</span><br><span class="line">bgview.layer.contentsRect &#x3D; CGRectMake(0, 0, 1, 0.5);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用场景：载入多张图拼合一起的整张图，切割了放在不同地方。单张大图比多张小图载入速度快。缺点就是某个小图尺寸改变时会很麻烦。</p>
+</li>
+<li><p>有一些软件可以生成拼合图片，并生成拼合坐标的xml或plist文件，并给每个拼合图层设置contentsRect。这样就方便多了。我也在找这个软件</p>
+</li>
+</ol>
+<h2 id="contentsCenter"><a href="#contentsCenter" class="headerlink" title="contentsCenter"></a>contentsCenter</h2><ol>
+<li><p>可拉伸区域, contentsCenter的值也是相对值，默认 {0,0,1,1}，图片将会均匀拉伸。contentsCenter可以指定拉伸区域</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bgview.layer.contentsCenter &#x3D; CGRectMake(0.25, 0.25, 0.5, 0.5);</span><br><span class="line">&#x2F;&#x2F;中间一部分可以拉伸</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>类似UIImage的不形变拉伸方法，指定拉伸位置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (UIImage *)stretchableImageWithLeftCapWidth:(NSInteger)leftCapWidth topCapHeight:(NSInteger)topCapHeight</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="drawing"><a href="#drawing" class="headerlink" title="drawing"></a>drawing</h2><ol>
+<li><p>自定义view的时候，会有-drawRect方法，在这里可以绘制。这个方法不会默认实现，如果用不到寄宿图的话，就不要创建这个方法。没有自定义的绘制任务时，不要写一个空的 -drawRect方法，会造成资源浪费</p>
+</li>
+<li><p>使用layer的代理方法，绘制寄宿图</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">CALayer *layer &#x3D; [CALayer layer];</span><br><span class="line">layer.frame &#x3D; CGRectMake(30, 30, 100, 100);</span><br><span class="line">layer.backgroundColor &#x3D; [UIColor blueColor].CGColor;</span><br><span class="line">layer.delegate &#x3D; self;</span><br><span class="line">layer.contentsScale &#x3D; [UIScreen mainScreen].scale;</span><br><span class="line">[bgview.layer addSublayer:layer];</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F; 需要手动调用，因为CALayer不会自动重绘内容。</span><br><span class="line">[layer display];</span><br><span class="line">    </span><br><span class="line">&#x2F;&#x2F;代理方法</span><br><span class="line">- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx</span><br><span class="line">&#123;</span><br><span class="line">    CGContextSetLineWidth(ctx, 10);</span><br><span class="line">    CGContextSetStrokeColorWithColor(ctx, [UIColor redColor].CGColor);</span><br><span class="line">    CGContextStrokeEllipseInRect(ctx, layer.bounds);</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 不会对超出layer存放边界以外的地方有绘制作用，所有超出的地方就像被切掉了一样，类似masksToBounds一样</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>打赏作者一杯咖啡</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mark
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://markmiao.com/2016/07/27/coreanimation/" title="Core Animation开发笔记">http://markmiao.com/2016/07/27/coreanimation/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/animation/" rel="tag"># animation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/07/05/Python5/" rel="prev" title="Python笔记5-模块">
+      <i class="fa fa-chevron-left"></i> Python笔记5-模块
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/08/01/ReactNative1/" rel="next" title="React Native笔记1-准备工作">
+      React Native笔记1-准备工作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAlayer"><span class="nav-number">1.</span> <span class="nav-text">CAlayer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layer的contents"><span class="nav-number">2.</span> <span class="nav-text">layer的contents</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contentsScale"><span class="nav-number">3.</span> <span class="nav-text">contentsScale</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maskToBounds"><span class="nav-number">4.</span> <span class="nav-text">maskToBounds</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contentsRect"><span class="nav-number">5.</span> <span class="nav-text">contentsRect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#contentsCenter"><span class="nav-number">6.</span> <span class="nav-text">contentsCenter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#drawing"><span class="nav-number">7.</span> <span class="nav-text">drawing</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Mark"
+      src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+  <p class="site-author-name" itemprop="name">Mark</p>
+  <div class="site-description" itemprop="description">Hello world, Coding life;</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/mxdios" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;mxdios" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:i@markmiao.com" title="E-Mail → mailto:i@markmiao.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title">
+      <i class="fa fa-fw fa-link"></i>
+      友链
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://chenxiao.wang/" title="https:&#x2F;&#x2F;chenxiao.wang&#x2F;" rel="noopener" target="_blank">喵汪之家</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mark</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.2
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : '1IKsdyf0EzwKKE81UNuy0DSS-gzGzoHsz',
+      appKey     : 'CFqU7nywNAD5QcP8kUqfHKNB',
+      placeholder: "欢迎吐槽~~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
