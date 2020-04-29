@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2020-03-19T07:26:32.114Z</updated>
+  <updated>2020-04-29T02:00:28.909Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>macOS开发笔记(2)</title>
+    <link href="http://markmiao.com/2020/04/29/macosdevelnote2/"/>
+    <id>http://markmiao.com/2020/04/29/macosdevelnote2/</id>
+    <published>2020-04-28T22:05:19.000Z</published>
+    <updated>2020-04-29T02:00:28.909Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="NSToolbar"><a href="#NSToolbar" class="headerlink" title="NSToolbar"></a>NSToolbar</h2><p>常用<code>NSToolbar</code>开发偏好设置界面，在xib中可以直接拖<code>NSToolbar</code>到<code>Window</code>中，可以自定义图片文字。</p><a id="more"></a><p>勾选<code>Behavior</code>中的<code>Selectable</code>，<code>NSToolbarItem</code>是可选中样式的。</p><p>设置某个<code>NSToolbarItem</code>默认选中，需要先设置默认选中的<code>NSToolbarItem</code>的<code>Identifier</code>，使用下面代码完成默认选中：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toolbar.selectedItemIdentifier = <span class="type">NSToolbarItem</span>.<span class="type">Identifier</span>(rawValue: <span class="string">"id"</span>)</span><br></pre></td></tr></table></figure><h2 id="Window按钮"><a href="#Window按钮" class="headerlink" title="Window按钮"></a>Window按钮</h2><p>控制window左上角关闭、最小化、最大化按钮的是否可用，以及显示隐藏。</p><p>可以在xib中勾选<code>Controls</code>中的<code>Close</code>、<code>Minimize</code>、<code>Resize</code>，控制按钮是否可用。或者使用代码：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.window?.standardWindowButton(.closeButton)?.isEnabled = <span class="literal">false</span></span><br></pre></td></tr></table></figure><p>使用代码可以隐藏按钮：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.window?.standardWindowButton(.miniaturizeButton)?.isHidden = <span class="literal">true</span></span><br><span class="line"><span class="keyword">self</span>.window?.standardWindowButton(.zoomButton)?.isHidden = <span class="literal">true</span></span><br></pre></td></tr></table></figure><h2 id="NSButton"><a href="#NSButton" class="headerlink" title="NSButton"></a>NSButton</h2><p>设置按钮为蓝色背景，需要设置按钮的<code>Key Equivalent</code>为回车键</p><h2 id="Label"><a href="#Label" class="headerlink" title="Label"></a>Label</h2><p>macOS中<code>Label</code>继承自<code>NSTextField</code>，有两种：<code>Label</code> 和<code>Wrapping Label</code></p><p><code>Wrapping Label</code>为多行Label，无需设置Line Break为<code>Character Wrap</code></p><p>使用<code>Label</code> 设置Line Break也无法折行显示。</p><p>当<code>Label</code>仅作为文字显示时，鼠标移上不变光标显示，需要设置Action为<code>Sent On End Editing</code></p><h2 id="NSTableCellView"><a href="#NSTableCellView" class="headerlink" title="NSTableCellView"></a>NSTableCellView</h2><p>移除默认的Cell点击变蓝，设置NSTableView的<code>selectionHighlightStyle</code> :</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.tableView.selectionHighlightStyle = .<span class="keyword">none</span></span><br></pre></td></tr></table></figure><p>NSTableCellView根据存放的Label内容自适应高度，OSX 10.13以后，在xib中设置正确的约束，设置Row自适应高度即可：</p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.tableView.usesAutomaticRowHeights = <span class="literal">true</span></span><br></pre></td></tr></table></figure><p>无需指定默认高度<code>rowHeight</code>，亦无需实现row高度的代理方法<code>func tableView(_ tableView: NSTableView, heightOfRow row: Int) -&gt; CGFloat</code></p><p><a href="https://www.itranslater.com/qa/details/2325926279662535680" target="_blank" rel="noopener">基于视图的NSTableView，其行具有动态高度</a></p><h2 id="NSTextField"><a href="#NSTextField" class="headerlink" title="NSTextField"></a>NSTextField</h2><p>限制输入框<code>NSTextField</code>的输入内容，仅允许输入数字，需要自定义<code>Formatter</code></p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Cocoa</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OnlyIntegerValueFormatter</span>: <span class="title">NumberFormatter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">isPartialStringValid</span><span class="params">(<span class="number">_</span> partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer&lt;NSString?&gt;?, errorDescription error: AutoreleasingUnsafeMutablePointer&lt;NSString?&gt;?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> partialString.isEmpty &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 禁止输入非数字 &amp;&amp; 首位不能为0 &amp;&amp; 最多输入3位</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">Int</span>(partialString) != <span class="literal">nil</span> &amp;&amp; <span class="type">Int</span>(partialString)! &gt; <span class="number">0</span> &amp;&amp; partialString.<span class="built_in">count</span> &lt; <span class="number">4</span></span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;NSToolbar&quot;&gt;&lt;a href=&quot;#NSToolbar&quot; class=&quot;headerlink&quot; title=&quot;NSToolbar&quot;&gt;&lt;/a&gt;NSToolbar&lt;/h2&gt;&lt;p&gt;常用&lt;code&gt;NSToolbar&lt;/code&gt;开发偏好设置界面，在xib中可以直接拖&lt;code&gt;NSToolbar&lt;/code&gt;到&lt;code&gt;Window&lt;/code&gt;中，可以自定义图片文字。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="macOS开发" scheme="http://markmiao.com/categories/macOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="macOS" scheme="http://markmiao.com/tags/macOS/"/>
+    
+  </entry>
   
   <entry>
     <title>Flutter笔记5-初探Widget布局</title>
@@ -474,32 +497,6 @@
     
     
       <category term="应用" scheme="http://markmiao.com/tags/%E5%BA%94%E7%94%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ipa重签名</title>
-    <link href="http://markmiao.com/2017/07/26/ipachongqianming/"/>
-    <id>http://markmiao.com/2017/07/26/ipachongqianming/</id>
-    <published>2017-07-26T02:58:03.000Z</published>
-    <updated>2018-12-24T07:59:23.222Z</updated>
-    
-    <content type="html"><![CDATA[<p>在工作中分发内测应用是经常遇见的，常见的方式有：TestFlight，用企业级开发者账号，搜集UDID打包等方式，每种方式都各有利弊。</p><p>由于公司有企业级开发者账号，所以平常应用内测比较简单：直接拿企业级账号打包.ipa，将.ipa发布到内测平台（比如<a href="https://www.pgyer.com" target="_blank" rel="noopener">蒲公英</a>，<a href="https://fir.im/" target="_blank" rel="noopener">fir.im</a>），测试人员直接下载安装就可，只是第一次需要信任一下企业级证书。</p><a id="more"></a><p>在工作中，有时候我们需要分发某个app的.ipa包，并没有改app的源码，无法用自己的账号打包。这时就用到了重签名。</p><p>其实ipa重签名的应用场景很多，比如App Store上的付费应用，可以使用自己的开发者账号，其.ipa包重新签名，就可以安装了。各大app助手平台就是这么做的。注意直接从App Store下载的应用是加壳的，无法直接重新签名，必须砸壳。<a href="http://iosre.com/" target="_blank" rel="noopener">iOSRE逆向</a></p><h2 id="iReSign"><a href="#iReSign" class="headerlink" title="iReSign"></a>iReSign</h2><p><a href="https://github.com/maciekish/iReSign" target="_blank" rel="noopener">iReSign</a>是一个重签名工具</p><p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/2017-07-25-19-21-04.png" alt="iReSign"></p><p>操作步骤：</p><ol><li>选择.ipa包的路径</li><li>选择<code>embedded.mobileprovision</code>文件路径。<code>embedded.mobileprovision</code>是用于打包的配置文件<code>Provisioning Profiles</code>。可以直接在<code>Certificates, Identifiers &amp; Profiles</code>中下载，注意下载之后需要将名字设置为<code>embedded.mobileprovision</code>。也可以在之前用该文件打包过的.ipa中找：解压.ipa -&gt; Payload -&gt; xx.app显示包内容 -&gt; <code>embedded.mobileprovision</code></li><li>网上有资料说entitlements.plist不需要填写。我试过不填写或填写，我按照本文<a href="http://www.olinone.com/?p=198" target="_blank" rel="noopener">iOS证书及ipa包重签名探究</a>的方式写的.plist文件。</li><li>选中修改ID，填写修改的appid</li><li>选择证书，下拉列表会显示mac上有的证书。</li><li>点击重新签名！</li></ol><p>结果是失败了。</p><p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/6111501034232_.pic.jpg" alt="iResign运行结果"></p><p>错误信息如下，可以查看该错误的<a href="https://github.com/maciekish/iReSign/issues/99" target="_blank" rel="noopener">IResign上的issues</a></p><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[General] <span class="builtin-name">Error</span> <span class="attribute">Domain</span>=NSCocoaErrorDomain <span class="attribute">Code</span>=3840 <span class="string">"Unexpected character s at line 1"</span> UserInfo=&#123;<span class="attribute">NSDebugDescription</span>=Unexpected character s at line 1, <span class="attribute">kCFPropertyListOldStyleParsingError</span>=Error <span class="attribute">Domain</span>=NSCocoaErrorDomain <span class="attribute">Code</span>=3840 <span class="string">"Unexpected ';' or '=' after key at line 1"</span> UserInfo=&#123;<span class="attribute">NSDebugDescription</span>=Unexpected <span class="string">';'</span> <span class="keyword">or</span> <span class="string">'='</span> after key at line 1&#125;&#125;</span><br></pre></td></tr></table></figure><p>另外还有一个重签名工具：<a href="https://github.com/DanTheMan827/ios-app-signer" target="_blank" rel="noopener">ios-app-signer</a></p><p><a href="http://www.iosugar.com/2017/04/10/Practice-articles-iOS-application-re-signature/" target="_blank" rel="noopener">实践篇：iOS 应用重签名(上)</a>这篇文章介绍了entitlement文件如何写，ios-app-signer的使用。我没有测试该方法是否可行。</p><h2 id="使用sigh脚本"><a href="#使用sigh脚本" class="headerlink" title="使用sigh脚本"></a>使用sigh脚本</h2><p>在iReSign失败后，我在网上找到使用sigh脚本的方式来重签名。</p><ol><li>安装神器brew，没有安装的看这里：<a href="https://brew.sh/" target="_blank" rel="noopener">Homebrew</a></li><li>安装ruby，命令：<code>brew install ruby</code></li><li>安装sigh，命令：<code>sudo gem install sigh</code>，过程比较漫长。</li></ol><p>安装sigh脚本后，开始进行重签名，步骤如下</p><ol><li>在终端输入<code>sigh resign</code>，回车</li><li>把要签名的ipa文件拖到窗口上，回车</li><li>填写用来签名的证书名，回车</li><li>把项目的配置文件embedded.mobileprovision文件拖到窗口上，回车</li><li>好了，resign脚本会自动更改bundel id，签名并重新打包。</li></ol><p>注意ipa包名不要有中文。如果应用有多个targetes无法用上述方式重签名。参考文章：<a href="http://www.jianshu.com/p/3f57d51f770a" target="_blank" rel="noopener">iOS的ipa重签名</a></p><p>我按照如上步骤操作，成功使用企业级证书打包，上传到蒲公英内测平台上，也显示的是企业级应用，但是无法安装，提醒无法下载app，我手机上没有从App Store上下载安装该应用，排除了无法覆盖问题。</p><p>iOS9以后，企业级应用不会出现信任按钮，如果ipa包和网页的<code>bundle ID</code>不匹配，就无法安装。在iOS9之前是没有检测的。详情见大神iOS程序犭袁的文章<a href="https://github.com/ChenYilong/iOS9AdaptationTips#3%E4%BC%81%E4%B8%9A%E7%BA%A7%E5%88%86%E5%8F%91" target="_blank" rel="noopener">ios9适配系列教程</a></p><h2 id="我操作成功的办法"><a href="#我操作成功的办法" class="headerlink" title="我操作成功的办法"></a>我操作成功的办法</h2><p>经过了无数次测试sigh脚本签名方式，最后即将放弃的时刻成功了。</p><ol><li>将需要重签的.ipa文件和<code>embedded.mobileprovision</code>配置文件放到同一个文件夹下。注意路径和文件名中不要出现中文，配置文件名一定要是<code>embedded</code>。</li><li>在终端中cd到该路径下</li><li>使用sigh脚本：<code>sigh resign</code>回车，运行结果跟上面是不一样的，会直接出现<code>Signing Identity:</code>让我填证书名。上述方式应该是第二步拖ipa文件到窗口，<code>Path to ipa file:</code></li><li>在<code>Signing Identity:</code>上面会出现一串可用的<code>identity</code>，这里要输入这些<code>identity</code>的十六进制串。回车</li><li>成功了：<code>Successfully signed 路径/xxx.ipa!</code>原来文件夹中的.ipa已经被重签名了。上传到蒲公英内测平台，完全可以下载使用。</li></ol><p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/QQ20170726-104243.png" alt="操作步骤"></p><p>本文涉及到的知识点都是从网上Google的，感谢网友们分享的资料，还涉及的一些参考资料：</p><p><a href="https://objccn.io/issue-17-2/" target="_blank" rel="noopener">代码签名探析</a></p><p><a href="http://www.hudongdong.com/skill/363.html" target="_blank" rel="noopener">mac用终端对ipa包重新签名</a></p><p><a href="http://www.jianshu.com/p/0d460b52ce96" target="_blank" rel="noopener">iPhone 如何不越狱安装越狱软件</a></p><p><a href="http://www.jianshu.com/p/1ef0dbdac653" target="_blank" rel="noopener">企业证书重新签名ipa</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在工作中分发内测应用是经常遇见的，常见的方式有：TestFlight，用企业级开发者账号，搜集UDID打包等方式，每种方式都各有利弊。&lt;/p&gt;
-&lt;p&gt;由于公司有企业级开发者账号，所以平常应用内测比较简单：直接拿企业级账号打包.ipa，将.ipa发布到内测平台（比如&lt;a href=&quot;https://www.pgyer.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;蒲公英&lt;/a&gt;，&lt;a href=&quot;https://fir.im/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;fir.im&lt;/a&gt;），测试人员直接下载安装就可，只是第一次需要信任一下企业级证书。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="iOS" scheme="http://markmiao.com/tags/iOS/"/>
-    
-      <category term="ipa" scheme="http://markmiao.com/tags/ipa/"/>
     
   </entry>
   

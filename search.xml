@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>macOS开发笔记(2)</title>
+    <url>/2020/04/29/macosdevelnote2/</url>
+    <content><![CDATA[<h2 id="NSToolbar"><a href="#NSToolbar" class="headerlink" title="NSToolbar"></a>NSToolbar</h2><p>常用<code>NSToolbar</code>开发偏好设置界面，在xib中可以直接拖<code>NSToolbar</code>到<code>Window</code>中，可以自定义图片文字。</p>
+<a id="more"></a>
+
+<p>勾选<code>Behavior</code>中的<code>Selectable</code>，<code>NSToolbarItem</code>是可选中样式的。</p>
+<p>设置某个<code>NSToolbarItem</code>默认选中，需要先设置默认选中的<code>NSToolbarItem</code>的<code>Identifier</code>，使用下面代码完成默认选中：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line">toolbar.selectedItemIdentifier = <span class="type">NSToolbarItem</span>.<span class="type">Identifier</span>(rawValue: <span class="string">"id"</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Window按钮"><a href="#Window按钮" class="headerlink" title="Window按钮"></a>Window按钮</h2><p>控制window左上角关闭、最小化、最大化按钮的是否可用，以及显示隐藏。</p>
+<p>可以在xib中勾选<code>Controls</code>中的<code>Close</code>、<code>Minimize</code>、<code>Resize</code>，控制按钮是否可用。或者使用代码：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">self</span>.window?.standardWindowButton(.closeButton)?.isEnabled = <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>使用代码可以隐藏按钮：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">self</span>.window?.standardWindowButton(.miniaturizeButton)?.isHidden = <span class="literal">true</span></span><br><span class="line"><span class="keyword">self</span>.window?.standardWindowButton(.zoomButton)?.isHidden = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="NSButton"><a href="#NSButton" class="headerlink" title="NSButton"></a>NSButton</h2><p>设置按钮为蓝色背景，需要设置按钮的<code>Key Equivalent</code>为回车键</p>
+<h2 id="Label"><a href="#Label" class="headerlink" title="Label"></a>Label</h2><p>macOS中<code>Label</code>继承自<code>NSTextField</code>，有两种：<code>Label</code> 和<code>Wrapping Label</code></p>
+<p><code>Wrapping Label</code>为多行Label，无需设置Line Break为<code>Character Wrap</code></p>
+<p>使用<code>Label</code> 设置Line Break也无法折行显示。</p>
+<p>当<code>Label</code>仅作为文字显示时，鼠标移上不变光标显示，需要设置Action为<code>Sent On End Editing</code></p>
+<h2 id="NSTableCellView"><a href="#NSTableCellView" class="headerlink" title="NSTableCellView"></a>NSTableCellView</h2><p>移除默认的Cell点击变蓝，设置NSTableView的<code>selectionHighlightStyle</code> :</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">self</span>.tableView.selectionHighlightStyle = .<span class="keyword">none</span></span><br></pre></td></tr></table></figure>
+
+<p>NSTableCellView根据存放的Label内容自适应高度，OSX 10.13以后，在xib中设置正确的约束，设置Row自适应高度即可：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">self</span>.tableView.usesAutomaticRowHeights = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>无需指定默认高度<code>rowHeight</code>，亦无需实现row高度的代理方法<code>func tableView(_ tableView: NSTableView, heightOfRow row: Int) -&gt; CGFloat</code></p>
+<p><a href="https://www.itranslater.com/qa/details/2325926279662535680" target="_blank" rel="noopener">基于视图的NSTableView，其行具有动态高度</a></p>
+<h2 id="NSTextField"><a href="#NSTextField" class="headerlink" title="NSTextField"></a>NSTextField</h2><p>限制输入框<code>NSTextField</code>的输入内容，仅允许输入数字，需要自定义<code>Formatter</code></p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Cocoa</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OnlyIntegerValueFormatter</span>: <span class="title">NumberFormatter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">isPartialStringValid</span><span class="params">(<span class="number">_</span> partialString: String, newEditingString newString: AutoreleasingUnsafeMutablePointer&lt;NSString?&gt;?, errorDescription error: AutoreleasingUnsafeMutablePointer&lt;NSString?&gt;?)</span></span> -&gt; <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> partialString.isEmpty &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 禁止输入非数字 &amp;&amp; 首位不能为0 &amp;&amp; 最多输入3位</span></span><br><span class="line">        <span class="keyword">return</span> <span class="type">Int</span>(partialString) != <span class="literal">nil</span> &amp;&amp; <span class="type">Int</span>(partialString)! &gt; <span class="number">0</span> &amp;&amp; partialString.<span class="built_in">count</span> &lt; <span class="number">4</span></span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>macOS开发</category>
+      </categories>
+      <tags>
+        <tag>macOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Flutter笔记5-初探Widget布局</title>
     <url>/2020/03/19/flutter5/</url>
     <content><![CDATA[<p>Flutter核心思想：用Widget构建UI界面、万物皆Widget。</p>
