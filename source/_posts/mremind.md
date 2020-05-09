@@ -14,7 +14,9 @@ mRemind 是一款专为 macOS 设计的待办提醒应用，操作简单而功�
 
 ## 下载
 
-[![](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/badge-download-on-the-mac-app-store_s.png)]((https://apps.apple.com/cn/app/mremind-提醒你每一件小事/id1449698904?mt=12))
+[![](https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/badge-download-on-the-mac-app-store_s.png)](https://apps.apple.com/cn/app/mremind-提醒你每一件小事/id1449698904?mt=12)
+
+## 简介
 
 当我们专注于工作或某项任务时，往往会忽略计划好的其他事情。当想起时，已经错过了最佳时间。
 
