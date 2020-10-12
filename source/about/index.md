@@ -6,7 +6,9 @@ comments: false
 
 
 
-90后，坐标北京，码农，职于创业公司。
+90后，坐标北京，iOS + 全干工程师
+
+个人简历: [MiaoXiaodong](https://markmiao.com/app-works/#/)
 
 E-mail: i#markmiao.com
 
