@@ -8,13 +8,13 @@ comments: false
 
 90后，坐标北京，iOS + 全干工程师
 
-个人简历: [MiaoXiaodong](https://markmiao.com/app-works/#/)
+个人简历: [MiaoXiaodong](https://resume.markmiao.com/)
 
 E-mail: i#markmiao.com
 
 Github: [@Mark Miao](https://github.com/mxdios)
 
-目前状态: 想学的太多，关注的太杂，行动的步伐跟不上大脑的冲动。
+目前状态: 想学的太多，关注的太杂，充电中...
 
 Hello world, Coding life;
 
