@@ -336,6 +336,13 @@
 </li>
 </ol>
 <p>至此，开发环境配置完成。</p>
+<h3 id="flutter其他命令"><a href="#flutter其他命令" class="headerlink" title="flutter其他命令"></a>flutter其他命令</h3><ol>
+<li>查看安装的flutter版本：<code>flutter --version</code></li>
+<li>查看线上flutter分支：<code>flutter channel</code> ，”stable”是稳定版分支，”master”是开发版分支</li>
+<li>升级flutter sdk和依赖包：<code>flutter upgrade</code></li>
+<li>flutter项目中获取项目的依赖包：<code>flutter packages get</code></li>
+<li>flutter项目中升级项目依赖包的最新版：<code>flutter packages upgrade</code></li>
+</ol>
 <h2 id="VS-Code"><a href="#VS-Code" class="headerlink" title="VS Code"></a>VS Code</h2><h3 id="VS-Code配置"><a href="#VS-Code配置" class="headerlink" title="VS Code配置"></a>VS Code配置</h3><ol>
 <li>安装flutter插件，在Extension中搜索flutter插件，安装，重启VSCode</li>
 <li>验证flutter，在命令面板 <code>command + shift + p</code> 中输入doctor，选择 <code>Flutter: Run Flutter Doctor</code> 运行。查看输出是否有问题。打印结果和命令行中doctor命令结果一致。</li>
