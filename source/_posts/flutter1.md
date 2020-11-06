@@ -76,6 +76,14 @@ Doctor summary (to see all details, run flutter doctor -v):
 
 至此，开发环境配置完成。
 
+### flutter其他命令
+
+1. 查看安装的flutter版本：`flutter --version`
+2. 查看线上flutter分支：`flutter channel` ，"stable"是稳定版分支，"master"是开发版分支
+3. 升级flutter sdk和依赖包：`flutter upgrade`
+4. flutter项目中获取项目的依赖包：`flutter packages get`
+5. flutter项目中升级项目依赖包的最新版：`flutter packages upgrade`
+
 ## VS Code
 
 ### VS Code配置
