@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>iOS中的地图与坐标</title>
+    <url>/2020/11/28/map/</url>
+    <content><![CDATA[<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><ul>
+<li>地图：系统地图（MKMapView），百度地图（BMKMapView），高德地图（MAMapView）</li>
+<li>坐标系：GPS坐标系（WGS84），火星坐标系（GCJ02），百度坐标系（BD09）</li>
+<li>定位：系统定位（CLLocationManager），百度定位SDK（BMKLocationManager），高德定位SDK（AMapLocationManager）</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="地图"><a href="#地图" class="headerlink" title="地图"></a>地图</h2><p>苹果系统地图在海外全球通用，为GPS坐标系。在国内使用的是高德数据，所以返回的经纬度是火星坐标系的。国内测试，超出国境线就无法获取经纬度数据。</p>
+<p>百度地图的坐标系是自己的BD09，无法切换为其他坐标系。</p>
+<p>高德地图坐标系是火星坐标系，无法切换为其他坐标系。</p>
+<p><strong>地图的坐标系无法更改！！！</strong></p>
+<h2 id="坐标系"><a href="#坐标系" class="headerlink" title="坐标系"></a>坐标系</h2><p>GPS坐标系是全球坐标系，国际标准。火星坐标系是中国的标准，是在GPS坐标的基础上做了一层加密。法律规定：在中国，地图产品不允许直接使用GPS坐标，至少使用一层加密的火星坐标系（GCJ02）。百度坐标系（BD09）则是在GCJ02的基础上又做了一层转换。</p>
+<p>GPS坐标转为火星坐标或百度坐标，以及火星坐标和百度坐标相互转换，都有官方提供的方法：</p>
+<p><a href="https://lbs.amap.com/api/ios-sdk/guide/computing-equipment/amap-calculate-tool/?sug_index=3" target="_blank" rel="noopener">高德提供的坐标转换</a></p>
+<p><a href="http://lbs.baidu.com/index.php?title=iossdk/guide/tool/coordinate" target="_blank" rel="noopener">百度提供的坐标转换</a></p>
+<p>但是！火星坐标和百度坐标不允许转换GPS坐标，至少没有官方提供转换方法。</p>
+<p>网上有很多开源的转换工具，亲测了几种：</p>
+<p><a href="https://github.com/JackZhouCn/JZLocationConverter-Swift" target="_blank" rel="noopener">JZLocationConverter-Swift</a> ： 在转换WGS84时会有误差，官方有说明</p>
+<p><a href="https://cloud.tencent.com/developer/article/1524369" target="_blank" rel="noopener">iOS地图开发2-坐标系的转换(swift)</a> ： 里面的一些参数可做优化，亲测 GCJ02 -&gt; WGS84 非常精准。</p>
+<p>虽然法律规定国内不能使用GPS坐标系，这仅限于地图产品。<strong>定位是可以直接获取GPS坐标的！</strong></p>
+<p>如果定位数据要放到地图中使用，则要保证统一坐标系，不然会出现偏差。</p>
+<h2 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h2><h3 id="系统定位"><a href="#系统定位" class="headerlink" title="系统定位"></a>系统定位</h3><p>系统定位返回的经纬度为GPS坐标。</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> locationM = <span class="type">CLLocationManager</span>()</span><br><span class="line">locationM.delegate = <span class="keyword">self</span></span><br><span class="line">locationM.requestWhenInUseAuthorization() <span class="comment">//使用app时定位</span></span><br><span class="line">locationM.startUpdatingLocation() <span class="comment">//开始定位</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 定位的代理方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">locationManager</span><span class="params">(<span class="number">_</span> manager: CLLocationManager, didUpdateLocations locations: [CLLocation])</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> locations.last != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"经纬度 = \(locations.last!.coordinate)"</span>)</span><br><span class="line">        manager.stopUpdatingLocation() <span class="comment">//停止定位</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="百度定位SDK"><a href="#百度定位SDK" class="headerlink" title="百度定位SDK"></a>百度定位SDK</h3><p>百度定位SDK获取的经纬度默认为火星坐标系（GCJ02），百度地图中是百度坐标系（BD09），如果要定位的坐标放到地图里用，则需要统一坐标系，指定坐标系为<code>.BMK09LL</code>。</p>
+<p>也可以获取其他坐标系中的定位坐标：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> locationM = <span class="type">BMKLocationManager</span>()</span><br><span class="line">locationM.delegate = <span class="keyword">self</span></span><br><span class="line">locationM.coordinateType = .<span class="type">BMK09LL</span> <span class="comment">//指定坐标系</span></span><br><span class="line">locationM.startUpdatingLocation()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">bmkLocationManager</span><span class="params">(<span class="number">_</span> manager: BMKLocationManager, didUpdate location: BMKLocation?, orError error: Error?)</span></span> &#123;</span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> coordinate = location?.location?.coordinate &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"经纬度 = \(coordinate)"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="高德定位SDK"><a href="#高德定位SDK" class="headerlink" title="高德定位SDK"></a>高德定位SDK</h3><p>高德的定位和地图SDK只使用了一种坐标系：火星坐标系（GCJ02）</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> locationM = <span class="type">AMapLocationManager</span>()</span><br><span class="line">locationM.delegate = <span class="keyword">self</span></span><br><span class="line">locationM.locatingWithReGeocode = <span class="literal">true</span> <span class="comment">//返回逆地理信息</span></span><br><span class="line">locationM.startUpdatingLocation() <span class="comment">//开始定位</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 代理方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">amapLocationManager</span><span class="params">(<span class="number">_</span> manager: AMapLocationManager!, didUpdate location: CLLocation!, reGeocode: AMapLocationReGeocode!)</span></span> &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"经纬度 = \(location.coordinate)"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>参考资料：</p>
+<p><a href="https://www.jianshu.com/p/3cd701299cef" target="_blank" rel="noopener">iOS 火星坐标/地球坐标/百度坐标整理及解决方案汇总？如何转火星坐标？</a></p>
+]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>地图</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mRemind - 提醒你每一件小事</title>
     <url>/2020/05/08/mremind/</url>
     <content><![CDATA[<p><a href="https://apps.apple.com/cn/app/mremind-提醒你每一件小事/id1449698904?mt=12" target="_blank" rel="noopener"><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/mremindicon.png" alt="mRemind"></a></p>
