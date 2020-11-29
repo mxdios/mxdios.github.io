@@ -8,9 +8,9 @@ toc: true
 
 ## 概念
 
-- 地图：系统地图，百度地图，高德地图
+- 地图：系统地图（MKMapView），百度地图（BMKMapView），高德地图（MAMapView）
 - 坐标系：GPS坐标系（WGS84），火星坐标系（GCJ02），百度坐标系（BD09）
-- 定位：系统定位（CLLocationManager），百度定位SDK，高德定位SDK
+- 定位：系统定位（CLLocationManager），百度定位SDK（BMKLocationManager），高德定位SDK（AMapLocationManager）
 
 <!--more-->
 
