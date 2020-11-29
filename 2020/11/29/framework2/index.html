@@ -20,16 +20,19 @@
     var CONFIG = {"hostname":"markmiao.com","root":"/","scheme":"Pisces","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Hello world, Coding life;">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Mark Miao">
-<meta property="og:url" content="http://markmiao.com/tags/cookie/index.html">
+  <meta name="description" content="上一篇关于静态库的文章：制作.a和.framework静态库。文章很老了，有许多问题，最近用Xcode12打包framework，遇到了一些问题，记录一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="framework合并问题">
+<meta property="og:url" content="http://markmiao.com/2020/11/29/framework2/index.html">
 <meta property="og:site_name" content="Mark Miao">
-<meta property="og:description" content="Hello world, Coding life;">
+<meta property="og:description" content="上一篇关于静态库的文章：制作.a和.framework静态库。文章很老了，有许多问题，最近用Xcode12打包framework，遇到了一些问题，记录一下。">
+<meta property="article:published_time" content="2020-11-29T09:21:55.000Z">
+<meta property="article:modified_time" content="2020-11-29T08:30:45.696Z">
 <meta property="article:author" content="Mark">
+<meta property="article:tag" content="静态库">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://markmiao.com/tags/cookie/">
+<link rel="canonical" href="http://markmiao.com/2020/11/29/framework2/">
 
 
 <script id="page-configurations">
@@ -37,11 +40,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false
+    isPost : true
   };
 </script>
 
-  <title>标签: cookie | Mark Miao</title>
+  <title>framework合并问题 | Mark Miao</title>
   
 
 
@@ -197,54 +200,176 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">cookie
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://markmiao.com/2020/11/29/framework2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/7787970.jpg">
+      <meta itemprop="name" content="Mark">
+      <meta itemprop="description" content="Hello world, Coding life;">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mark Miao">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          framework合并问题
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-29 17:21:55 / 修改时间：16:30:45" itemprop="dateCreated datePublished" datetime="2020-11-29T17:21:55+08:00">2020-11-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">iOS开发</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/11/29/framework2/" class="post-meta-item leancloud_visitors" data-flag-title="framework合并问题" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/29/framework2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/29/framework2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2016</h1>
+        <p>上一篇关于静态库的文章：<a href="https://markmiao.com/2016/11/14/%E5%88%B6%E4%BD%9C-a%E5%92%8C-framework%E9%9D%99%E6%80%81%E5%BA%93/">制作.a和.framework静态库</a>。文章很老了，有许多问题，最近用Xcode12打包framework，遇到了一些问题，记录一下。</p>
+<a id="more"></a>
+
+<p>打包静态库常用脚本配置的方式，在Run Script添加脚本。编译之后，真机和模拟器的framework会完成合并。但Xcode升级之后脚本失效了，则分别打包，手动完成合并。</p>
+<p>在编译时，要选中包的TARGET，分别在真机和模拟器下完成编译。在Products里面Show in Finder便能看到完成打包的framework文件。</p>
+<p>xxx.framework文件夹中xxx文件，没有后缀名且体积最大，这就是静态库文件。</p>
+<p>查看静态文件支持架构：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info 静态库xxx文件路径</span><br></pre></td></tr></table></figure>
+
+<p>真机：arm64 armv7， 模拟器：arm64 x86_64 i386 </p>
+<p>静态文件合并命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create 真机xxx文件路径 模拟器xxx文件路径 -output 新文件路径</span><br></pre></td></tr></table></figure>
+
+<p>Xcode升级12之后，报错了：</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">have the same architectures (<span class="name">arm64</span>) and can't be in the same fat output file</span><br></pre></td></tr></table></figure>
+
+<p>因为两个静态文件都支持<code>arm64</code>，无法合并。</p>
+<p>可以移除模拟器静态文件的<code>arm64</code>架构：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo 模拟器静态文件xxx -remove arm64 -output 移除后模拟器静态文件xxx名</span><br></pre></td></tr></table></figure>
+
+<p>移除之后，重新查看支持架构，只有<code>armv7</code>，重新合并就没有问题了。</p>
+<p>网上对于该问题的一些解决办法：</p>
+<p><a href="https://stackoverflow.com/questions/64022291/ios-14-lipo-error-while-creating-library-for-both-device-and-simulator" target="_blank" rel="noopener">iOS 14, lipo error while creating library for both device and simulator</a></p>
+<p><a href="https://blog.csdn.net/huawt520/article/details/109305833" target="_blank" rel="noopener">XCode12 模拟器静态库支持arm64架构引发的系列问题</a></p>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2016-01-27T00:59:51+08:00"
-              content="2016-01-27">
-          01-27
-        </time>
+    
+    
+    
+        <div class="reward-container">
+  <div>打赏作者一杯咖啡</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG767.jpeg" alt="Mark 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WechatIMG766.jpeg" alt="Mark 支付宝">
+        <p>支付宝</p>
       </div>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2016/01/27/ioscookie/" itemprop="url">
-            <span itemprop="name">iOS的cookie使用</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-    </div>
   </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Mark
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://markmiao.com/2020/11/29/framework2/" title="framework合并问题">http://markmiao.com/2020/11/29/framework2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9D%99%E6%80%81%E5%BA%93/" rel="tag"># 静态库</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/28/map/" rel="prev" title="iOS中的地图与坐标">
+      <i class="fa fa-chevron-left"></i> iOS中的地图与坐标
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
   
   
   
 
-  
-
+  </div>
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {

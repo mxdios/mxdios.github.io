@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2020-11-28T13:37:38.598Z</updated>
+  <updated>2020-11-29T08:30:45.696Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>framework合并问题</title>
+    <link href="http://markmiao.com/2020/11/29/framework2/"/>
+    <id>http://markmiao.com/2020/11/29/framework2/</id>
+    <published>2020-11-29T09:21:55.000Z</published>
+    <updated>2020-11-29T08:30:45.696Z</updated>
+    
+    <content type="html"><![CDATA[<p>上一篇关于静态库的文章：<a href="https://markmiao.com/2016/11/14/%E5%88%B6%E4%BD%9C-a%E5%92%8C-framework%E9%9D%99%E6%80%81%E5%BA%93/">制作.a和.framework静态库</a>。文章很老了，有许多问题，最近用Xcode12打包framework，遇到了一些问题，记录一下。</p><a id="more"></a><p>打包静态库常用脚本配置的方式，在Run Script添加脚本。编译之后，真机和模拟器的framework会完成合并。但Xcode升级之后脚本失效了，则分别打包，手动完成合并。</p><p>在编译时，要选中包的TARGET，分别在真机和模拟器下完成编译。在Products里面Show in Finder便能看到完成打包的framework文件。</p><p>xxx.framework文件夹中xxx文件，没有后缀名且体积最大，这就是静态库文件。</p><p>查看静态文件支持架构：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -info 静态库xxx文件路径</span><br></pre></td></tr></table></figure><p>真机：arm64 armv7， 模拟器：arm64 x86_64 i386 </p><p>静态文件合并命令：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo -create 真机xxx文件路径 模拟器xxx文件路径 -output 新文件路径</span><br></pre></td></tr></table></figure><p>Xcode升级12之后，报错了：</p><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">have the same architectures (<span class="name">arm64</span>) and can't be in the same fat output file</span><br></pre></td></tr></table></figure><p>因为两个静态文件都支持<code>arm64</code>，无法合并。</p><p>可以移除模拟器静态文件的<code>arm64</code>架构：</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lipo 模拟器静态文件xxx -remove arm64 -output 移除后模拟器静态文件xxx名</span><br></pre></td></tr></table></figure><p>移除之后，重新查看支持架构，只有<code>armv7</code>，重新合并就没有问题了。</p><p>网上对于该问题的一些解决办法：</p><p><a href="https://stackoverflow.com/questions/64022291/ios-14-lipo-error-while-creating-library-for-both-device-and-simulator" target="_blank" rel="noopener">iOS 14, lipo error while creating library for both device and simulator</a></p><p><a href="https://blog.csdn.net/huawt520/article/details/109305833" target="_blank" rel="noopener">XCode12 模拟器静态库支持arm64架构引发的系列问题</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;上一篇关于静态库的文章：&lt;a href=&quot;https://markmiao.com/2016/11/14/%E5%88%B6%E4%BD%9C-a%E5%92%8C-framework%E9%9D%99%E6%80%81%E5%BA%93/&quot;&gt;制作.a和.framework静态库&lt;/a&gt;。文章很老了，有许多问题，最近用Xcode12打包framework，遇到了一些问题，记录一下。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="静态库" scheme="http://markmiao.com/tags/%E9%9D%99%E6%80%81%E5%BA%93/"/>
+    
+  </entry>
   
   <entry>
     <title>iOS中的地图与坐标</title>
@@ -476,32 +499,6 @@
     
     
       <category term="文档" scheme="http://markmiao.com/tags/%E6%96%87%E6%A1%A3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>被苹果爸爸完全碾压的通话记录</title>
-    <link href="http://markmiao.com/2017/08/12/talkingtoapple/"/>
-    <id>http://markmiao.com/2017/08/12/talkingtoapple/</id>
-    <published>2017-08-12T08:14:28.000Z</published>
-    <updated>2017-08-12T08:17:39.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>私情是介个样子滴~</p><p>最近公司开发了一款APP，是面向大众化的工具类应用。在上架App Store时遇到了阻挠，这对我来说都习以为常了，没有阻挠才奇怪呢。</p><a id="more"></a><p>这次被拒的原因之前没遇到过，但我大概预测到了：因为APP内容是属于大众化的工具类，核心功能与账户没有直接关系，所以不能在没使用APP之前强制用户登录，违反了App Store审核指南的第5.1.1条。</p><p>其实这条规则我也知道，并且知道如果给出了强制用户登录的原因，且原因具有说服力的话是可以这么做的。所以我在提交应用审核的备注里长篇大论的写了一百多字的说明，如此如此这般这般，所以我们采用了用户强制登录机制。</p><p>事实证明，这些都是废话，半毛钱说服力都没有。苹果爸爸直接拒绝，第5.1.1条规则打脸甩过来了。我还不死心，将原来备注里一多百字的说明扩充到两百字，详详细细的阐述了我们之所以这么搞，是有原因滴，然后给苹果发过去了。</p><p>苹果的回复是：你违反了第5.1.1条规则，后面分别用英文、简体中文、繁体中文说：“如果你不服，留下联系方式，来信砍。”当然苹果爸爸是用很文雅的语言描述了这个意思。我岂能示弱，留就留！</p><p>其实之前与苹果开发者客服电话联系过几次，都是些账号或应用的小问题，关于应用审核还是开天辟地头一遭。App Store应用上架审核一直是一个很神秘的机构，他们具体的工作流程和审核方法都鲜为人知。听说这个机构都在美国本土，还听说在中国台湾有个部门负责亚洲市场的应用审核。这些都是我听过的传言。之前与应用审核人员沟通都是用iTunesConnect里面的邮件，或者在Developer里面选择一项“我想干嘛”，给应用审核组发信息。从来没有电话或即时通讯这些快速的沟通途径，我曾经问过苹果开发者客服应用审核组的客服电话是多少，他直接告诉我没有。</p><p>没想到这次能电话联系到应用审核组！想想还有些小激动呢。</p><p>在我留下联系方式的三天后，也就是今天早上，我遛完狗回来接到了来自美国加利福尼亚圣何塞的电话。我清了清嗓子：“喂，您好。”</p><p>“喂，请问是xxx先生吗？”是一位普通话明显生硬的妹子，这样让我有些惊讶。</p><p>为了今天的通话，我是做了准备的。在经过友好的问候和审核问题确认之后，我率先发招：“我们的应用是有专门的用户群体，我们需要为每位使用者创建用户ID，便于后期工作展开。”我并没有在第一招就阐明这个后期工作，是希望在后面对方反驳后，再行祭出，已达到首尾呼应，加大谈判力度，我是多么的睿智。</p><p>“我们发现您的应用并不具备独立用户群的特性，因此在使用前不能强制用户登录，这违反了我们审核规则的第5.1.1条。”对方明显没get到我说的应用独特性，依旧强调规则。</p><p>“是这样的，我们会统计用户登录后使用的工具模板数量，后台大数据分析该用户经常使用哪几类，后期会对该用户着重推送这几类的工具模板。这是为用户提供更好的服务和更优质的体验，这些都是基于用户登录的。”以用户服务为向导，一切都是为了用户，有这么高大上的理由为依据，区区强制用户登录不会有问题啦，都是为了用户体验嘛。我都为我的机智和逻辑思维能力感到赞叹。</p><p>“不是不允许用户登录。对于针对普通用户群体的应用，在用户了解应用之前不可以强制用户注册登录，强制搜集用户信息。这违反了我们的应用审核规则。应用必须开放用户未登录时也可以使用部分功能，当使用涉及账号的功能时，再请求用户登录。否则无法上架。”对方如是说。</p><p>听不听爸爸的话？不听话你就别想上架。我有点委屈了，完全没考虑过人家的感受嘛。我做了一些妥协：“那这样吧，我们可以提供用户不登录的游客模式，但是只能浏览，不能使用工具模板。在使用时需要登录，这样便于我们后期有针对性的内容推送。”</p><p>“不可以，iOS是有本地存储机制的，用户不登录可以将工具模板保存到本地。如果用户想要将使用记录保存到服务器，同步到其他设备，这时可以让用户登录。”我的让步完全没有换来理解，反而换来了她的步步紧逼。太欺负人了！</p><p>“那这样一来很大一部分核心功能在用户未登录状态下都能使用，用户的登录欲望会大大降低，这不利于我们后期对用户进行有针对性的工具模板推送。”我还在做最后的挣扎，用户针对性内容是我自以为有力的筹码，我以此一再强调我们后期准备对用户的付出，想换来苹果爸爸的理解。</p><p>“当你们应用做得足够好，推广到位，我相信用户是会愿意主动注册登录的。”这分明是胜利后的嘲讽啊！听到她这句话时，我知道我说错话了，败得彻底，再也没有缓和的余地了。怎么让用户愿意登录不是苹果爸爸该考虑的，是我们该考虑的，想以强制用户登录来达到目的，苹果爸爸可不答应。别看她普通话略显生硬，欺负起我来，我竟毫无反驳的余地，稍微挣扎一点即被拍死。</p><p>“那好吧，我们对应用修改后再行上架。”我如一只斗败的公鸡，完全没有了开始时的底气和自信。这明显就不是一场势均力敌的谈判，而是爸爸教育儿子的完虐。一开始我就搞错了自己的身份地位，妄图说服苹果爸爸，这哪是胳膊拧大腿，简直是腿毛想扎大动脉，还妄图给苹果放血，太不自量力了。</p><p>君不见中国两大微——微信和微博，一个为了打赏，一个为了问答。微信关了iOS客户端的打赏功能，微博妥协了问答付费走内购。</p><p>我还是图样图森破。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;私情是介个样子滴~&lt;/p&gt;
-&lt;p&gt;最近公司开发了一款APP，是面向大众化的工具类应用。在上架App Store时遇到了阻挠，这对我来说都习以为常了，没有阻挠才奇怪呢。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="程序人生" scheme="http://markmiao.com/categories/%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F/"/>
-    
-    
-      <category term="短文" scheme="http://markmiao.com/tags/%E7%9F%AD%E6%96%87/"/>
-    
-      <category term="应用" scheme="http://markmiao.com/tags/%E5%BA%94%E7%94%A8/"/>
     
   </entry>
   
