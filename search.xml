@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>火星坐标转GPS坐标</title>
+    <url>/2020/12/06/map2/</url>
+    <content><![CDATA[<p>火星坐标（GCJ02）转GPS坐标（WGS84）没有标准的方法，网上倒是有很多第三方的。最近在做一款产品，要求非常精确的将火星坐标转换成GPS坐标。</p>
+<a id="more"></a>
+
+<p>我试过很多种方法，<a href="https://github.com/JackZhouCn/JZLocationConverter-Swift" target="_blank" rel="noopener">JZLocationConverter-Swift</a> 算误差比较小了，有几米的误差。我找到另一种方法：二分法取中心点，逐步逼近。几乎可以算是零误差了，但有个问题。</p>
+<h2 id="算法详解"><a href="#算法详解" class="headerlink" title="算法详解"></a>算法详解</h2><p>先说这个转换方法的逻辑，步骤如下：</p>
+<ol>
+<li><p>火星坐标 A 转换GPS坐标 A1，对 A 的经纬度（lng，lat）分别 + - 0.5，得到4个值:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">最小经度</span> <span class="attr">minLng:</span> <span class="string">lng</span> <span class="bullet">-</span> <span class="number">0.5</span></span><br><span class="line"><span class="string">最大经度</span> <span class="attr">maxLng:</span> <span class="string">lng</span> <span class="string">+</span> <span class="number">0.5</span></span><br><span class="line"><span class="string">最小纬度</span> <span class="attr">minLat:</span> <span class="string">lat</span> <span class="bullet">-</span> <span class="number">0.5</span></span><br><span class="line"><span class="string">最大纬度</span> <span class="attr">maxLat:</span> <span class="string">lat</span> <span class="string">+</span> <span class="number">0.5</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可以组成4个火星坐标：*<em>注：方位只在东北半球适用，火星坐标也只中国用 : ( *</em></p>
+<figure class="highlight pf"><table><tr><td class="code"><pre><span class="line">左下角：a (<span class="keyword">min</span>Lng, <span class="keyword">min</span>Lat)</span><br><span class="line">右下角：b (<span class="keyword">max</span>Lng, <span class="keyword">min</span>Lat)</span><br><span class="line">左上角：c (<span class="keyword">min</span>Lng, <span class="keyword">max</span>Lat)</span><br><span class="line">右上角：d (<span class="keyword">max</span>Lng, <span class="keyword">max</span>Lat)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这4个坐标点得到一个正方形区域 M，A 是中心点，它们都属于火星坐标系</p>
+</li>
+<li><p><strong>重点：将M区域 a，b，c，d 4个坐标看作是GPS坐标！获取中心点坐标 P （P是GPS坐标，A是火星坐标，数值相等，位置不同）</strong></p>
+</li>
+<li><p>计算 P 与 A 的经纬度差，坐标系不同不能直接比较。将 P 转为火星坐标P1（<strong>有官方转换方法</strong>）</p>
+</li>
+<li><p>计算 P1 与 A 的经纬度相差之和 ( | P1lng - Alng | + | P1lat - Alat | ) &lt; 0.00001，则认为P1和A重叠，那 P 就是 A 对应的GPS坐标。</p>
+</li>
+<li><p>如果 &gt; 0.00001，二分法缩小区域，将a，b，c，d 4点转为火星坐标 a1，b1，c1，d1，以P1为准，计算A在P1的什么方位。看A在 P1-a1，P1-b1，P1-c1，P1-d1，哪个之间。</p>
+</li>
+<li><p>用二分法排除以外区域，比如：A在P1的左下角，就是A在P1-a1之间，得到新的区域：</p>
+<figure class="highlight pf"><table><tr><td class="code"><pre><span class="line">左下角：a（<span class="keyword">min</span>Lng, <span class="keyword">min</span>Lat)</span><br><span class="line">右下角：b ((<span class="keyword">min</span>Lng + <span class="keyword">max</span>Lng) / <span class="number">2</span>, <span class="keyword">min</span>Lat)</span><br><span class="line">左上角：c (<span class="keyword">min</span>Lng, (<span class="keyword">min</span>Lat + <span class="keyword">max</span>Lat) / <span class="number">2</span>)</span><br><span class="line">右上角：d ((<span class="keyword">min</span>Lng + <span class="keyword">max</span>Lng) / <span class="number">2</span>, (<span class="keyword">min</span>Lat + <span class="keyword">max</span>Lat) / <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>6 - 8 步骤循环30次，一般情况下能得到差距 &lt; 0.00001 的GPS坐标，即时达不到标准，结果也很接近。</p>
+</li>
+</ol>
+<p>这个转换一句话解释：<strong>用已知的GPS坐标，逐步逼近要转换的火星坐标</strong></p>
+<h2 id="算法漏洞"><a href="#算法漏洞" class="headerlink" title="算法漏洞"></a>算法漏洞</h2><p>在测试过程中，有一个坐标点出现了问题：上海虹桥机场2号航站楼 (latitude : 31.194248175984768  longitude : 121.32863948433301)</p>
+<p>下面是算法输出的经纬度相差之和：</p>
+<figure class="highlight angelscript"><table><tr><td class="code"><pre><span class="line">左上，<span class="number">0.49360417451567073</span></span><br><span class="line">右下，<span class="number">0.24358081099306617</span></span><br><span class="line">右下，<span class="number">0.11855877737957243</span></span><br><span class="line">右下，<span class="number">0.05603884882789245</span></span><br><span class="line">右下，<span class="number">0.024777349920977798</span></span><br><span class="line">右下，<span class="number">0.00914639780950921</span></span><br><span class="line">右下，<span class="number">0.0025836297689565413</span></span><br><span class="line">左下，<span class="number">0.0013319084599991982</span></span><br><span class="line">右上，<span class="number">0.001330858958493053</span></span><br><span class="line">右上，<span class="number">0.001604743230569028</span></span><br></pre></td></tr></table></figure>
+
+<p>坐标点在循环第10次，四角坐标点从GPS转为火星坐标系时，逃出了限定区域，这时已没法继续二分法逼近了，只能返回差距<code>0.001604743230569028</code>的坐标转换。</p>
+<p>问题成因：GPS坐标在转换为火星坐标系时，四个点并非同步平移，正方形区域的GPS坐标，转为火星坐标时，就成了不规则的四边形，有时会把坐标点闪到外面。</p>
+<p>正在想办法解决这个问题……</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">/// 火星坐标 -&gt; GPS</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">transformFromGCJToWGS</span><span class="params">(p:CLLocationCoordinate2D)</span></span> -&gt; <span class="type">CLLocationCoordinate2D</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> threshold = <span class="number">0.00001</span>;</span><br><span class="line">    <span class="keyword">var</span> minLat = p.latitude - <span class="number">0.5</span>;</span><br><span class="line">    <span class="keyword">var</span> maxLat = p.latitude + <span class="number">0.5</span>;</span><br><span class="line">    <span class="keyword">var</span> minLng = p.longitude - <span class="number">0.5</span>;</span><br><span class="line">    <span class="keyword">var</span> maxLng = p.longitude + <span class="number">0.5</span>;</span><br><span class="line">    <span class="keyword">var</span> delta = <span class="number">1.0</span>;</span><br><span class="line">    <span class="keyword">var</span> maxIteration = <span class="number">30</span>;</span><br><span class="line">    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> leftBottom = <span class="type">AMapCoordinateConvert</span>(<span class="type">CLLocationCoordinate2D</span>(latitude: minLat, longitude: minLng), .<span class="type">GPS</span>)</span><br><span class="line">        <span class="keyword">let</span> rightBottom = <span class="type">AMapCoordinateConvert</span>(<span class="type">CLLocationCoordinate2D</span>(latitude: minLat, longitude: maxLng), .<span class="type">GPS</span>)</span><br><span class="line">        <span class="keyword">let</span> leftUp = <span class="type">AMapCoordinateConvert</span>(<span class="type">CLLocationCoordinate2D</span>(latitude: maxLat, longitude: minLng), .<span class="type">GPS</span>)</span><br><span class="line">        <span class="keyword">let</span> rightUp = <span class="type">AMapCoordinateConvert</span>(<span class="type">CLLocationCoordinate2D</span>(latitude: maxLat, longitude: maxLng), .<span class="type">GPS</span>)</span><br><span class="line">        <span class="keyword">let</span> midPoint = <span class="type">AMapCoordinateConvert</span>(<span class="type">CLLocationCoordinate2D</span>(latitude : ((minLat + maxLat) / <span class="number">2</span>),longitude : ((minLng + maxLng) / <span class="number">2</span>)), .<span class="type">GPS</span>)</span><br><span class="line">        delta = fabs(midPoint.latitude - p.latitude) + fabs(midPoint.longitude - p.longitude);</span><br><span class="line">        maxIteration = maxIteration - <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span>(maxIteration &lt;= <span class="number">0</span> || delta &lt;= threshold) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">CLLocationCoordinate2D</span>(latitude: (minLat + maxLat) / <span class="number">2</span>, longitude: (minLng + maxLng) / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(isContains(point: p, p1: leftBottom, p2: midPoint)) &#123;</span><br><span class="line">            maxLat = (minLat + maxLat) / <span class="number">2</span>;</span><br><span class="line">            maxLng = (minLng + maxLng) / <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(isContains(point: p, p1: rightBottom, p2: midPoint)) &#123;</span><br><span class="line">            maxLat = (minLat + maxLat) / <span class="number">2</span>;</span><br><span class="line">            minLng = (minLng + maxLng) / <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(isContains(point: p, p1: leftUp, p2: midPoint)) &#123;</span><br><span class="line">            minLat = (minLat + maxLat) / <span class="number">2</span>;</span><br><span class="line">            maxLng = (minLng + maxLng) / <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span>(isContains(point: p, p1: rightUp, p2: midPoint))&#123;</span><br><span class="line">            minLat = (minLat + maxLat) / <span class="number">2</span>;</span><br><span class="line">            minLng = (minLng + maxLng) / <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="type">CLLocationCoordinate2D</span>(latitude: (minLat + maxLat) / <span class="number">2</span>, longitude: (minLng + maxLng) / <span class="number">2</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isContains</span><span class="params">(point:CLLocationCoordinate2D , p1:CLLocationCoordinate2D, p2:CLLocationCoordinate2D)</span></span>-&gt;<span class="type">Bool</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (point.latitude &gt;= <span class="built_in">min</span>(p1.latitude, p2.latitude) &amp;&amp;</span><br><span class="line">                point.latitude &lt;= <span class="built_in">max</span>(p1.latitude, p2.latitude)) &amp;&amp;</span><br><span class="line">        (point.longitude &gt;= <span class="built_in">min</span>(p1.longitude,p2.longitude) &amp;&amp;</span><br><span class="line">            point.longitude &lt;= <span class="built_in">max</span>(p1.longitude, p2.longitude));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考链接：<a href="https://cloud.tencent.com/developer/article/1524369" target="_blank" rel="noopener">iOS地图开发2-坐标系的转换(swift)</a> </p>
+]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>地图</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>framework合并问题</title>
     <url>/2020/11/29/framework2/</url>
     <content><![CDATA[<p>上一篇关于静态库的文章：<a href="https://markmiao.com/2016/11/14/%E5%88%B6%E4%BD%9C-a%E5%92%8C-framework%E9%9D%99%E6%80%81%E5%BA%93/">制作.a和.framework静态库</a>。文章很老了，有许多问题，最近用Xcode12打包framework，遇到了一些问题，记录一下。</p>
