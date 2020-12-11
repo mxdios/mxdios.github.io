@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Vue与App交互</title>
+    <url>/2020/12/11/vuenative/</url>
+    <content><![CDATA[<p>app开发经常会内嵌h5页面，原生app与h5页面相互调用，完成数据传递。一套h5页面能多端运行，实现跨平台，这就是常见的Hybrid app（混合app）</p>
+<a id="more"></a>
+
+<h2 id="WKWebView"><a href="#WKWebView" class="headerlink" title="WKWebView"></a>WKWebView</h2><h3 id="通过-url-向-vue-传参"><a href="#通过-url-向-vue-传参" class="headerlink" title="通过 url 向 vue 传参"></a>通过 url 向 vue 传参</h3><p>在原生WKWebView中加载URL时，以拼接方式向h5页面传参：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> urlStr = <span class="string">"https://markmiao.com/app/request?data=123"</span></span><br><span class="line"><span class="keyword">let</span> request = <span class="type">URLRequest</span>(url: <span class="type">URL</span>(string: urlStr)!)</span><br><span class="line">webView.load(request)</span><br></pre></td></tr></table></figure>
+
+<p>vue中接收传递数据：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">this.data &#x3D; this.$route.query.data</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过<code>&amp;</code>符号拼接多个参数传递：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> urlStr = <span class="string">"https://markmiao.com/app/request?data=123&amp;index=1"</span></span><br></pre></td></tr></table></figure>
+
+<p>URL是有长度限制的，如果要传递的数据很多，可以采用<code>evaluateJavaScript</code>，在原生中调用vue中的js方法传递数据。</p>
+<h3 id="evaluateJavaScript-向-vue-传参"><a href="#evaluateJavaScript-向-vue-传参" class="headerlink" title="evaluateJavaScript 向 vue 传参"></a>evaluateJavaScript 向 vue 传参</h3><p><code>evaluateJavaScript</code>接收的是一个字符串方法名，传参时需要将json对象的参数转为json字符串，用单引号包裹放到字符串方法中：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> funStr = <span class="string">"vueFunctionStr('\(jsonStr)')"</span> <span class="comment">//vueFunctionStr是vue中的方法名，jsonStr是json字符串的传参</span></span><br><span class="line"><span class="keyword">self</span>.webView.evaluateJavaScript(funStr) &#123; (any, error) <span class="keyword">in</span></span><br><span class="line">    <span class="keyword">if</span> error != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="type">XDLog</span>(<span class="string">"调用失败 = \(error.debugDescription)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>vue的方法接收数据：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">mounted () &#123; <span class="comment">// 在window中注册方法</span></span><br><span class="line">  <span class="built_in">window</span>.vueFunctionStr = <span class="keyword">this</span>.vueFunctionStr</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vueFunctionStr (jsonStr) &#123;</span><br><span class="line">  <span class="keyword">let</span> jsonDict = <span class="built_in">JSON</span>.parse(jsonStr)</span><br><span class="line">  <span class="built_in">console</span>.log(jsonDict)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<h3 id="vue-向-WKWebView传参"><a href="#vue-向-WKWebView传参" class="headerlink" title="vue 向 WKWebView传参"></a>vue 向 WKWebView传参</h3><p>h5也可以通过调用原生方法传参，<code>WKWebView</code>需要添加方法监听，<code>vueFunction</code>是要监听的方法名。</p>
+<p>在 <code>WKScriptMessageHandler</code>方法中接收传参，<code>message.name</code>是方法名，<code>message.body</code>是传递参数：</p>
+<figure class="highlight swift"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 添加监听</span></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewWillAppear</span><span class="params">(<span class="number">_</span> animated: Bool)</span></span> &#123;</span><br><span class="line">		<span class="keyword">super</span>.viewWillAppear(animated)</span><br><span class="line">		<span class="keyword">self</span>.webView.configuration.userContentController.add(<span class="keyword">self</span>, name: <span class="string">"vueFunction"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 移除监听</span></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewWillDisappear</span><span class="params">(<span class="number">_</span> animated: Bool)</span></span> &#123;</span><br><span class="line">		<span class="keyword">super</span>.viewWillDisappear(animated)</span><br><span class="line">    <span class="keyword">self</span>.webView.configuration.userContentController.removeScriptMessageHandler(forName: <span class="string">"vueFunction"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">WebViewController</span>: <span class="title">WKScriptMessageHandler</span>, <span class="title">WKNavigationDelegate</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">userContentController</span><span class="params">(<span class="number">_</span> userContentController: WKUserContentController, didReceive message: WKScriptMessage)</span></span> &#123;</span><br><span class="line">        <span class="type">XDLog</span>(<span class="string">"vue调用原生 = \(message.name), \(message.body)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">	  <span class="comment">// 获取h5网页title</span></span><br><span class="line">  	<span class="function"><span class="keyword">func</span> <span class="title">webView</span><span class="params">(<span class="number">_</span> webView: WKWebView, didFinish navigation: WKNavigation!)</span></span> &#123;</span><br><span class="line">        webView.evaluateJavaScript(<span class="string">"document.title"</span>) &#123; (title, error) <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">let</span> titleStr = title <span class="keyword">as</span>? <span class="type">String</span> &#123;</span><br><span class="line">                <span class="keyword">self</span>.navigationItem.title = titleStr</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">self</span>.navigationItem.title = <span class="string">""</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在vue中通过<code>window.webkit</code>调用原生方法，传参：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.webkit) &#123;</span><br><span class="line">	<span class="comment">// vueFunction 是在WKWebView中监听的方法名，postMessage后面是要传递的json对象参数</span></span><br><span class="line">  <span class="built_in">window</span>.webkit.messageHandlers.vueFunction.postMessage(&#123;</span><br><span class="line">    data: <span class="number">123</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="uni-app"><a href="#uni-app" class="headerlink" title="uni-app"></a>uni-app</h2><p>uni-app是一款跨平台框架，可以以一套代码编译成iOS/Android/各种小程序，一套代码多端运行。</p>
+<p>uni-app完全是vue的开发方式，API高度类似小程序，相比原生性能和拓展性都是问题。框架本身也存在一些bug，好在官方迭代很快。</p>
+<h3 id="通过-url-向-vue-传参-1"><a href="#通过-url-向-vue-传参-1" class="headerlink" title="通过 url 向 vue 传参"></a>通过 url 向 vue 传参</h3><p>uni-app有<code>web-view</code>组件，用来加载网页，可以通过<code>src</code>的URL地址向vue传参：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;web-view src&#x3D;&quot;https:&#x2F;&#x2F;markmiao.com&#x2F;app&#x2F;request?data&#x3D;123&quot;&gt;&lt;&#x2F;web-view&gt;</span><br></pre></td></tr></table></figure>
+
+<p>vue接收参数和上面一样，也是通过<code>this.$route.query.data</code></p>
+<h3 id="vue-向-uni-app-传参"><a href="#vue-向-uni-app-传参" class="headerlink" title="vue 向 uni-app 传参"></a>vue 向 uni-app 传参</h3><p>参考文章：<a href="https://ask.dcloud.net.cn/article/35083" target="_blank" rel="noopener">在web-view加载的本地及远程HTML中调用uni的API及网页和vue页面通讯</a></p>
+<p>vue 向 uni-app 传参需要引入uni-app提供的sdk，vue中只需要在<code>public/index.html</code>文件中引入即可：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"https://js.cdn.aliyun.dcloud.net.cn/dev/uni-app/uni.webview.1.5.1.js?rev=1.0.0"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果要兼容小程序，还需要引入微信js-sdk，如果引入需要在前面：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"//res.wx.qq.com/open/js/jweixin-1.4.0.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在vue中调用<code>uni.postMessage</code>方法向uni-app传参：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">uni.postMessage(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    to: <span class="string">'appFunction'</span>, <span class="comment">//方法名</span></span><br><span class="line">    data: &#123; <span class="comment">//传递参数</span></span><br><span class="line">      data: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>在uni-app中的 <code>getMessage</code>方法中得到传参：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">getMessage: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> dataDict = e.detail.data[<span class="number">0</span>]</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"方法名 = "</span> + dataDict.to + <span class="string">"传参 = "</span> + dataDict.data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>iOS开发</category>
+      </categories>
+      <tags>
+        <tag>vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>火星坐标转GPS坐标</title>
     <url>/2020/12/06/map2/</url>
     <content><![CDATA[<p>火星坐标（GCJ02）转GPS坐标（WGS84）没有标准的方法，网上倒是有很多第三方的。最近在做一款产品，要求非常精确的将火星坐标转换成GPS坐标。</p>
