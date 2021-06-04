@@ -62,7 +62,7 @@ Doctor summary (to see all details, run flutter doctor -v):
 
 1. 获取flutter SDK路径，用在第2步中添加的路径。
 
-2. 不同系统文件目录可能会不相同，以 `.bashrc` 为例。在 `.bashrc` 文件中添加路径。
+2. 不同系统文件目录可能会不相同，以 `.bash_profile` 为例。在 `.bash_profile` 文件中添加路径。
 
    ```
    export PATH="$PATH:/Users/inspiry/Desktop/work/flutter/bin"
