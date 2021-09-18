@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2021-06-04T04:06:26.330Z</updated>
+  <updated>2021-09-18T08:44:37.267Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>跨域导致iframe无法使用Cookie</title>
+    <link href="http://markmiao.com/2021/09/18/iframecookieerror/"/>
+    <id>http://markmiao.com/2021/09/18/iframecookieerror/</id>
+    <published>2021-09-18T06:30:50.000Z</published>
+    <updated>2021-09-18T08:44:37.267Z</updated>
+    
+    <content type="html"><![CDATA[<p>在工作中，有一个项目需要在我们的平台内嵌其他平台，用户信息需要共享。在使用iframe内嵌时，发现内嵌的页面用户校验失败。两个平台系统没有问题，单独访问时都可以。</p><p>测试时Chrome有问题，使用Firefox可以，Firefox更新之后有同样问题。那就是浏览器的问题了。</p><a id="more"></a><h2 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2><p>Chrome 80版本默认屏蔽了第三方Cookie，SameSite属性设置为Lax，防止跨域传送Cookie，防止 CSRF 攻击和用户追踪。<a href="http://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html" target="_blank" rel="noopener">SameSite属性介绍</a></p><p>在接口请求响应头<code>Set-Cookie</code>有个提示：<code>此Set-Cookie标头未指定&quot;SameSite&quot;属性,它默认为&quot;SameSite=Lax,&quot;因为它来自跨站点响应，而不是对顶级导航的响应，必须为此此Set-Cookie设置&quot;SameSite=None&quot;才能实现跨站点使用</code></p><p>当设置<code>SameSite=None</code>时，必须同时设置<code>Secure</code>属性才有效，而且必须通过https发送cookie。</p><h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>我们的A平台，集成了B平台模块，A平台在iframe嵌套B平台时通过<code>url</code>将用户<code>token</code>传给B，B有用户<code>token</code>后，有自成一套的用户逻辑。</p><p>B平台使用<code>session</code>进行用户鉴权，会产生一条session id：<code>PHPSESSID</code>，这个会存储在cookie中，每次接口请求时由此鉴权。</p><p><code>PHPSESSID</code>这条cookie是后端php项目自动生成的，这就很难改它的<code>SameSite</code>和<code>Secure</code></p><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p><strong>先说方案：直接问题没解决，从根本解决了，B平台取消session鉴权方案，采用和A平台一致的token鉴权，真釜底抽薪</strong></p><p><strong>另一种方案：两平台放到同一域下，不跨域自然没有该问题了。</strong></p><p>网上有很多临时解决办法，比如修改<code>chrome://flags/</code>里的配置，手动设置这条cookie的<code>SameSite</code>和<code>Secure</code>，这些在开发时可作为临时手段，生产环境就扯淡了。</p><p>生产环境需要通过代码修改<code>SameSite</code>和<code>Secure</code>，我是个php纯小白，来解决这个问题：</p><h3 id="修改服务端源码"><a href="#修改服务端源码" class="headerlink" title="修改服务端源码"></a>修改服务端源码</h3><p>在php服务端代码里设置：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_COOKIE[<span class="string">"PHPSESSID"</span>])) &#123;</span><br><span class="line">   setcookie(<span class="string">"PHPSESSID"</span>, $_COOKIE[<span class="string">"PHPSESSID"</span>], [<span class="string">'samesite'</span> =&gt; <span class="string">'None'</span>, <span class="string">'secure'</span> =&gt; <span class="keyword">true</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>这个方式是可以将PHPSESSID这条cookie的SameSite设置为None，Secure设置为true。之后iframe嵌套也完全可以发送cookie。</p><p>前提是这段代码加到哪里？必须在<code>$_COOKIE[&quot;PHPSESSID&quot;]</code>有值时才能修改属性。PHPSESSID是自动产生的，说是在<code>session_start();</code>方法调用后创建，但我加在这后面也完全无效。</p><h3 id="设置header"><a href="#设置header" class="headerlink" title="设置header"></a>设置header</h3><p>在根目录的<code>index.php</code>文件中设置header</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">header(<span class="string">'Set-Cookie:'</span>.<span class="string">'PHPSESSID='</span>.session_id().<span class="string">';Path=/;SameSite=None;Secure=true;'</span>);</span><br></pre></td></tr></table></figure><p>和上面同样的问题，<code>session_id()</code>根本不能获取到实际的sessionid。</p><h3 id="设置session属性"><a href="#设置session属性" class="headerlink" title="设置session属性"></a>设置session属性</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ini_set(<span class="string">'session.cookie_secure'</span>, <span class="string">'On'</span>);</span><br><span class="line">ini_set(<span class="string">'session.cookie_samesite'</span>, <span class="string">'None'</span>);</span><br></pre></td></tr></table></figure><p>这个方法在php的<code>index.php</code>文件中添加过，在php的配置文件<code>php.ini</code>中也添加过：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session.cookie_samesite = <span class="string">"None"</span></span><br><span class="line">session.cookie_secure = On</span><br></pre></td></tr></table></figure><h3 id="设置Nginx配置项"><a href="#设置Nginx配置项" class="headerlink" title="设置Nginx配置项"></a>设置Nginx配置项</h3><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxy_cookie_path</span> / <span class="string">"/; httponly; secure; SameSite=None"</span>;</span><br></pre></td></tr></table></figure><p>在nginx配置项里增加这条配置，还是没能解决。</p><h3 id="设置响应头"><a href="#设置响应头" class="headerlink" title="设置响应头"></a>设置响应头</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setHeader(<span class="string">'Set-Cookie'</span>, <span class="string">'HttpOnly;Secure;SameSite=None'</span>)</span><br></pre></td></tr></table></figure><p>这个没有试验。</p><h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://blog.csdn.net/yhyc812/article/details/108623844" target="_blank" rel="noopener">chrome浏览器跨域Cookie的SameSite问题导致访问iframe内嵌页面异常</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在工作中，有一个项目需要在我们的平台内嵌其他平台，用户信息需要共享。在使用iframe内嵌时，发现内嵌的页面用户校验失败。两个平台系统没有问题，单独访问时都可以。&lt;/p&gt;
+&lt;p&gt;测试时Chrome有问题，使用Firefox可以，Firefox更新之后有同样问题。那就是浏览器的问题了。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="web" scheme="http://markmiao.com/categories/web/"/>
+    
+    
+      <category term="web" scheme="http://markmiao.com/tags/web/"/>
+    
+  </entry>
   
   <entry>
     <title>Flutter笔记6-json与model</title>
@@ -211,9 +235,9 @@
     <link href="http://markmiao.com/2020/05/08/mremind/"/>
     <id>http://markmiao.com/2020/05/08/mremind/</id>
     <published>2020-05-08T08:54:02.000Z</published>
-    <updated>2020-05-09T03:49:07.571Z</updated>
+    <updated>2021-09-18T08:46:37.037Z</updated>
     
-    <content type="html"><![CDATA[<p><a href="https://apps.apple.com/cn/app/mremind-提醒你每一件小事/id1449698904?mt=12" target="_blank" rel="noopener"><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/mremindicon.png" alt="mRemind"></a></p><p>mRemind 是一款专为 macOS 设计的待办提醒应用，操作简单而功能强大。</p><a id="more"></a><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><a href="https://apps.apple.com/cn/app/mremind-提醒你每一件小事/id1449698904?mt=12" target="_blank" rel="noopener"><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/badge-download-on-the-mac-app-store_s.png" alt=""></a></p><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>当我们专注于工作或某项任务时，往往会忽略计划好的其他事情。当想起时，已经错过了最佳时间。</p><p>mRemind 是为解决这类烦恼而生的，它能帮你记录待办事项。当你把任务交给 mRemind 记录后，你便可以专注于当下工作，时间到了，mRemind 会提醒你的待办事项该做了。</p><p>mRemind，让你保持专注不遗漏。</p><p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/mremindappstore.png" alt="mRemind"></p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul><li>在状态栏中一键添加待办提醒</li><li>查看添加的所有待办提醒</li><li>时间到了，通知栏提醒待办</li><li>在消息通知上可一键操作完成</li></ul><h2 id="mRemind基础功能"><a href="#mRemind基础功能" class="headerlink" title="mRemind基础功能"></a>mRemind基础功能</h2><ul><li><p>添加不超过3条的mRemind提醒</p></li><li><p>5/10/20/30分钟的倒计时提醒</p></li><li><p>全部提醒的完成/删除操作</p></li><li><p>其他 mRemind 提供的服务</p></li></ul><h2 id="mRemind高级版"><a href="#mRemind高级版" class="headerlink" title="mRemind高级版"></a>mRemind高级版</h2><ul><li><p>添加多条mRemind提醒</p></li><li><p>日期选择功能，可随意指定未来时间</p></li><li><p>自定义时间功能，可设置任意倒计时</p></li></ul><h2 id="订阅"><a href="#订阅" class="headerlink" title="订阅"></a>订阅</h2><p>订阅 mRemind高级版 解锁全部功能，您可自由选择月度订阅或年度订阅：</p><ul><li><p>按月订阅：¥6.00/月</p></li><li><p>按年订阅：¥60.00/年（推荐，约节省17%）</p></li></ul><p>确认订阅后，将向您的Apple ID账户收款。除非您在当前计费周期结束前至少24小时取消订单，否则项目会自动续订，您的账户将在当前计费周期结束前24小时内收取续订费用。当前订阅被激活后不可取消。购买后，您可在App Store的账户设置中管理您的订阅。</p><h2 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h2><p>我们欢迎您对 mRemind 提出意见或建议，请邮件联系 <a href="mailto:i@markmiao.com">i@markmiao.com</a> ，我们会认真对待每一个反馈，将 mRemind 做的更好。</p><hr><p>隐私政策：<a href="https://markmiao.com/2018/12/25/yinsizhengce/">https://markmiao.com/2018/12/25/yinsizhengce/</a></p><p>使用条款：<a href="https://markmiao.com/2018/12/26/shiyongtiaokuan/">https://markmiao.com/2018/12/26/shiyongtiaokuan/</a></p>]]></content>
+    <content type="html"><![CDATA[<p><a href="https://apps.apple.com/cn/app/mremind-提醒你每一件小事/id1449698904?mt=12" target="_blank" rel="noopener"><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/mremindicon.png" alt="mRemind"></a></p><p>mRemind 是一款专为 macOS 设计的待办提醒应用，操作简单而功能强大。</p><a id="more"></a><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p><a href="https://apps.apple.com/cn/app/mremind-提醒你每一件小事/id1449698904?mt=12" target="_blank" rel="noopener"><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/badge-download-on-the-mac-app-store_s.png" alt=""></a></p><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>当我们专注于工作或某项任务时，往往会忽略计划好的其他事情。当想起时，已经错过了最佳时间。</p><p>mRemind 是为解决这类烦恼而生的，它能帮你记录待办事项。当你把任务交给 mRemind 记录后，你便可以专注于当下工作，时间到了，mRemind 会提醒你的待办事项该做了。</p><p>mRemind，让你保持专注不遗漏。</p><p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/mremindappstore.png" alt="mRemind"></p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul><li>在状态栏中一键添加待办提醒</li><li>查看添加的所有待办提醒</li><li>时间到了，通知栏提醒待办</li><li>在消息通知上可一键操作完成</li></ul><h2 id="mRemind基础功能"><a href="#mRemind基础功能" class="headerlink" title="mRemind基础功能"></a>mRemind基础功能</h2><ul><li><p>添加不超过3条的mRemind提醒</p></li><li><p>5/10/20/30分钟的倒计时提醒</p></li><li><p>全部提醒的完成/删除操作</p></li><li><p>其他 mRemind 提供的服务</p></li></ul><h2 id="mRemind高级版"><a href="#mRemind高级版" class="headerlink" title="mRemind高级版"></a>mRemind高级版</h2><ul><li><p>添加多条mRemind提醒</p></li><li><p>日期选择功能，可随意指定未来时间</p></li><li><p>自定义时间功能，可设置任意倒计时</p></li></ul><h2 id="订阅"><a href="#订阅" class="headerlink" title="订阅"></a>订阅</h2><p>订阅 mRemind高级版 解锁全部功能，您可自由选择月度订阅或年度订阅：</p><ul><li><p>按月订阅：¥6.00/月</p></li><li><p>按年订阅：¥60.00/年（推荐，约节省17%）</p></li></ul><p>确认订阅后，将向您的Apple ID账户收款。除非您在当前计费周期结束前至少24小时取消订单，否则项目会自动续订，您的账户将在当前计费周期结束前24小时内收取续订费用。当前订阅被激活后不可取消。购买后，您可在App Store的账户设置中管理您的订阅。</p><h2 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h2><p>我们欢迎您对 mRemind 提出意见或建议，请邮件联系 <a href="mailto:i@markmiao.com">i@markmiao.com</a> ，我们会认真对待每一个反馈，将 mRemind 做的更好。</p><hr><p>隐私政策：<a href="https://blog.markmiao.com/2018/12/25/yinsizhengce/" target="_blank" rel="noopener">https://blog.markmiao.com/2018/12/25/yinsizhengce/</a></p><p>使用条款：<a href="https://blog.markmiao.com/2018/12/26/shiyongtiaokuan/" target="_blank" rel="noopener">https://blog.markmiao.com/2018/12/26/shiyongtiaokuan/</a></p>]]></content>
     
     <summary type="html">
     
@@ -466,32 +490,6 @@
     
     
       <category term="iOS" scheme="http://markmiao.com/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2017我的年终总结</title>
-    <link href="http://markmiao.com/2017/12/29/sum2017/"/>
-    <id>http://markmiao.com/2017/12/29/sum2017/</id>
-    <published>2017-12-29T05:44:30.000Z</published>
-    <updated>2018-03-16T09:35:12.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>2016年的年终总结里写的愿望是：希望2017年的年终总结里没有懊悔。</p><p>回望2017，好像在原地踏步，像在风浪中打转的孤舟。混混沌沌算是过去了，这一晃又是一年。</p><a id="more"></a><h2 id="工作"><a href="#工作" class="headerlink" title="工作"></a>工作</h2><p>没有跳槽，还是很平淡的敲代码，公司的代码敲的比较少了，一是没有什么技术难题，二是确实没有什么可敲的。这一年立志做自己的应用，写技术博客，开源项目。这几项都完成寥寥，没什么可总结的。独立项目，可看我上一篇文章<a href="http://markmiao.com/2017/12/26/kaifazhezongjietucao/">个人开发者的吐槽</a>；技术博客，没什么可说的；开源项目，呃……不丢人了……</p><p>明年还是想让自己的工作有一个大的改变，好几年都没有变化，做井底之蛙太久了。</p><h2 id="生活"><a href="#生活" class="headerlink" title="生活"></a>生活</h2><p>生活上比较跌宕起伏，有时间我会就这个大事件专门写一篇长文，吐槽一下整个2017年，我们的惊险奇遇。可以说见证了北京房价的疯狂，也见识到人性的卑劣，更体会到福祸相依的人生，还见识到不能说的黑暗。之所以现在还没写，是他妈的这件事还没完！！！</p><p>生活从不缺惊喜和惊吓，我会积极面对，不以物喜，不以己悲，佛系人生，看淡一切。WQNMLGB！</p><p>2017再见，2018你好。对2018的我说一句：再立志，别放弃！</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;2016年的年终总结里写的愿望是：希望2017年的年终总结里没有懊悔。&lt;/p&gt;
-&lt;p&gt;回望2017，好像在原地踏步，像在风浪中打转的孤舟。混混沌沌算是过去了，这一晃又是一年。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="记事" scheme="http://markmiao.com/categories/%E8%AE%B0%E4%BA%8B/"/>
-    
-    
-      <category term="总结" scheme="http://markmiao.com/tags/%E6%80%BB%E7%BB%93/"/>
-    
-      <category term="生活" scheme="http://markmiao.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   

@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>跨域导致iframe无法使用Cookie</title>
+    <url>/2021/09/18/iframecookieerror/</url>
+    <content><![CDATA[<p>在工作中，有一个项目需要在我们的平台内嵌其他平台，用户信息需要共享。在使用iframe内嵌时，发现内嵌的页面用户校验失败。两个平台系统没有问题，单独访问时都可以。</p>
+<p>测试时Chrome有问题，使用Firefox可以，Firefox更新之后有同样问题。那就是浏览器的问题了。</p>
+<a id="more"></a>
+
+<h2 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h2><p>Chrome 80版本默认屏蔽了第三方Cookie，SameSite属性设置为Lax，防止跨域传送Cookie，防止 CSRF 攻击和用户追踪。<a href="http://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html" target="_blank" rel="noopener">SameSite属性介绍</a></p>
+<p>在接口请求响应头<code>Set-Cookie</code>有个提示：<code>此Set-Cookie标头未指定&quot;SameSite&quot;属性,它默认为&quot;SameSite=Lax,&quot;因为它来自跨站点响应，而不是对顶级导航的响应，必须为此此Set-Cookie设置&quot;SameSite=None&quot;才能实现跨站点使用</code></p>
+<p>当设置<code>SameSite=None</code>时，必须同时设置<code>Secure</code>属性才有效，而且必须通过https发送cookie。</p>
+<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>我们的A平台，集成了B平台模块，A平台在iframe嵌套B平台时通过<code>url</code>将用户<code>token</code>传给B，B有用户<code>token</code>后，有自成一套的用户逻辑。</p>
+<p>B平台使用<code>session</code>进行用户鉴权，会产生一条session id：<code>PHPSESSID</code>，这个会存储在cookie中，每次接口请求时由此鉴权。</p>
+<p><code>PHPSESSID</code>这条cookie是后端php项目自动生成的，这就很难改它的<code>SameSite</code>和<code>Secure</code></p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p><strong>先说方案：直接问题没解决，从根本解决了，B平台取消session鉴权方案，采用和A平台一致的token鉴权，真釜底抽薪</strong></p>
+<p><strong>另一种方案：两平台放到同一域下，不跨域自然没有该问题了。</strong></p>
+<p>网上有很多临时解决办法，比如修改<code>chrome://flags/</code>里的配置，手动设置这条cookie的<code>SameSite</code>和<code>Secure</code>，这些在开发时可作为临时手段，生产环境就扯淡了。</p>
+<p>生产环境需要通过代码修改<code>SameSite</code>和<code>Secure</code>，我是个php纯小白，来解决这个问题：</p>
+<h3 id="修改服务端源码"><a href="#修改服务端源码" class="headerlink" title="修改服务端源码"></a>修改服务端源码</h3><p>在php服务端代码里设置：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_COOKIE[<span class="string">"PHPSESSID"</span>])) &#123;</span><br><span class="line">   setcookie(<span class="string">"PHPSESSID"</span>, $_COOKIE[<span class="string">"PHPSESSID"</span>], [<span class="string">'samesite'</span> =&gt; <span class="string">'None'</span>, <span class="string">'secure'</span> =&gt; <span class="keyword">true</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个方式是可以将PHPSESSID这条cookie的SameSite设置为None，Secure设置为true。之后iframe嵌套也完全可以发送cookie。</p>
+<p>前提是这段代码加到哪里？必须在<code>$_COOKIE[&quot;PHPSESSID&quot;]</code>有值时才能修改属性。PHPSESSID是自动产生的，说是在<code>session_start();</code>方法调用后创建，但我加在这后面也完全无效。</p>
+<h3 id="设置header"><a href="#设置header" class="headerlink" title="设置header"></a>设置header</h3><p>在根目录的<code>index.php</code>文件中设置header</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">header(<span class="string">'Set-Cookie:'</span>.<span class="string">'PHPSESSID='</span>.session_id().<span class="string">';Path=/;SameSite=None;Secure=true;'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>和上面同样的问题，<code>session_id()</code>根本不能获取到实际的sessionid。</p>
+<h3 id="设置session属性"><a href="#设置session属性" class="headerlink" title="设置session属性"></a>设置session属性</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">ini_set(<span class="string">'session.cookie_secure'</span>, <span class="string">'On'</span>);</span><br><span class="line">ini_set(<span class="string">'session.cookie_samesite'</span>, <span class="string">'None'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这个方法在php的<code>index.php</code>文件中添加过，在php的配置文件<code>php.ini</code>中也添加过：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">session.cookie_samesite = <span class="string">"None"</span></span><br><span class="line">session.cookie_secure = On</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置Nginx配置项"><a href="#设置Nginx配置项" class="headerlink" title="设置Nginx配置项"></a>设置Nginx配置项</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">proxy_cookie_path</span> / <span class="string">"/; httponly; secure; SameSite=None"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在nginx配置项里增加这条配置，还是没能解决。</p>
+<h3 id="设置响应头"><a href="#设置响应头" class="headerlink" title="设置响应头"></a>设置响应头</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">response.setHeader(<span class="string">'Set-Cookie'</span>, <span class="string">'HttpOnly;Secure;SameSite=None'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个没有试验。</p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="https://blog.csdn.net/yhyc812/article/details/108623844" target="_blank" rel="noopener">chrome浏览器跨域Cookie的SameSite问题导致访问iframe内嵌页面异常</a></p>
+]]></content>
+      <categories>
+        <category>web</category>
+      </categories>
+      <tags>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Flutter笔记6-json与model</title>
     <url>/2021/06/04/flutter6/</url>
     <content><![CDATA[<p>开发中json数据是最常见的，在具体使用时，通常会将json转为model。这样能保证类型安全，编译器也能自动补全，提示编译异常，用起来方便又安全。在flutter中如何进行json和model的相互转换呢？</p>
@@ -367,8 +413,8 @@
 <p>确认订阅后，将向您的Apple ID账户收款。除非您在当前计费周期结束前至少24小时取消订单，否则项目会自动续订，您的账户将在当前计费周期结束前24小时内收取续订费用。当前订阅被激活后不可取消。购买后，您可在App Store的账户设置中管理您的订阅。</p>
 <h2 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h2><p>我们欢迎您对 mRemind 提出意见或建议，请邮件联系 <a href="mailto:i@markmiao.com">i@markmiao.com</a> ，我们会认真对待每一个反馈，将 mRemind 做的更好。</p>
 <hr>
-<p>隐私政策：<a href="https://markmiao.com/2018/12/25/yinsizhengce/">https://markmiao.com/2018/12/25/yinsizhengce/</a></p>
-<p>使用条款：<a href="https://markmiao.com/2018/12/26/shiyongtiaokuan/">https://markmiao.com/2018/12/26/shiyongtiaokuan/</a></p>
+<p>隐私政策：<a href="https://blog.markmiao.com/2018/12/25/yinsizhengce/" target="_blank" rel="noopener">https://blog.markmiao.com/2018/12/25/yinsizhengce/</a></p>
+<p>使用条款：<a href="https://blog.markmiao.com/2018/12/26/shiyongtiaokuan/" target="_blank" rel="noopener">https://blog.markmiao.com/2018/12/26/shiyongtiaokuan/</a></p>
 ]]></content>
       <categories>
         <category>macOS开发</category>
@@ -1247,7 +1293,7 @@
 <p>命令执行完毕，在<code>doc/</code>目录下点击<code>index.html</code>，便可本地浏览用apiDoc写成的接口文档。</p>
 ]]></content>
       <categories>
-        <category>HTML5</category>
+        <category>web</category>
       </categories>
       <tags>
         <tag>文档</tag>
@@ -2641,10 +2687,9 @@
 
 
 
-
 ]]></content>
       <categories>
-        <category>HTML5</category>
+        <category>web</category>
       </categories>
       <tags>
         <tag>HTML5</tag>
