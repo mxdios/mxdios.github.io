@@ -2,7 +2,7 @@
 title: 用apiDoc写接口文档
 date: 2017-11-13 17:44:16
 tags: [文档]
-categories: [HTML5]
+categories: [web]
 toc: true
 ---
 

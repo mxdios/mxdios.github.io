@@ -67,6 +67,6 @@ mRemind，让你保持专注不遗漏。
 
 ------
 
-隐私政策：https://markmiao.com/2018/12/25/yinsizhengce/
+隐私政策：https://blog.markmiao.com/2018/12/25/yinsizhengce/
 
-使用条款：https://markmiao.com/2018/12/26/shiyongtiaokuan/
+使用条款：https://blog.markmiao.com/2018/12/26/shiyongtiaokuan/
