@@ -52,7 +52,7 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 至此，服务器中的设置完成。
 
-##GitHub建库
+## GitHub建库
 
 在GitHub中创建hexo源文件库，可以是私有库。建完库之后，设置Secret
 
