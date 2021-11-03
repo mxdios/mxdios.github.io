@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>宝塔独立部署Bitwarden密码管理</title>
+    <url>/2021/11/03/bitwarden/</url>
+    <content><![CDATA[<p>之前一直用1Password管理密码，但是没买订阅服务，相当于手机的本地密码存储。浏览器上Chrome和钥匙串混用，特别不方便。终于发现了<a href="https://bitwarden.com/" target="_blank" rel="noopener">Bitwarden</a>。</p>
+<a id="more"></a>
+
+<p>这里我部署的是<a href="https://rs.bitwarden.in/" target="_blank" rel="noopener">Vaultwarden</a>，也是原来的bitwarden_rs。因为Vaultwarden对配置要求低，同样开源，支持docker部署，而且使用的客户端、浏览器插件都是Bitwarden官方的。</p>
+<h2 id="安装镜像"><a href="#安装镜像" class="headerlink" title="安装镜像"></a>安装镜像</h2><h3 id="安装Docker管理器"><a href="#安装Docker管理器" class="headerlink" title="安装Docker管理器"></a>安装Docker管理器</h3><p>在宝塔的“软件商店”面板里直接搜索“Docker管理器”，安装即可</p>
+<h3 id="安装Vaultwarden镜像"><a href="#安装Vaultwarden镜像" class="headerlink" title="安装Vaultwarden镜像"></a>安装Vaultwarden镜像</h3><p>镜像名称：<code>vaultwarden/server</code></p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/WX20211103-101352@2x.png" alt=""></p>
+<p>镜像安装完成之后，需要创建Docker容器</p>
+<h3 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h3><p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image-20211103102621111.png" alt="创建容器"></p>
+<ul>
+<li>镜像：选择刚才安装的镜像<code>vaultwarden/server:latest</code></li>
+<li>绑定IP：默认<code>0.0.0.0</code></li>
+<li>端口映射：<code>80</code>（容器端口固定），<code>5555</code>（服务器端口可自定义，需要在宝塔面板和服务器开放该端口），写完端口映射，点 <code>+</code></li>
+<li>目录映射：容器目录：<code>/www/wwwroot/pwd</code>（/www/wwwroot/是站点的固定目录，pwd可自定义，注意后面创建站点的目录也要是此目录），服务器目录固定：<code>/data</code>，写完目录映射，点 <code>+</code></li>
+<li>内存配额：可按照自己的服务器配置分配，Vaultwarden对内存要求很低</li>
+</ul>
+<p>填写完成后点击提交，并修改容器名称。</p>
+<h3 id="命令行创建镜像和容器"><a href="#命令行创建镜像和容器" class="headerlink" title="命令行创建镜像和容器"></a>命令行创建镜像和容器</h3><p>需要已安装Docker管理器</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull vaultwarden/server:latest</span><br><span class="line"><span class="comment"># 创建容器</span></span><br><span class="line">docker <span class="keyword">run</span><span class="bash"> -d --name vaultwarden -v /www/wwwroot/<span class="built_in">pwd</span>/:/data/ -p 5555:80 vaultwarden/server:latest</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建站点"><a href="#创建站点" class="headerlink" title="创建站点"></a>创建站点</h2><p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image-20211103113428280.png" alt="创建站点"></p>
+<ul>
+<li>根目录要和<code>目录映射</code>中的<code>容器目录</code>一致！</li>
+<li>PHP版本纯静态即可</li>
+</ul>
+<p>站点创建之后，添加<code>Let&#39;s Encrypt</code>SSL证书，可以用https访问。</p>
+<h2 id="添加反代"><a href="#添加反代" class="headerlink" title="添加反代"></a>添加反代</h2><p>给站点添加反向代理</p>
+<p>目标URL：<code>http://127.0.0.1:5555</code>，端口要和设置的服务器端口一致。</p>
+<p><img src="https://imagedb-1257991841.cos.ap-beijing.myqcloud.com/image-20211103120910132.png" alt="添加反代"></p>
+<p>至此，Vaultwarden部署完毕，可通过域名访问。</p>
+<h2 id="关闭注册"><a href="#关闭注册" class="headerlink" title="关闭注册"></a>关闭注册</h2><p>关闭注册之前，一定要自己先注册个账号！：）</p>
+<ol>
+<li><p>在Docker管理器中先停掉vaultwarden容器</p>
+</li>
+<li><p>删除容器，删除容器不会删除你的数据</p>
+</li>
+<li><p>使用如下命令重新创建容器</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建容器</span></span><br><span class="line">docker <span class="keyword">run</span><span class="bash"> -d --name vaultwarden -e SIGNUPS_ALLOWED=<span class="literal">false</span> -v /www/wwwroot/<span class="built_in">pwd</span>/:/data/ -p 5555:80 vaultwarden/server:latest</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用命令行关闭容器，再重启</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 关闭容器</span></span><br><span class="line">docker stop vaultwarden</span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker start vaultwarden</span><br></pre></td></tr></table></figure>
+
+<p>这一步非常重要，有时候会出现关闭注册之后，之前注册的账号也无法登录，使用命令行进行容器重启操作，可解决该问题。</p>
+</li>
+</ol>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>使用命令行完成更新操作，完整命令如下：</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 拉取最新镜像</span></span><br><span class="line">docker pull vaultwarden/server:latest</span><br><span class="line"><span class="comment"># 停止旧容器</span></span><br><span class="line">docker stop vaultwarden</span><br><span class="line"><span class="comment"># 删除旧容器</span></span><br><span class="line">docker rm vaultwarden</span><br><span class="line"><span class="comment"># 创建新容器</span></span><br><span class="line">docker <span class="keyword">run</span><span class="bash"> -d --name vaultwarden -e SIGNUPS_ALLOWED=<span class="literal">false</span> -v /www/wwwroot/<span class="built_in">pwd</span>/:/data/ -p 5555:80 vaultwarden/server:latest</span></span><br><span class="line"><span class="comment"># 关闭容器</span></span><br><span class="line">docker stop vaultwarden</span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">docker start vaultwarden</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>Bitwarden</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Github Actions+宝塔部署hexo博客到云服务器</title>
     <url>/2021/10/13/blogdeploy/</url>
     <content><![CDATA[<p>Github Actions是GitHub的持续集成服务，可以预设动作（如：main分支push）来触发一些自动化操作。可以用来自动化部署hexo博客。</p>
@@ -46,7 +104,7 @@
 <p><a href="https://segmentfault.com/a/1190000022990551" target="_blank" rel="noopener">Github Actions实现CI/CD配置</a></p>
 ]]></content>
       <categories>
-        <category>web</category>
+        <category>工具</category>
       </categories>
       <tags>
         <tag>hexo</tag>
