@@ -2,7 +2,7 @@
 title: Github Actions+宝塔部署hexo博客到云服务器
 date: 2021-10-13 14:30:50
 tags: [hexo]
-categories: [web]
+categories: [工具]
 toc: true
 ---
 
