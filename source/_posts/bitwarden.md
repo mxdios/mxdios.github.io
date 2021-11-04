@@ -46,7 +46,10 @@ toc: true
 # 拉取镜像
 docker pull vaultwarden/server:latest
 # 创建容器
-docker run -d --name vaultwarden -v /www/wwwroot/pwd/:/data/ -p 5555:80 vaultwarden/server:latest
+docker run -d --name vaultwarden \
+	-v /www/wwwroot/pwd/:/data/ \
+	-p 5555:80 \
+	vaultwarden/server:latest
 ```
 
 ## 创建站点
@@ -80,7 +83,11 @@ docker run -d --name vaultwarden -v /www/wwwroot/pwd/:/data/ -p 5555:80 vaultwar
 
    ```dockerfile
    # 创建容器
-   docker run -d --name vaultwarden -e SIGNUPS_ALLOWED=false -v /www/wwwroot/pwd/:/data/ -p 5555:80 vaultwarden/server:latest
+   docker run -d --name vaultwarden \
+   	-e SIGNUPS_ALLOWED=false \
+   	-v /www/wwwroot/pwd/:/data/ \
+   	-p 5555:80 \
+   	vaultwarden/server:latest
    ```
 
 4. 用命令行关闭容器，再重启
@@ -106,9 +113,39 @@ docker stop vaultwarden
 # 删除旧容器
 docker rm vaultwarden
 # 创建新容器
-docker run -d --name vaultwarden -e SIGNUPS_ALLOWED=false -v /www/wwwroot/pwd/:/data/ -p 5555:80 vaultwarden/server:latest
+docker run -d --name vaultwarden \
+	-e SIGNUPS_ALLOWED=false \
+	-v /www/wwwroot/pwd/:/data/ \
+	-p 5555:80 \
+	vaultwarden/server:latest
 # 关闭容器
 docker stop vaultwarden
 # 启动容器
 docker start vaultwarden
 ```
+
+## 开启管理页面
+
+开启管理页面可以在这里管理所有的注册账户，可以邀请新用户。
+
+```dockerfile
+# 创建关闭注册且开启管理界面的容器
+docker run -d --name vaultwarden \
+	-e SIGNUPS_ALLOWED=false \
+	-e ADMIN_TOKEN=xxxx \
+	-v /www/wwwroot/pwd/:/data/ \
+	-p 5555:80 \
+	bitwardenrs/server:latest
+```
+
+`-e ADMIN_TOKEN=xxxx \` 设置了`ADMIN_TOKEN`即开启管理页面，`ADMIN_TOKEN`值便是管理页面的登录token，`ADMIN_TOKEN`设置尽量复杂，可使用`openssl rand -base64 48`命令生成随机字符串。**注意保存！！！**
+
+开启之后管理页面的访问地址：
+
+```
+https://域名/admin
+```
+
+## 参考文章
+
+[Vaultwarden Wiki 中文版](https://rs.bitwarden.in/)
