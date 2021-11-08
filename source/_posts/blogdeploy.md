@@ -28,7 +28,7 @@ Github Actions是GitHub的持续集成服务，可以预设动作（如：main�
 
 使用宝塔创建站点，会设置好域名和网站目录，然后做好域名解析。（国内服务器域名需要备案）
 
-在创建好的文件目录中会初始化一些文件，这些文件需要删掉，特别是`.user.ini`，否则在部署时会报错：
+在创建好的文件目录中会初始化一些文件，有一个`.user.ini`，是php的防跨站文件，需要在后面的`.yml`文件中忽略，否则在部署时会报错：
 
 ```
 rsync: delete_file: unlink(.user.ini) failed: Operation not permitted (1)
@@ -135,7 +135,7 @@ jobs: # 任务集合
         uses: easingthemes/ssh-deploy@main
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }} # 云服务器私钥
-          ARGS: "-avzr --delete"
+          ARGS: "-avzr --delete --exclude /.user.ini" # 忽略服务器上的.user.ini文件
           SOURCE: "public/" # hexo编译之后的博客文件目录
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }} # 云服务器ip地址
           REMOTE_USER: ${{ secrets.REMOTE_USER }} # 云服务器用户名
