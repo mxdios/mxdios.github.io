@@ -688,6 +688,9 @@ google_analytics:
 # Baidu Analytics
 baidu_analytics: 3a6b5f9b69c85227a288646d3403af6e # <app_id>
 
+# Microsoft Clarity
+microsoft-clarity: 992omvz7af
+
 # Growingio Analytics
 growingio_analytics: # <project_id>
 
