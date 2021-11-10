@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://markmiao.com/"/>
-  <updated>2021-11-08T02:47:34.538Z</updated>
+  <updated>2021-11-10T05:27:38.776Z</updated>
   <id>http://markmiao.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>博客中集成Microsoft Clarity</title>
+    <link href="http://markmiao.com/2021/11/10/blogclarity/"/>
+    <id>http://markmiao.com/2021/11/10/blogclarity/</id>
+    <published>2021-11-10T06:30:50.000Z</published>
+    <updated>2021-11-10T05:27:38.776Z</updated>
+    
+    <content type="html"><![CDATA[<p><a href="https://clarity.microsoft.com/" target="_blank" rel="noopener">Microsoft Clarity</a>是微软出的用户体验优化工具，可以监控用户在网页中的交互行为。开源免费，国内可用。</p><a id="more"></a><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>在<a href="https://clarity.microsoft.com/" target="_blank" rel="noopener">Microsoft Clarity</a>上登录，创建项目，提供要监控的网页地址即可。创建完成之后，Microsoft Clarity会分配集成代码和集成方法。官方列出了一些第三方平台集成方法，还可以手动安装追踪代码。</p><p>以手动为例，代码块如下：</p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">c,l,a,r,i,t,y</span>)</span>&#123;</span><br><span class="line">        c[a]=c[a]||<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;(c[a].q=c[a].q||[]).push(<span class="built_in">arguments</span>)&#125;;</span><br><span class="line">        t=l.createElement(r);t.async=<span class="number">1</span>;t.src=<span class="string">"https://www.clarity.ms/tag/"</span>+i;</span><br><span class="line">        y=l.getElementsByTagName(r)[<span class="number">0</span>];y.parentNode.insertBefore(t,y);</span><br><span class="line">    &#125;)(<span class="built_in">window</span>, <span class="built_in">document</span>, <span class="string">"clarity"</span>, <span class="string">"script"</span>, <span class="string">"xxxxxxxxxx"</span>);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure><p>代码块中的<code>xxxxxxxxxx</code>便是分配的网站ID。</p><h2 id="在博客中集成"><a href="#在博客中集成" class="headerlink" title="在博客中集成"></a>在博客中集成</h2><p>hexo的博客主题中很少有集成Microsoft Clarity的，我用的<code>hexo</code>+<code>hexo-theme-matery</code>，下面以<code>hexo-theme-matery</code>为例集成Microsoft Clarity。</p><p>这个和百度统计一样，都是将代码块放到网站的<code>&lt;head&gt;</code>中。我修改了<code>hexo-theme-matery</code>的源码，只需要在配置文件<code>_config.yml</code>开启Microsoft Clarity，写入分配的网站id即可。</p><p>在<code>hexo-theme-matery/layout/_partial</code>目录下新建文件<code>microsoft-clarity.ejs</code>，文件中写入代码：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Microsoft Clarity --&gt;</span><br><span class="line">&lt;% if (theme.microsoftClarity.enable) &#123; %&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    (function (c, l, a, r, i, t, y) &#123;</span><br><span class="line">        c[a] &#x3D; c[a] || function () &#123; (c[a].q &#x3D; c[a].q || []).push(arguments) &#125;;</span><br><span class="line">        t &#x3D; l.createElement(r); t.async &#x3D; 1; t.src &#x3D; &quot;https:&#x2F;&#x2F;www.clarity.ms&#x2F;tag&#x2F;&quot; + i;</span><br><span class="line">        y &#x3D; l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);</span><br><span class="line">    &#125;)(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;&lt;%- theme.microsoftClarity.id %&gt;&quot;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure><p>在<code>hexo-theme-matery/layout.ejs</code>文件中<body>标签中添加集成代码：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%- partial(&#39;_partial&#x2F;microsoft-clarity&#39;) %&gt;</span><br></pre></td></tr></table></figure><p>在配置文件<code>_config.yml</code>中添加配置项：</p><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加 Microsoft Clarity 分析配置</span></span><br><span class="line"><span class="attr">microsoftClarity:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 开启Microsoft Clarity</span></span><br><span class="line">  <span class="attr">id:</span> <span class="string">xxxxxxxxxx</span> <span class="comment"># 网站id</span></span><br></pre></td></tr></table></figure><p>至此，Microsoft Clarity在hexo博客中集成完毕，重新部署之后，便可在Microsoft Clarity中查看用户行为。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;a href=&quot;https://clarity.microsoft.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Microsoft Clarity&lt;/a&gt;是微软出的用户体验优化工具，可以监控用户在网页中的交互行为。开源免费，国内可用。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="工具" scheme="http://markmiao.com/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="hexo" scheme="http://markmiao.com/tags/hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>宝塔独立部署Bitwarden密码管理</title>
@@ -459,29 +482,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;使用条款&quot;&gt;&lt;a href=&quot;#使用条款&quot; class=&quot;headerlink&quot; title=&quot;使用条款&quot;&gt;&lt;/a&gt;使用条款&lt;/h2&gt;&lt;p&gt;在购买 mRemind 高级版之前，您应当阅读并遵守以下使用条款。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="iOS开发" scheme="http://markmiao.com/categories/iOS%E5%BC%80%E5%8F%91/"/>
-    
-    
-      <category term="iOS" scheme="http://markmiao.com/tags/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>隐私政策</title>
-    <link href="http://markmiao.com/2018/12/25/yinsizhengce/"/>
-    <id>http://markmiao.com/2018/12/25/yinsizhengce/</id>
-    <published>2018-12-25T12:09:00.000Z</published>
-    <updated>2020-05-07T08:28:05.283Z</updated>
-    
-    <content type="html"><![CDATA[<p>本应用尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，我们会按照本隐私权政策的规定使用和披露您的个人信息。但本应用将以高度的勤勉、审慎义务对待这些信息。除本隐私权政策另有规定外，在未征得您事先许可的情况下，本应用不会将这些信息对外披露或向第三方提供。本应用会不时更新本隐私权政策。您在使用本应用及服务前，请您务必仔细阅读本政策。你在同意本应用服务使用协议之时，即视为您同意本《隐私政策》（含更新版本）全部内容。本隐私权政策属于本应用服务使用协议不可分割的一部分。</p><a id="more"></a><ol><li><p>适用范围<br>(a) 在您注册本应用帐号时，您根据本应用要求提供的个人注册信息；<br>(b) 在您使用本应用网络服务，或访问本应用平台网页时，本应用自动接收并记录的您的浏览器和计算机上的信息，包括但不限于您的IP地址、浏览器的类型、使用的语言、访问日期和时间、软硬件特征信息及您需求的网页记录等数据；<br>(c) 本应用通过合法途径从商业伙伴处取得的用户个人数据。 您了解并同意，以下信息不适用本隐私权政策：<br>(a) 您在使用本应用平台提供的搜索服务时输入的关键字信息；<br>(b) 违反法律规定或违反本应用规则行为及本应用已对您采取的措施。</p></li><li><p>信息使用<br>(a)本应用不会向任何无关第三方提供、出售、出租、分享或交易您的个人信息，除非事先得到您的许可，或该第三方和本应用（含本应用关联公司）单独或共同为您提供服务，且在该服务结束后，其将被禁止访问包括其以前能够访问的所有这些资料。<br>(b) 本应用亦不允许任何第三方以任何手段收集、编辑、出售或者无偿传播您的个人信息。任何本应用平台用户如从事上述活动，一经发现，本应用有权立即终止与该用户的服务协议。<br>(c) 为服务用户的目的，本应用可能通过使用您的个人信息，向您提供您感兴趣的信息，包括但不限于向您发出产品和服务信息，或者与本应用合作伙伴共享信息以便他们向您发送有关其产品和服务的信息（后者需要您的事先同意）。</p></li><li><p>信息披露<br>在如下情况下，本应用将依据您的个人意愿或法律的规定全部或部分的披露您的个人信息：<br>(a) 经您事先同意，向第三方披露；<br>(b)为提供您所要求的产品和服务，而必须和第三方分享您的个人信息；<br>(c) 根据法律的有关规定，或者行政或司法机构的要求，向第三方或者行政、司法机构披露；<br>(d) 如您出现违反中国或其他国家有关法律、法规或者本应用服务协议或相关规则的情况，需要向第三方披露；<br>(e) 如您是适格的知识产权投诉人并已提起投诉，应被投诉人要求，向被投诉人披露，以便双方处理可能的权利纠纷；<br>(f) 在本应用平台上创建的某一交易中，如交易任何一方履行或部分履行了交易义务并提出信息披露请求的，本应用有权决定向该用户提供其交易对方的联络方式等必要信息，以促成交易的完成或纠纷的解决。<br>(g) 其它本应用根据法律、法规或者网站政策认为合适的披露。</p></li><li><p>信息存储和交换<br>本应用收集的有关您的信息和资料将保存在本应用及（或）其关联公司的服务器上，这些信息和资料可能传送至您所在国家、地区或本应用收集信息和资料所在地的境外并在境外被访问、存储和展示。</p></li><li><p>Cookie的使用<br>(a) 在您未拒绝接受cookies的情况下，本应用会在您的计算机上设定或取用cookies ，以便您能登录或使用依赖于cookies的本应用平台服务或功能。本应用使用cookies可为您提供更加周到的个性化服务，包括推广服务。<br>(b) 您有权选择接受或拒绝接受cookies。您可以通过修改浏览器设置的方式拒绝接受cookies。但如果您选择拒绝接受cookies，则您可能无法登录或使用依赖于cookies的本应用网络服务或功能。<br>(c) 通过本应用所设cookies所取得的有关信息，将适用本政策。</p></li><li><p>信息安全<br>(a) 本应用帐号均有安全保护功能，请妥善保管您的用户名及密码信息。本应用将通过对用户密码进行加密等安全措施确保您的信息不丢失，不被滥用和变造。尽管有前述安全措施，但同时也请您注意在信息网络上不存在“完善的安全措施”。<br>(b) 在使用本应用网络服务进行网上交易时，您不可避免的要向交易对方或潜在的交易对方披露自己的个人信息，如联络方式或者邮政地址。请您妥善保护自己的个人信息，仅在必要的情形下向他人提供。如您发现自己的个人信息泄密，尤其是本应用用户名及密码发生泄露，请您立即联络本应用客服，以便本应用采取相应措施。<br>7.本隐私政策的更改<br>(a)如果决定更改隐私政策，我们会在本政策中、本公司网站中以及我们认为适当的位置发布这些更改，以便您了解我们如何收集、使用您的个人信息，哪些人可以访问这些信息，以及在什么情况下我们会透露这些信息。<br>(b)本公司保留随时修改本政策的权利，因此请经常查看。如对本政策作出重大更改，本公司会通过网站通知的形式告知。</p></li><li><p>联系我们</p><p>如果您对我们的隐私政策有任何疑问或建议，请随时通过 <a href="mailto:i@markmiao.com">i@markmiao.com</a> 与我们联系。</p></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本应用尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，我们会按照本隐私权政策的规定使用和披露您的个人信息。但本应用将以高度的勤勉、审慎义务对待这些信息。除本隐私权政策另有规定外，在未征得您事先许可的情况下，本应用不会将这些信息对外披露或向第三方提供。本应用会不时更新本隐私权政策。您在使用本应用及服务前，请您务必仔细阅读本政策。你在同意本应用服务使用协议之时，即视为您同意本《隐私政策》（含更新版本）全部内容。本隐私权政策属于本应用服务使用协议不可分割的一部分。&lt;/p&gt;
     
     </summary>
     

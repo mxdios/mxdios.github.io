@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>博客中集成Microsoft Clarity</title>
+    <url>/2021/11/10/blogclarity/</url>
+    <content><![CDATA[<p><a href="https://clarity.microsoft.com/" target="_blank" rel="noopener">Microsoft Clarity</a>是微软出的用户体验优化工具，可以监控用户在网页中的交互行为。开源免费，国内可用。</p>
+<a id="more"></a>
+
+<h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>在<a href="https://clarity.microsoft.com/" target="_blank" rel="noopener">Microsoft Clarity</a>上登录，创建项目，提供要监控的网页地址即可。创建完成之后，Microsoft Clarity会分配集成代码和集成方法。官方列出了一些第三方平台集成方法，还可以手动安装追踪代码。</p>
+<p>以手动为例，代码块如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">c,l,a,r,i,t,y</span>)</span>&#123;</span><br><span class="line">        c[a]=c[a]||<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;(c[a].q=c[a].q||[]).push(<span class="built_in">arguments</span>)&#125;;</span><br><span class="line">        t=l.createElement(r);t.async=<span class="number">1</span>;t.src=<span class="string">"https://www.clarity.ms/tag/"</span>+i;</span><br><span class="line">        y=l.getElementsByTagName(r)[<span class="number">0</span>];y.parentNode.insertBefore(t,y);</span><br><span class="line">    &#125;)(<span class="built_in">window</span>, <span class="built_in">document</span>, <span class="string">"clarity"</span>, <span class="string">"script"</span>, <span class="string">"xxxxxxxxxx"</span>);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>代码块中的<code>xxxxxxxxxx</code>便是分配的网站ID。</p>
+<h2 id="在博客中集成"><a href="#在博客中集成" class="headerlink" title="在博客中集成"></a>在博客中集成</h2><p>hexo的博客主题中很少有集成Microsoft Clarity的，我用的<code>hexo</code>+<code>hexo-theme-matery</code>，下面以<code>hexo-theme-matery</code>为例集成Microsoft Clarity。</p>
+<p>这个和百度统计一样，都是将代码块放到网站的<code>&lt;head&gt;</code>中。我修改了<code>hexo-theme-matery</code>的源码，只需要在配置文件<code>_config.yml</code>开启Microsoft Clarity，写入分配的网站id即可。</p>
+<p>在<code>hexo-theme-matery/layout/_partial</code>目录下新建文件<code>microsoft-clarity.ejs</code>，文件中写入代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;!-- Microsoft Clarity --&gt;</span><br><span class="line">&lt;% if (theme.microsoftClarity.enable) &#123; %&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    (function (c, l, a, r, i, t, y) &#123;</span><br><span class="line">        c[a] &#x3D; c[a] || function () &#123; (c[a].q &#x3D; c[a].q || []).push(arguments) &#125;;</span><br><span class="line">        t &#x3D; l.createElement(r); t.async &#x3D; 1; t.src &#x3D; &quot;https:&#x2F;&#x2F;www.clarity.ms&#x2F;tag&#x2F;&quot; + i;</span><br><span class="line">        y &#x3D; l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);</span><br><span class="line">    &#125;)(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;&lt;%- theme.microsoftClarity.id %&gt;&quot;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>hexo-theme-matery/layout.ejs</code>文件中<body>标签中添加集成代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;%- partial(&#39;_partial&#x2F;microsoft-clarity&#39;) %&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件<code>_config.yml</code>中添加配置项：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 添加 Microsoft Clarity 分析配置</span></span><br><span class="line"><span class="attr">microsoftClarity:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 开启Microsoft Clarity</span></span><br><span class="line">  <span class="attr">id:</span> <span class="string">xxxxxxxxxx</span> <span class="comment"># 网站id</span></span><br></pre></td></tr></table></figure>
+
+<p>至此，Microsoft Clarity在hexo博客中集成完毕，重新部署之后，便可在Microsoft Clarity中查看用户行为。</p>
+]]></content>
+      <categories>
+        <category>工具</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>宝塔独立部署Bitwarden密码管理</title>
     <url>/2021/11/03/bitwarden/</url>
     <content><![CDATA[<p>之前一直用1Password管理密码，但是没买订阅服务，相当于手机的本地密码存储。浏览器上Chrome和钥匙串混用，特别不方便。终于发现了<a href="https://bitwarden.com/" target="_blank" rel="noopener">Bitwarden</a>。</p>
