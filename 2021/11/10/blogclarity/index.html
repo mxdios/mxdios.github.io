@@ -27,7 +27,7 @@
 <meta property="og:site_name" content="Mark Miao">
 <meta property="og:description" content="Microsoft Clarity是微软出的用户体验优化工具，可以监控用户在网页中的交互行为。开源免费，国内可用。">
 <meta property="article:published_time" content="2021-11-10T06:30:50.000Z">
-<meta property="article:modified_time" content="2021-11-10T05:27:38.776Z">
+<meta property="article:modified_time" content="2021-11-10T07:30:08.286Z">
 <meta property="article:author" content="Mark">
 <meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
@@ -59,6 +59,13 @@
   </script>
 
 
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "992omvz7af");
+  </script>
 
 
 
@@ -282,7 +289,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params">c,l,a,r,i,t,y</span>)</span>&#123;</span><br><span class="line">        c[a]=c[a]||<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;(c[a].q=c[a].q||[]).push(<span class="built_in">arguments</span>)&#125;;</span><br><span class="line">        t=l.createElement(r);t.async=<span class="number">1</span>;t.src=<span class="string">"https://www.clarity.ms/tag/"</span>+i;</span><br><span class="line">        y=l.getElementsByTagName(r)[<span class="number">0</span>];y.parentNode.insertBefore(t,y);</span><br><span class="line">    &#125;)(<span class="built_in">window</span>, <span class="built_in">document</span>, <span class="string">"clarity"</span>, <span class="string">"script"</span>, <span class="string">"xxxxxxxxxx"</span>);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>代码块中的<code>xxxxxxxxxx</code>便是分配的网站ID。</p>
-<h2 id="在博客中集成"><a href="#在博客中集成" class="headerlink" title="在博客中集成"></a>在博客中集成</h2><p>hexo的博客主题中很少有集成Microsoft Clarity的，我用的<code>hexo</code>+<code>hexo-theme-matery</code>，下面以<code>hexo-theme-matery</code>为例集成Microsoft Clarity。</p>
+<h2 id="在博客中集成"><a href="#在博客中集成" class="headerlink" title="在博客中集成"></a>在博客中集成</h2><p>hexo的博客主题中很少有集成Microsoft Clarity的，我其中一个博客用的<code>hexo</code>+<code>hexo-theme-matery</code>，下面以<code>hexo-theme-matery</code>为例集成Microsoft Clarity。</p>
 <p>这个和百度统计一样，都是将代码块放到网站的<code>&lt;head&gt;</code>中。我修改了<code>hexo-theme-matery</code>的源码，只需要在配置文件<code>_config.yml</code>开启Microsoft Clarity，写入分配的网站id即可。</p>
 <p>在<code>hexo-theme-matery/layout/_partial</code>目录下新建文件<code>microsoft-clarity.ejs</code>，文件中写入代码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Microsoft Clarity --&gt;</span><br><span class="line">&lt;% if (theme.microsoftClarity.enable) &#123; %&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    (function (c, l, a, r, i, t, y) &#123;</span><br><span class="line">        c[a] &#x3D; c[a] || function () &#123; (c[a].q &#x3D; c[a].q || []).push(arguments) &#125;;</span><br><span class="line">        t &#x3D; l.createElement(r); t.async &#x3D; 1; t.src &#x3D; &quot;https:&#x2F;&#x2F;www.clarity.ms&#x2F;tag&#x2F;&quot; + i;</span><br><span class="line">        y &#x3D; l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);</span><br><span class="line">    &#125;)(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;&lt;%- theme.microsoftClarity.id %&gt;&quot;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;% &#125; %&gt;</span><br></pre></td></tr></table></figure>
@@ -294,6 +301,16 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加 Microsoft Clarity 分析配置</span></span><br><span class="line"><span class="attr">microsoftClarity:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span> <span class="comment"># 开启Microsoft Clarity</span></span><br><span class="line">  <span class="attr">id:</span> <span class="string">xxxxxxxxxx</span> <span class="comment"># 网站id</span></span><br></pre></td></tr></table></figure>
 
 <p>至此，Microsoft Clarity在hexo博客中集成完毕，重新部署之后，便可在Microsoft Clarity中查看用户行为。</p>
+<h2 id="NexT主题中集成"><a href="#NexT主题中集成" class="headerlink" title="NexT主题中集成"></a>NexT主题中集成</h2><p>在<code>next/layout/_third-party/analytics/</code>目录下新建文件<code>microsoft-clarity.swig</code>，文件中写入代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;%- if theme.microsoft_clarity %&#125;</span><br><span class="line">  &lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    (function(c,l,a,r,i,t,y)&#123;</span><br><span class="line">        c[a]&#x3D;c[a]||function()&#123;(c[a].q&#x3D;c[a].q||[]).push(arguments)&#125;;</span><br><span class="line">        t&#x3D;l.createElement(r);t.async&#x3D;1;t.src&#x3D;&quot;https:&#x2F;&#x2F;www.clarity.ms&#x2F;tag&#x2F;&quot;+i;</span><br><span class="line">        y&#x3D;l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);</span><br><span class="line">    &#125;)(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;&#123;&#123; theme.microsoft_clarity &#125;&#125;&quot;);</span><br><span class="line">  &lt;&#x2F;script&gt;</span><br><span class="line">&#123;%- endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<code>next/layout/_third-party/analytics/index.swig</code>文件中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% include &#39;microsoft-clarity.swig&#39; %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件<code>_config.yml</code>中添加配置项：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Microsoft Clarity</span></span><br><span class="line"><span class="attr">microsoft_clarity:</span> <span class="string">xxxxxxxxxx</span> <span class="comment"># 网站id</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：配置项<code>microsoft_clarity</code>必须用<code>_</code>连接，如果使用<code>-</code>写成<code>microsoft-clarity</code>不生效。</p>
 
     </div>
 
@@ -413,7 +430,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在博客中集成"><span class="nav-number">2.</span> <span class="nav-text">在博客中集成</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在博客中集成"><span class="nav-number">2.</span> <span class="nav-text">在博客中集成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NexT主题中集成"><span class="nav-number">3.</span> <span class="nav-text">NexT主题中集成</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
