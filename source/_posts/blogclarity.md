@@ -30,7 +30,7 @@ toc: true
 
 ## 在博客中集成
 
-hexo的博客主题中很少有集成Microsoft Clarity的，我用的`hexo`+`hexo-theme-matery`，下面以`hexo-theme-matery`为例集成Microsoft Clarity。
+hexo的博客主题中很少有集成Microsoft Clarity的，我其中一个博客用的`hexo`+`hexo-theme-matery`，下面以`hexo-theme-matery`为例集成Microsoft Clarity。
 
 这个和百度统计一样，都是将代码块放到网站的`<head>`中。我修改了`hexo-theme-matery`的源码，只需要在配置文件`_config.yml`开启Microsoft Clarity，写入分配的网站id即可。
 
@@ -66,3 +66,33 @@ microsoftClarity:
 
 至此，Microsoft Clarity在hexo博客中集成完毕，重新部署之后，便可在Microsoft Clarity中查看用户行为。
 
+## NexT主题中集成
+
+在`next/layout/_third-party/analytics/`目录下新建文件`microsoft-clarity.swig`，文件中写入代码：
+
+```ejs
+{%- if theme.microsoft_clarity %}
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "{{ theme.microsoft_clarity }}");
+  </script>
+{%- endif %}
+```
+
+在`next/layout/_third-party/analytics/index.swig`文件中添加如下代码：
+
+```ejs
+{% include 'microsoft-clarity.swig' %}
+```
+
+在配置文件`_config.yml`中添加配置项：
+
+```yaml
+# Microsoft Clarity
+microsoft_clarity: xxxxxxxxxx # 网站id
+```
+
+注意：配置项`microsoft_clarity`必须用`_`连接，如果使用`-`写成`microsoft-clarity`不生效。
